@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>6</zoom_level>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>102</x>
+      <y>330</y>
+      <w>96</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Existing User (Curator)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>102</x>
+      <y>486</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Create Account</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>36</x>
+      <y>492</y>
+      <w>78</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;110.0;110.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>258</x>
+      <y>294</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Login</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>162</x>
+      <y>300</y>
+      <w>108</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;90.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>414</x>
+      <y>252</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Delete Account</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>732</x>
+      <y>378</y>
+      <w>108</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Create New Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>0</x>
+      <y>534</y>
+      <w>48</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>New User</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>324</x>
+      <y>258</y>
+      <w>102</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;75.0;70.0;40.0;150.0;15.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>546</x>
+      <y>456</y>
+      <w>72</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Collection
+
+-Privateable
+--
+Columns
+
+-Item ID
+-Tag(s)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>156</x>
+      <y>360</y>
+      <w>96</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;140.0;45.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>756</x>
+      <y>408</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Edit Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>756</x>
+      <y>432</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Delete Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>756</x>
+      <y>456</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Search Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>612</x>
+      <y>456</y>
+      <w>156</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>240.0;15.0;190.0;20.0;80.0;110.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>612</x>
+      <y>432</y>
+      <w>156</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>240.0;10.0;180.0;10.0;80.0;120.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>540</y>
+      <w>96</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>140.0;17.0;60.0;20.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>606</x>
+      <y>378</y>
+      <w>138</w>
+      <h>108</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>210.0;10.0;160.0;10.0;80.0;120.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>306</x>
+      <y>762</y>
+      <w>84</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes>Other user (patrons)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>258</x>
+      <y>582</y>
+      <w>162</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>Datebase of Museums</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>654</y>
+      <w>18</w>
+      <h>66</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>300</x>
+      <y>708</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>View Museums</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>342</x>
+      <y>726</y>
+      <w>18</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>426</y>
+      <w>60</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>30.0;260.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>690</x>
+      <y>564</y>
+      <w>96</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Item
+--
+Description String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>546</y>
+      <w>126</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;14.0;10.0;60.0;190.0;65.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>864</x>
+      <y>540</y>
+      <w>108</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Create New Item</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>612</x>
+      <y>408</y>
+      <w>156</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>240.0;17.0;160.0;20.0;80.0;110.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>876</x>
+      <y>564</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Edit Item</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>564</y>
+      <w>108</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>160.0;17.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>900</x>
+      <y>600</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Delete Item</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>780</x>
+      <y>576</y>
+      <w>132</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>200.0;57.0;60.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>930</x>
+      <y>372</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Template</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>834</x>
+      <y>372</y>
+      <w>108</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>930</x>
+      <y>402</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Blank Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>834</x>
+      <y>384</y>
+      <w>108</w>
+      <h>42</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>160.0;50.0;40.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>240</x>
+      <y>372</y>
+      <w>72</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>Museum
+--
+Columns
+
+-Room ID</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>360</x>
+      <y>360</y>
+      <w>84</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>Room
+
+-Privateable
+--
+Columns
+
+-Collection ID</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>390</x>
+      <y>438</y>
+      <w>168</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>15.0;14.0;20.0;100.0;260.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>534</x>
+      <y>360</y>
+      <w>90</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Create New Room</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>540</x>
+      <y>384</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Edit Room</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>540</x>
+      <y>408</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Delete Room</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>546</x>
+      <y>432</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Search Room</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>426</x>
+      <y>360</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>15.0;25.0;180.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>378</y>
+      <w>120</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>15.0;15.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>396</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>15.0;15.0;120.0;30.0;180.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>414</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;15.0;120.0;40.0;190.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>726</x>
+      <y>660</y>
+      <w>36</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Picture</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>738</x>
+      <y>588</y>
+      <w>60</w>
+      <h>78</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>30.0;19.0;10.0;80.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>306</x>
+      <y>390</y>
+      <w>66</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;24.0;90.0;25.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>420</x>
+      <y>300</y>
+      <w>72</w>
+      <h>18</h>
+    </coordinates>
+    <panel_attributes>Edit Account</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>324</x>
+      <y>294</y>
+      <w>108</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;extends&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;25.0;160.0;25.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>546</x>
+      <y>276</y>
+      <w>84</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Privateable means
+only curators can
+view object
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>876</x>
+      <y>246</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Book Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1014</x>
+      <y>258</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Card Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1086</x>
+      <y>330</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Digital Media Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1080</x>
+      <y>390</y>
+      <w>60</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>Art Collection</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>264</y>
+      <w>60</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0;80.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>972</x>
+      <y>270</y>
+      <w>72</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>996</x>
+      <y>336</y>
+      <w>102</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>150.0;10.0;30.0;40.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>996</x>
+      <y>378</y>
+      <w>96</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>140.0;40.0;50.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>138</x>
+      <y>384</y>
+      <w>102</w>
+      <h>114</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+&lt;&lt;New User Becomes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>450</x>
+      <y>528</y>
+      <w>84</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Explanation of Tags:
+Tags are a column
+in a collection, like
+how addresses and
+phone numbers
+worked in the small
+project.
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
