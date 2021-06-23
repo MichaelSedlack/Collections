@@ -15,13 +15,6 @@ if(process.env.NODE_ENV === 'production'){
   app.use(express.static('frontend/build')); // Serves frontend if in production mode
 }
 
-
-
-
-
-
-
-
 // Starts App
 app.listen(PORT, () => {
   console.log('Server running on port ' + PORT);
