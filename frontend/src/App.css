@@ -54,10 +54,55 @@ footer {
   background-color: #282c34;
   min-height: 50px;
   margin-top: auto;
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
   justify-content: center;
   font-size: small;
   color: orange;
+}
+
+input {
+  font-family: Nunito Sans;
+  background-color: aliceblue;
+  border: solid 2px grey;
+  font-size: 1.75vw;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: text;
+}
+
+.buttons {
+  border: none;
+  background-color: aliceblue;
+  font-size: 1.75vw;
+  border: solid 2px grey;
+  width: 20%;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  transition: 0.35s;
+}
+
+.buttons:hover {
+  background-color: #8cadde;
+  cursor: pointer;
+}
+
+p {
+  margin: 0; /*reduces the new line space between p tags*/
+}
+
+/* CSS for the body in the login component*/
+#loginDiv {
+  background-color: #08be88;
+  color: rgb(29, 0, 160);
+  min-height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
