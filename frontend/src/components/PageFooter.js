@@ -5,7 +5,7 @@ function PageFooter(){
     return(
         <div>
             <footer>
-                <p>Collections: Large Project</p>
+                <p>Collections</p>
                 <p>Group 6 Summer 2021</p>    
             </footer>
             
