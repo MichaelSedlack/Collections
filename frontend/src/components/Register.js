@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function Register()
 {
+    var bp = require('./Path.js');
 
-    //var bp = require('./Path.js');
-    
     var registerFirstName;
     var registerLastName;
     var registerEmail;
@@ -14,45 +14,44 @@ function Register()
 
     const doRegister = async event => 
     {
-        // event.preventDefault();
+      event.preventDefault();
 
-        // var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail,password:registerPassword};
-        // var js = JSON.stringify(obj);
+      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,passwordHash:registerPassword.value};
+      var js = JSON.stringify(obj);
 
-        setTimeout(
-            function(){
-                    alert("Navigating back to log in");
-                    window.location.href = 'http://localhost:3000';
-            },500)
-        // try
-        // {    
-        //     const response = await fetch(bp.buildPath('api/register'),
-        //         {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
-
-        //     var res = JSON.parse(await response.text());
-
-        //     if( res.id <= 0 )
-        //     {
-        //         setMessage('User already exists');
-        //     }
-        //     else
-        //     {
-        //         var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-        //         localStorage.setItem('user_data', JSON.stringify(user));
-
-        //         setTimeout(
-        //             function(){
-        //                 setMessage('Navigating back to Log in');
-
-        //                 window.location.href = '/3001';
-        //             },3000)
-        //     }
-        // }
-        // catch(e)
-        // {
-        //     setMessage(e.toString());
-        //     return;
-        // }    
+      var config = 
+      {
+          method: 'post',
+          url: bp.buildPath('users'),	
+          headers: 
+          {
+              'Content-Type': 'application/json'
+          },
+          data: js
+      };
+      
+        axios(config)
+            .then(function (response) 
+        {
+            var res = response.data;
+            if (res.error) 
+            {
+              setMessage('User/Password combination incorrect');
+            }
+            else 
+            {
+              setMessage('Account has been added');
+              setTimeout(
+                function(){
+                        
+                        window.location.href = '/';
+                },500)
+            }
+        })
+        .catch(function (error) 
+        {
+            console.log(error);
+        });
     };
 
     return(
@@ -62,10 +61,10 @@ function Register()
         <input type="text" id="registerLastName" placeholder="Last Name" ref={(c) => registerLastName = c}  /><br />
         <input type="text" id="registerEmail" placeholder="Email" ref={(c) => registerEmail = c}  /><br />
         <input type="password" id="registerPassword" placeholder="Password" ref={(c) => registerPassword = c} /><br />
-        <input type="submit" id="registerButton" class="buttons" value = "Complete Registration"
+        <input type="submit" id="registerButton" className="buttons" value = "Complete Registration"
           onClick={doRegister} />
         <span id="registerResult">{message}</span>
-        <input type="submit" id="loginButton" class="buttons" value="Login" onClick={()=>{window.location.href = '/'}}/>
+        <input type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}/>
      </div>
     );
 };
