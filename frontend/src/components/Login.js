@@ -52,9 +52,9 @@ function Login()
         <span id="inner-title">PLEASE LOG IN</span><br />
         <input type="text" id="loginName" placeholder="Username" ref={(c) => loginName = c}  /><br />
         <input type="password" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} /><br />
-        <input type="submit" id="loginButton" class="buttons" value = "Log In" onClick={doLogin} />
+        <input type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin} />
         <span id="loginResult">{message}</span>
-        <input type="submit" id="registerButton" class="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}/>
+        <input type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}/>
      </div>
     );
 };
