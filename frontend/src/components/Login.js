@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-
+import axios from 'axios';
 
 function Login()
 {
 
-    //var bp = require('./Path.js');
+    var bp = require('./Path.js');
+    var storage = require('../tokenStorage.js');
     
     var loginName;
     var loginPassword;
@@ -13,38 +14,50 @@ function Login()
 
     const doLogin = async event => 
     {
-        alert("The login button was pressed!");
-        // event.preventDefault();
+        event.preventDefault();
 
-        // var obj = {login:loginName.value,password:loginPassword.value};
-        // var js = JSON.stringify(obj);
+        var obj = {email:loginName.value,passwordHash:loginPassword.value};
+        var js = JSON.stringify(obj);
 
-        // try
-        // {    
-        //     const response = await fetch(bp.buildPath('api/login'),
-        //         {method:'POST',body:js,headers:{'Content-Type': 'application/json'}});
+        var config = 
+        {
+            method: 'post',
+            url: bp.buildPath('users'),	
+            headers: 
+            {
+                'Content-Type': 'application/json'
+            },
+            data: js
+        };
 
-        //     var res = JSON.parse(await response.text());
-
-        //     if( res.id <= 0 )
-        //     {
-        //         setMessage('User/Password combination incorrect');
-        //     }
-        //     else
-        //     {
-        //         var user = {firstName:res.firstName,lastName:res.lastName,id:res.id}
-        //         localStorage.setItem('user_data', JSON.stringify(user));
-
-        //         setMessage('');
-        //         window.location.href = '/cards';
-        //     }
-        // }
-        // catch(e)
-        // {
-        //     alert(e.toString());
-        //     return;
-        // }    
-    };
+        axios(config)
+            .then(function (response) 
+        {
+            var res = response.data;
+            if (res.error) 
+            {
+                setMessage('User/Password combination incorrect');
+            }
+            else 
+            {	
+                storage.storeToken(res);
+                var jwt = require('jsonwebtoken');
+    
+                var ud = jwt.decode(storage.retrieveToken(),{complete:true});
+                var userId = ud.payload.userId;
+                var firstName = ud.payload.firstName;
+                var lastName = ud.payload.lastName;
+                  
+                var user = {firstName:firstName,lastName:lastName,id:userId}
+                localStorage.setItem('user_data', JSON.stringify(user));
+                window.location.href = '/register';
+            }
+        })
+        .catch(function (error) 
+        {
+            console.log(error);
+        });
+    }
 
 
     return(
