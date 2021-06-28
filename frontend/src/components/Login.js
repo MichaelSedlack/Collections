@@ -22,7 +22,7 @@ function Login()
         var config = 
         {
             method: 'post',
-            url: bp.buildPath('users'),	
+            url: bp.buildPath('users/login'),	
             headers: 
             {
                 'Content-Type': 'application/json'
@@ -36,21 +36,29 @@ function Login()
             var res = response.data;
             if (res.error) 
             {
-                setMessage('User/Password combination incorrect');
+                setMessage(res.error);
             }
             else 
             {	
-                storage.storeToken(res);
-                var jwt = require('jsonwebtoken');
+                //storage.storeToken(res);
+                //var jwt = require('jsonwebtoken');
     
-                var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                var userId = ud.payload.userId;
-                var firstName = ud.payload.firstName;
-                var lastName = ud.payload.lastName;
+                //var ud = jwt.decode(storage.retrieveToken(),{complete:true});
+                //var userId = ud.payload.userId;
+                //var firstName = ud.payload.firstName;
+                //var lastName = ud.payload.lastName;
                   
-                var user = {firstName:firstName,lastName:lastName,id:userId}
-                localStorage.setItem('user_data', JSON.stringify(user));
-                window.location.href = '/register';
+                //var user = {firstName:firstName,lastName:lastName,id:userId}
+                //localStorage.setItem('user_data', JSON.stringify(user));
+                
+                //alert("ID: " + res.id + " \n" + "email: " + res.email);
+                setMessage("Logging In");
+                setTimeout(
+                    function(){
+                            
+                            window.location.href = '/';
+                    },2000)
+                //window.location.href = '/register';
             }
         })
         .catch(function (error) 
