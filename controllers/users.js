@@ -1,3 +1,4 @@
+const { response } = require('express');
 const User = require('../models/user');
 const usersRouter = require('express').Router()
 const token = require('../utils/token');
@@ -21,7 +22,7 @@ usersRouter.post('/register', async (req, res) => {
   const savedUser = await newUser.save();
 
   // Send response
-  res.send(savedUser);
+  return res.send(savedUser);
 })
 
 usersRouter.post('/login', async (req, res) => {
@@ -34,9 +35,9 @@ usersRouter.post('/login', async (req, res) => {
 
   // Error checking (incorrect password, or incorrect email)
   if(!user){
-    res.status(400).json({error: "User does not exist"});
+    return res.status(400).json({error: "User does not exist"});
   }else if(passwordHash !== user.passwordHash){
-    res.status(400).json({error: "Incorrect Password"});
+    return res.status(400).json({error: "Incorrect Password"});
   }
 
   const newToken = await token.createToken(user.firstName, user.lastName, user.id);
@@ -47,11 +48,26 @@ usersRouter.post('/login', async (req, res) => {
     email: user.email
   };
 
-  res.send(response);
+  return res.send(response);
 })
 
 usersRouter.get('/:id', async (req, res) => {
-  console.log("Getting user by ID");
+  const id = req.params.id;
+  const verifiedToken = await token.isExpired(token.getToken(req));
+
+  if(!verifiedToken){
+    return res.status(401).end();
+  }
+
+  if(id === verifiedToken.id){
+    const userInfo = await User.findById(id);
+
+    return res.send(userInfo);
+  }else{
+    const userInfo = await User.findById(id, 'firstName lastName');
+
+    return res.send(userInfo);
+  }
 })
 
 module.exports = usersRouter;
