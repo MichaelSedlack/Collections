@@ -22,7 +22,7 @@ function Register()
       var config = 
       {
           method: 'post',
-          url: bp.buildPath('users'),	
+          url: bp.buildPath('users/register'),	
           headers: 
           {
               'Content-Type': 'application/json'
