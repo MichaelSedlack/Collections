@@ -36,16 +36,15 @@ function Register()
             var res = response.data;
             if (res.error) 
             {
-              setMessage('User/Password combination incorrect');
+              setMessage('User already exists');
             }
             else 
             {
-              setMessage('Account has been added');
+              setMessage('New Account Created');
               setTimeout(
                 function(){
-                        
                         window.location.href = '/';
-                },500)
+                },2000)
             }
         })
         .catch(function (error) 
