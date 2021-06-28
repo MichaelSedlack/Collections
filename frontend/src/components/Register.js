@@ -36,7 +36,7 @@ function Register()
             var res = response.data;
             if (res.error) 
             {
-              setMessage('User already exists');
+              setMessage('User/Password combination incorrect');
             }
             else 
             {
