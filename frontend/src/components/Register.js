@@ -26,15 +26,15 @@ function Register()
     {
       event.preventDefault();
 
-      bcrypt.hash(registerPassword.value, 10, (err, hash) => {
-        if(err){
-          console.error("error");
-        }
-        alert(hash);
-        console.log(hash);
-      })
+      // bcrypt.hash(registerPassword.value, 10, (err, hash) => {
+      //   if(err){
+      //     console.error("error");
+      //   }
+      //   alert(hash);
+      //   console.log(hash);
+      // })
 
-      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,passwordHash:hash};
+      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,passwordHash:registerEmail.value};
       var js = JSON.stringify(obj);
 
       var config = 
