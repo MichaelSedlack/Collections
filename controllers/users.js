@@ -8,6 +8,14 @@ usersRouter.post('/register', async (req, res) => {
   const firstName = (body.firstName) ? body.firstName : "";
   const lastName = (body.lastName) ? body.lastNmae : "";
 
+  const emailExists = await User.find({email: body.email});
+
+  console.log(emailExists);
+
+  if(emailExists.length > 0){
+    return res.status(409).json({error: "Email already in use."});
+  }
+
   // Format request into mongoose schema
   const newUser = new User({
     firstName,
