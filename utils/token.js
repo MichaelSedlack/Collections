@@ -6,25 +6,16 @@ function createToken( firstName, lastName, id ){
 }
 
 function _createToken ( firstName, lastName, id ){
-    
+  var ret;
   try{
-      const expiration = new Date();
-      const user = {id,firstName,lastName};
-
-      // const accessToken =  jwt.sign( user, process.env.SECRET);
-
-      // In order to exoire with a value other than the default, use the 
-       // following
+      const user = {id, firstName, lastName};
       
-      const accessToken= jwt.sign(user,process.env.SECRET, { expiresIn: '30m'} );
-      //                  '24h'
-      //                 '365d'
-      
+      const accessToken= jwt.sign(user, process.env.SECRET, { expiresIn: '30m'} );
 
-      var ret = accessToken;
+      ret = accessToken;
     }
     catch(e){
-      var ret = {error:e.message};
+      ret = {error:e.message};
     }
     
     return ret;
