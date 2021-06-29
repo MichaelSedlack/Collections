@@ -76,6 +76,7 @@ function Login()
         <input type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin} />
         <span id="loginResult">{message}</span>
         <input type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}/>
+        <p onClick={()=>{alert("Forgot password clicked")}}>Forgot Password?</p>
      </div>
     );
 };
