@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
-//import bcrypt from 'bcrypt';
+var bcrypt = require('bcryptjs');
+
 
 function Register()
 {
@@ -12,25 +13,28 @@ function Register()
     var registerEmail;
     var registerPassword; // hash password????
 
+
     const [message,setMessage] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [passwordErrorColor, setPasswordErrorColor] = useState('');
 
-    // bcrypt.hash(registerPassword, 10, (err, hash) => {
-    //   if(err){
-    //     console.error(err);
-    //     return;
-    //   }
-    //   console.log(hash);
-    // })
+    var hash;
 
     const doRegister = async event => 
     {
       event.preventDefault();
 
-      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,passwordHash:registerPassword.value};
+      bcrypt.hash(registerPassword.value, 10, (err, hash) => {
+        if(err){
+          console.error("error");
+        }
+        alert(hash);
+        console.log(hash);
+      })
+
+      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,passwordHash:hash};
       var js = JSON.stringify(obj);
 
       var config = 
