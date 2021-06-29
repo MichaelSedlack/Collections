@@ -39,7 +39,7 @@ usersRouter.post('/login', async (req, res) => {
     return res.status(400).json({error: "Incorrect Password"});
   }
 
-  const newToken = await token.createToken(user.firstName, user.lastName, user.id);
+  const newToken = token.createToken(user.firstName, user.lastName, user.id);
   
   const response = {
     accessToken: newToken,
@@ -52,7 +52,7 @@ usersRouter.post('/login', async (req, res) => {
 
 usersRouter.get('/:id', async (req, res) => {
   const id = req.params.id;
-  const verifiedToken = await token.isExpired(token.getToken(req));
+  const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
     return res.status(401).end();
