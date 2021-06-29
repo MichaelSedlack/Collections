@@ -1,4 +1,3 @@
-const { response } = require('express');
 const User = require('../models/user');
 const usersRouter = require('express').Router()
 const token = require('../utils/token');
