@@ -14,7 +14,7 @@ function Register()
 
     const [message,setMessage] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [errorColor, setErrorColor] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [passwordErrorColor, setPasswordErrorColor] = useState('');
 
@@ -71,11 +71,11 @@ function Register()
     const checkValidation = (e) => {
       
       if(registerPassword.value !== e.target.value){
-        setMessage("Passwords need to match");
+        setPasswordError("Passwords need to match");
         setPasswordErrorColor('red');
       }
       else{
-          setMessage("The passwords match!");
+          setPasswordError("The passwords match!");
           setPasswordErrorColor('green');
       }
     }
@@ -100,11 +100,14 @@ function Register()
         <span id="inner-title">PLEASE REGISTER</span><br />
         <input type="text" id="registerFirstName" placeholder="First Name" ref={(c) => registerFirstName = c}  /><br />
         <input type="text" id="registerLastName" placeholder="Last Name" ref={(c) => registerLastName = c}  /><br />
-        <input type="text" id="registerEmail" placeholder="Email" onChange={(e)=> validateEmail(e)}  /><span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
+        <input type="text" id="registerEmail" placeholder="Email" onChange={(e)=> validateEmail(e)} ref={(c) => registerEmail = c} />
+        <span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
         <input type="password" id="registerPassword" placeholder="Password" ref={(c) => registerPassword = c} /><br />
-        <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" onChange={(e)=> checkValidation(e)} /><span id="registerPasswordResult" style={{color:passwordErrorColor}}>{message}</span><br />
+        <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" onChange={(e)=> checkValidation(e)} />
+        <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
         <input type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister} />
         <input type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}/><br />
+        <span id="registrationResult" style={{color:'green'}}>{message}</span>
         <br />
         
      </div>
