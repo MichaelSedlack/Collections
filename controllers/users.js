@@ -63,7 +63,7 @@ usersRouter.get('/:id', async (req, res) => {
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
-    return res.status(401).end();
+    return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
   if(id === verifiedToken.id){

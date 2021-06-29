@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const usersRouter = require('./controllers/users');
+const roomsRouter = require('./controllers/rooms');
 
 // Variables
 const app = express();
@@ -21,6 +22,7 @@ mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
 app.use(cors()); // Allows for cross-origin requests
 app.use(bodyParser.json()); // Parses json in request.body for us
 app.use('/users', usersRouter); // Users route
+app.use('/rooms', roomsRouter); // Rooms route
 
 if(process.env.NODE_ENV === 'production'){
   app.use(express.static('frontend/build')); // Serves frontend if in production mode
