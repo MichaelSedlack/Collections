@@ -10,7 +10,7 @@ function PageHeader(){
                 <Switch>
                     <Route path='/' exact>
                         <header>
-                            <h1>Collections</h1>
+                            <h1>Myuseum</h1>
                         </header>
                     </Route>
                     <Route path='/register' exact>
