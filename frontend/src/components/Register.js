@@ -102,7 +102,7 @@ function Register()
         <input type="text" id="registerLastName" placeholder="Last Name" ref={(c) => registerLastName = c}  /><br />
         <input type="text" id="registerEmail" placeholder="Email" onChange={(e)=> validateEmail(e)} ref={(c) => registerEmail = c} />
         <span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
-        <input type="password" id="registerPassword" placeholder="Password" ref={(c) => registerPassword = c} /><br />
+        <input type="password" id="registerPassword" placeholder="Password" ref={(c) => registerPassword = c} onChange={(e)=> checkValidation(e)} /><br />
         <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" onChange={(e)=> checkValidation(e)} />
         <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
         <input type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister} />
