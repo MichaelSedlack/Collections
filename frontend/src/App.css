@@ -94,6 +94,7 @@ input {
 
 p {
   margin: 0; /*reduces the new line space between p tags*/
+  color: rgb(22, 0, 122);
 }
 
 /* CSS for the body in the login component*/
