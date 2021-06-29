@@ -36,7 +36,7 @@ function isExpired( token ){
   return jwt.verify( token, process.env.SECRET, (err, verifiedJwt) =>
   {
     if( err ){
-      return "Error";
+      return null;
     }
     else{
       return verifiedJwt;
