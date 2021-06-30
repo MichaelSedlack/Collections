@@ -12,10 +12,6 @@ const roomsRouter = require('./controllers/rooms');
 const app = express();
 const url = config.MONGODB_URI;
 
-console.log(url)
-console.log(config.EMAIL_ADDRESS)
-console.log(config.EMAIL_PASSWORD)
-console.log(config.SECRET)
 
 // Database Connection
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true})
