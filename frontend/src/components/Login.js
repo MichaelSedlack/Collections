@@ -55,7 +55,7 @@ function Login()
                 setTimeout(
                     function(){
                             
-                            window.location.href = '/';
+                            window.location.href = '/museum';
                     },2000)
             }
         })
