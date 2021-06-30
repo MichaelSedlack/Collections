@@ -10,17 +10,22 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  test_pull_request:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
+    
     steps:
     - uses: actions/checkout@v2
+    - name: Create .env file
+    - run: |
+        touch .env
+        echo TEST_MONGODB_URI=${{ secrets.TEST_MONGODB_URI }} >> .env
+        echo EMAIL_ADDRESS=${{ secrets.EMAIL_ADDRESS }} >> .env
+        echo EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} >> .env
+        echo SECRET=${{ secrets.SECRET }} >> .env
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:

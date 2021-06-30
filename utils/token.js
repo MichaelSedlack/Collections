@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const config = require('./config');
 
 function createToken( firstName, lastName, id ){
     return _createToken( firstName, lastName, id );
@@ -10,7 +10,7 @@ function _createToken ( firstName, lastName, id ){
   try{
       const user = {id, firstName, lastName};
       
-      const accessToken= jwt.sign(user, process.env.SECRET, { expiresIn: '30m'} );
+      const accessToken= jwt.sign(user, config.SECRET, { expiresIn: '30m'} );
 
       ret = accessToken;
     }
@@ -33,7 +33,7 @@ function getToken(request){
 }
 
 function isExpired( token ){
-  return jwt.verify( token, process.env.SECRET, (err, verifiedJwt) =>
+  return jwt.verify( token, config.SECRET, (err, verifiedJwt) =>
   {
     if( err ){
       return null;
