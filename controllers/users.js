@@ -10,8 +10,6 @@ usersRouter.post('/register', async (req, res) => {
 
   const emailExists = await User.find({email: body.email});
 
-  console.log(emailExists);
-
   if(emailExists.length > 0){
     return res.status(409).json({error: "Email already in use."});
   }
