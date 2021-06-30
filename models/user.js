@@ -18,13 +18,17 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectID,
     ref: 'Room'
     }
-  ]
+  ],
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 })
 
 // Set options for translation to JSON
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()
+      delete returnedObject.resetPasswordToken
+      delete returnedObject.resetPasswordExpires
       delete returnedObject._id
       delete returnedObject.__v
       delete returnedObject.passwordHash
