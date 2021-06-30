@@ -113,8 +113,10 @@ usersRouter.post('/forgotPassword', async (req, res) => {
   // Send Email and retrieve info for email.
   const info = await transporter.sendMail(mailOptions);
 
+  console.log(info);
+
   // Email not accepted case.
-  if(!info.accepted.contains(user.email)){
+  if(!info.accepted.includes(user.email)){
     return res.status(500).json({error: "Email was not sent."});
   }
 
