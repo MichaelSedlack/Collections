@@ -3,6 +3,7 @@ const usersRouter = require('express').Router();
 const token = require('../utils/token');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const config = require('../utils/config');
 
 // Register User Account
 usersRouter.post('/register', async (req, res) => {
@@ -91,8 +92,8 @@ usersRouter.post('/forgotPassword', async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth:{
-      user: `${process.env.EMAIL_ADDRESS}`,
-      pass: `${process.env.EMAIL_PASSWORD}`,
+      user: `${config.EMAIL_ADDRESS}`,
+      pass: `${config.EMAIL_PASSWORD}`,
     }
   })
 
