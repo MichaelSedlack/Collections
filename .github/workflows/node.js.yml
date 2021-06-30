@@ -17,6 +17,13 @@ jobs:
         node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
+    env:
+        TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+        SECRET: ${{ secrets.SECRET }}
+        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        PORT: ${{ secrets.PORT }}
+    
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -25,9 +32,3 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
     - run: npm test
-      env:
-        TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
-        SECRET: ${{ secrets.SECRET }}
-        EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
-        EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
-        PORT: ${{ secrets.PORT }}
