@@ -1,6 +1,9 @@
 import React from 'react';
 import '../App.css';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import { Grid } from '@material-ui/core';
+
 
 function PageHeader(){
     return(
@@ -10,7 +13,12 @@ function PageHeader(){
                 <Switch>
                     <Route path='/' exact>
                         <header>
-                            <h1>Myuseum</h1>
+                            <div>
+                                <Grid container direction="column" alignItems="flex-end">
+                                    <AccountBoxIcon color="secondary" fontSize="large"/>
+                                    <h1>Myuseum</h1>
+                                </Grid>
+                            </div>
                         </header>
                     </Route>
                     <Route path='/register' exact>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
-import ForgotPassword from './ForgotPassword.js';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField';
 
 function Login()
 {
@@ -8,8 +9,8 @@ function Login()
     var bp = require('./Path.js');
     var storage = require('../tokenStorage.js');
     
-    var loginName;
-    var loginPassword;
+    const loginName = useRef(null);
+    const loginPassword = useRef(null);
 
     const [message,setMessage] = useState('');
 
@@ -17,7 +18,7 @@ function Login()
     {
         event.preventDefault();
 
-        var obj = {email:loginName.value,password:loginPassword.value};
+        var obj = {email:loginName.current.value,password:loginPassword.current.value};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -70,12 +71,12 @@ function Login()
     return(
       <div id="loginDiv">
         <span id="inner-title">PLEASE LOG IN</span><br />
-        <input type="text" id="loginName" placeholder="Username" ref={(c) => loginName = c}  /><br />
-        <input type="password" id="loginPassword" placeholder="Password" ref={(c) => loginPassword = c} /><br />
-        <input type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin} />
+        <TextField  variant="outlined" required label="Email" type="text" id="loginName" inputRef={loginName}  /><br />
+        <TextField  variant="outlined" required label="Password" type="password" id="loginPassword" inputRef={loginPassword} /><br />
+        <Button variant="contained" size="large" color="primary" type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin}>Log In</Button>
         <span id="loginResult">{message}</span>
-        <input type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}/>
-        <p onClick={()=>{window.location.href = '/forgotpassword'}}>Forgot Password?</p>
+        <Button variant="contained" size="large" color="secondary" type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}>Register</Button>
+        <Button size="large" onClick={()=>{window.location.href = '/forgotpassword'}}>Forgot Password?</Button>
      </div>
     );
 };

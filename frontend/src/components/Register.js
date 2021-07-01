@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 var bcrypt = require('bcryptjs');
 
 
@@ -8,10 +10,11 @@ function Register()
 {
     var bp = require('./Path.js');
 
-    var registerFirstName;
-    var registerLastName;
-    var registerEmail;
-    var registerPassword; // hash password????
+
+    const registerFirstName = useRef(null);
+    const registerLastName = useRef(null);
+    const registerEmail = useRef(null);
+    const registerPassword = useRef(null);
 
 
     const [message,setMessage] = useState('');
@@ -34,7 +37,7 @@ function Register()
       //   console.log(hash);
       // })
 
-      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,password:registerPassword.value};
+      var obj = {firstname:registerFirstName.current.value,lastname:registerLastName.current.value,email:registerEmail.current.value,password:registerPassword.current.value};
       var js = JSON.stringify(obj);
 
       var config = 
@@ -71,10 +74,10 @@ function Register()
         });
     };
 
-    // checks for matching passwords: remember to hash
+    // checks for matching passwords
     const checkValidation = (e) => {
       
-      if(registerPassword.value !== e.target.value){
+      if(registerPassword.current.value !== e.target.value){
         setPasswordError("Passwords need to match");
         setPasswordErrorColor('red');
       }
@@ -102,15 +105,15 @@ function Register()
     return(
       <div id="registerDiv">
         <span id="inner-title">PLEASE REGISTER</span><br />
-        <input type="text" id="registerFirstName" placeholder="First Name" ref={(c) => registerFirstName = c}  /><br />
-        <input type="text" id="registerLastName" placeholder="Last Name" ref={(c) => registerLastName = c}  /><br />
-        <input type="text" id="registerEmail" placeholder="Email" onChange={(e)=> validateEmail(e)} ref={(c) => registerEmail = c} />
+        <TextField margin="dense" variant="outlined" type="text" id="registerFirstName" label="First Name" inputRef={registerFirstName}  /><br />
+        <TextField margin="dense" variant="outlined"  type="text" id="registerLastName" label="Last Name" inputRef={registerLastName}  /><br />
+        <TextField margin="dense" variant="outlined" required type="text" id="registerEmail" label="Email" onChange={(e)=> validateEmail(e)} inputRef={registerEmail} />
         <span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
-        <input type="password" id="registerPassword" placeholder="Password" ref={(c) => registerPassword = c} /><br />
-        <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" onChange={(e)=> checkValidation(e)} />
+        <TextField margin="dense" variant="outlined" required type="password" id="registerPassword" label="Password" inputRef={registerPassword} /><br />
+        <TextField margin="dense" variant="outlined" required type="password" id="registerConfirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
         <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
-        <input type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister} />
-        <input type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}/><br />
+        <Button variant="contained" size="large" color="primary" type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister}>Complete Registration</Button>
+        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Back to Login</Button><br />
         <span id="registrationResult" style={{color:'green'}}>{message}</span>
         <br />
         
