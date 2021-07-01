@@ -18,9 +18,9 @@ function CreateRoomForm()
 
         var uid = JSON.parse(localStorage.getItem('user_data'));
 
-        alert(uid.userId);
+        alert(uid.id);
 
-        var obj = {name:newRoomName.value,private:choice.value,uid:uid.userId};
+        var obj = {name:newRoomName.value,private:choice.value,uid:uid.id};
         var js = JSON.stringify(obj);
 
         var config = 
