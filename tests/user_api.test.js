@@ -31,7 +31,7 @@ describe('/users/register', () => {
       firstName: 'Tester',
       lastName: 'Testerson',
       email: 'testy@tester.com',
-      passwordHash: 'test'
+      password: 'test'
     }
 
   await api
@@ -46,7 +46,7 @@ describe('/users/register', () => {
       firstName: 'Tester',
       lastName: 'Testerson',
       email: 'kxngvenom@gmail.com',
-      passwordHash: 'test'
+      password: 'test'
     }
 
     await api
