@@ -11,6 +11,7 @@ usersRouter.post('/register', async (req, res) => {
 
   const firstName = (body.firstName) ? body.firstName : "";
   const lastName = (body.lastName) ? body.lastNmae : "";
+  const passwordHash = body.password; // ADD HASHING
 
   const emailExists = await User.find({email: body.email});
 
@@ -23,7 +24,7 @@ usersRouter.post('/register', async (req, res) => {
     firstName,
     lastName,
     email: body.email,
-    passwordHash: body.passwordHash,
+    passwordHash: passwordHash,
     rooms: []
   })
 
@@ -38,7 +39,7 @@ usersRouter.post('/register', async (req, res) => {
 usersRouter.post('/login', async (req, res) => {
   // Get information from body
   const email = req.body.email;
-  const passwordHash = req.body.passwordHash;
+  const passwordHash = req.body.password; // ADD HASHING
 
   // Search for user in database
   const user = await User.findOne({email});
@@ -80,7 +81,7 @@ usersRouter.post('/forgotPassword', async (req, res) => {
 
   const resetPasswordToken = crypto.randomBytes(20).toString('hex');
 
-  // Add token and expiration to document and save
+  // Add token and expiration to User document and save
   user.resetPasswordToken = resetPasswordToken;
   user.resetPasswordExpires= Date.now() + 3600000;
   await user.save({
