@@ -76,6 +76,7 @@ function ForgotPassword()
           <input type="text" id="email" placeholder="Enter Email" onChange={(e)=> validateEmail(e)} ref={(c) => newEmail = c} />
           <span id="emailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
           <input type="submit" id="sendEmailButton" className="buttons" value = "Send Email" onClick={sendEmail} />
+          <input type="submit" id="loginButton" className="buttons" value="Return to Login" onClick={()=>{window.location.href = '/'}}/><br />
           <span id="emailResult" style={{color:'green'}}>{message}</span>
         </div>
     );
