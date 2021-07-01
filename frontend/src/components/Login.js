@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import ForgotPassword from './ForgotPassword.js';
 
 function Login()
 {
@@ -16,7 +17,7 @@ function Login()
     {
         event.preventDefault();
 
-        var obj = {email:loginName.value,passwordHash:loginPassword.value};
+        var obj = {email:loginName.value,password:loginPassword.value};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -74,7 +75,7 @@ function Login()
         <input type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin} />
         <span id="loginResult">{message}</span>
         <input type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}/>
-        <p onClick={()=>{alert("Forgot password clicked")}}>Forgot Password?</p>
+        <p onClick={()=>{window.location.href = '/forgotpassword'}}>Forgot Password?</p>
      </div>
     );
 };

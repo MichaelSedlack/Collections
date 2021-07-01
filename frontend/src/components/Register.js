@@ -34,7 +34,7 @@ function Register()
       //   console.log(hash);
       // })
 
-      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,passwordHash:registerEmail.value};
+      var obj = {firstname:registerFirstName.value,lastname:registerLastName.value,email:registerEmail.value,password:registerPassword.value};
       var js = JSON.stringify(obj);
 
       var config = 
