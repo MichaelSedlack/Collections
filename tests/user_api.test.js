@@ -41,6 +41,21 @@ describe('/users/register', () => {
     .expect('Content-Type', /application\/json/)
   });
 
+  test('User cannot be created with already used email', async () => {
+    const newUser = {
+      firstName: 'Tester',
+      lastName: 'Testerson',
+      email: 'kxngvenom@gmail.com',
+      passwordHash: 'test'
+    }
+
+    await api
+      .post('/users/register/')
+      .send(newUser)
+      .expect(409)
+      .expect('Content-Type', /application\/json/)
+  })
+
 })
 
 afterAll(() => {
