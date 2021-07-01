@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import validator from 'validator';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 function ForgotPassword()
 {
 
     var bp = require('./Path.js');
-    var newEmail;
+
+    const newEmail = useRef(null);
+
 
     const [message,setMessage] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
@@ -17,7 +21,7 @@ function ForgotPassword()
     {
         event.preventDefault();
 
-        var obj = {email:newEmail.value};
+        var obj = {email:newEmail.current.value};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -73,10 +77,10 @@ function ForgotPassword()
     return (
         <div id="forgotPasswordDiv">
           <h3>Enter Your Email to Reset Your Password</h3>
-          <input type="text" id="email" placeholder="Enter Email" onChange={(e)=> validateEmail(e)} ref={(c) => newEmail = c} />
+          <TextField type="text" variant="outlined" id="email" label="Enter Email" onChange={(e)=> validateEmail(e)} inputRef={newEmail} />
           <span id="emailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
-          <input type="submit" id="sendEmailButton" className="buttons" value = "Send Email" onClick={sendEmail} />
-          <input type="submit" id="loginButton" className="buttons" value="Return to Login" onClick={()=>{window.location.href = '/'}}/><br />
+          <Button variant="contained" size="small" color="primary" type="submit" id="sendEmailButton" className="buttons" value="Send Email" onClick={sendEmail}>Send Email</Button>
+          <Button variant="contained" size="small" color="secondary" type="submit" id="loginButton" className="buttons" value="Return to Login" onClick={()=>{window.location.href = '/'}}>Return to Login</Button><br />
           <span id="emailResult" style={{color:'green'}}>{message}</span>
         </div>
     );
