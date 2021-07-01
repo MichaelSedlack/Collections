@@ -17,7 +17,7 @@ function Login()
     {
         event.preventDefault();
 
-        var obj = {email:loginName.value,passwordHash:loginPassword.value};
+        var obj = {email:loginName.value,password:loginPassword.value};
         var js = JSON.stringify(obj);
 
         var config = 
