@@ -4,14 +4,16 @@ const token = require('../utils/token');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const config = require('../utils/config');
+const bcrypt = require('bcrypt');
 
 // Register User Account
 usersRouter.post('/register', async (req, res) => {
   const body = req.body;
+  const saltRounds = 10;
 
   const firstName = (body.firstName) ? body.firstName : "";
   const lastName = (body.lastName) ? body.lastNmae : "";
-  const passwordHash = body.password; // ADD HASHING
+  const passwordHash = await bcrypt.hash(body.password, saltRounds); // ADD HASHING
 
   const emailExists = await User.find({email: body.email});
 
@@ -39,7 +41,7 @@ usersRouter.post('/register', async (req, res) => {
 usersRouter.post('/login', async (req, res) => {
   // Get information from body
   const email = req.body.email;
-  const passwordHash = req.body.password; // ADD HASHING
+  const password = req.body.password; // ADD HASHING
 
   // Search for user in database
   const user = await User.findOne({email});
@@ -47,7 +49,7 @@ usersRouter.post('/login', async (req, res) => {
   // Error checking (incorrect password, or incorrect email)
   if(!user){
     return res.status(400).json({error: "User does not exist"});
-  }else if(passwordHash !== user.passwordHash){
+  }else if(!(await bcrypt.compare(password, user.passwordHash))){
     return res.status(400).json({error: "Incorrect Password"});
   }
 
