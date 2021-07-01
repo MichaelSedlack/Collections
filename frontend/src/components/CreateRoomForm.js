@@ -78,7 +78,7 @@ function CreateRoomForm()
             </select> 
             <span id="result">{option}</span>
             <br /><br />
-            <input type="submit" id="createRoomButton" className="buttons" value = "Create New Room" onClick={createRoom} />
+            <input type="submit" id="createRoomButton" className="buttons" value = "Set Up New Room" onClick={createRoom} /><br />
             <span id="createRoomResult">{message}</span>
         </div>
     );
