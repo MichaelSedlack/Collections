@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-d
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import MuseumPage from './pages/MuseumPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         </Route>
         <Route path="/museum" exact>
           <MuseumPage />
+        </Route>
+        <Route path="/forgotpassword" exact>
+          <ForgotPasswordPage />
         </Route>
       </Switch>
     </Router>

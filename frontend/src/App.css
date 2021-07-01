@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100%;
 }
 
 .App-logo {
@@ -11,17 +12,6 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -39,19 +29,19 @@
 
 /*CSS for the PageHeader Component*/
 header {
-  background-color: #282c34;
+  background-color: rgb(0, 0, 0);
   min-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: orange;
+  color: rgb(47, 79, 79);
 }
 
 /*CSS for the PageFooter Component*/
 footer {
-  background-color: #282c34;
+  background-color: rgb(0, 0, 0);
   min-height: 50px;
   margin-top: auto;
   display: flex;
@@ -59,7 +49,7 @@ footer {
   align-items: left;
   justify-content: center;
   font-size: small;
-  color: orange;
+  color: rgb(47, 79, 79);
 }
 
 input {
@@ -99,9 +89,9 @@ p {
 
 /* CSS for the body in the login component*/
 #loginDiv {
-  background-color: #08be88;
+  background-color: #fafafa;
   color: rgb(29, 0, 160);
-  min-height: 10vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
