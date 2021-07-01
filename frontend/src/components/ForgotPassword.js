@@ -72,10 +72,11 @@ function ForgotPassword()
 
     return (
         <div id="forgotPasswordDiv">
-            <input type="text" id="email" placeholder="Enter Email" onChange={(e)=> validateEmail(e)} ref={(c) => newEmail = c} />
-            <span id="emailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
-            <input type="submit" id="sendEmailButton" className="buttons" value = "Send Email" onClick={sendEmail} />
-            <span id="emailResult" style={{color:'green'}}>{message}</span>
+          <h3>Enter Your Email to Reset Your Password</h3>
+          <input type="text" id="email" placeholder="Enter Email" onChange={(e)=> validateEmail(e)} ref={(c) => newEmail = c} />
+          <span id="emailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
+          <input type="submit" id="sendEmailButton" className="buttons" value = "Send Email" onClick={sendEmail} />
+          <span id="emailResult" style={{color:'green'}}>{message}</span>
         </div>
     );
 };
