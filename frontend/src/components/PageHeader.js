@@ -18,6 +18,11 @@ function PageHeader(){
                             <h1>Create New Account</h1>
                         </header>
                     </Route>
+                    <Route path='/forgotpassword' exact>
+                        <header>
+                            <h1>Forgot Password</h1>
+                        </header>
+                    </Route>
                 </Switch>
             </Router>
             
