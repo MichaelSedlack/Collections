@@ -19,7 +19,7 @@ function App() {
         <Route path="/forgotpassword" exact>
           <ForgotPasswordPage />
         </Route>
-        <Route path='/reset'>
+        <Route path='/reset/:id'>
           <ResetPasswordPage />
         </Route>
       </Switch>
