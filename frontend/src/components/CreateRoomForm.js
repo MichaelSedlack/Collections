@@ -17,13 +17,12 @@ function CreateRoomForm()
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
     var userId = ud.userId;
-
     
     const createRoom = async event =>
     {
         event.preventDefault();
         var tok = storage.retrieveToken();
-        var obj = {name:newRoomName.value,private:choice.value,uid:tok};
+        var obj = {name:newRoomName.value,private:choice.value,token:tok};
         var js = JSON.stringify(obj);
 
         var config = 
