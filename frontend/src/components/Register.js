@@ -37,7 +37,7 @@ function Register()
       //   console.log(hash);
       // })
 
-      var obj = {firstname:registerFirstName.current.value,lastname:registerLastName.current.value,email:registerEmail.current.value,password:registerPassword.current.value};
+      var obj = {firstName:registerFirstName.current.value,lastName:registerLastName.current.value,email:registerEmail.current.value,password:registerPassword.current.value};
       var js = JSON.stringify(obj);
 
       var config = 

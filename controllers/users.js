@@ -6,10 +6,11 @@ const nodemailer = require('nodemailer');
 const config = require('../utils/config');
 const bcrypt = require('bcrypt');
 
+const saltRounds = 10;
+
 // Register User Account
 usersRouter.post('/register', async (req, res) => {
   const body = req.body;
-  const saltRounds = 10;
 
   const firstName = (body.firstName) ? body.firstName : "";
   const lastName = (body.lastName) ? body.lastNmae : "";
@@ -49,7 +50,7 @@ usersRouter.post('/login', async (req, res) => {
   // Error checking (incorrect password, or incorrect email)
   if(!user){
     return res.status(400).json({error: "User does not exist"});
-  }else if(!(await bcrypt.compare(password, user.passwordHash))){
+  }else if(!(await bcrypt.compare(password, user.passwordHash))){ // Check if passwords match
     return res.status(400).json({error: "Incorrect Password"});
   }
 
@@ -140,6 +141,31 @@ usersRouter.get('/reset', async (req, res) => {
 
   // Valid token and date.
   return res.send({email: user.email});
+})
+
+// Update password by email.
+usersRouter.put('/updatePasswordByEmail', async (req, res) => {
+  const email = req.body.email; // Users email
+  const password = req.body.password; // Users new Password
+
+  const newPasswordHash = await bcrypt.hash(password, saltRounds); // Hash password
+
+  const user = await User.findOne({email}); // get User document
+
+  // User doesn't exist case
+  if(!user){
+    return res.status(404).json({error: "User does not exist in db."});
+  }
+
+  // Update users information and set reset properties to null.
+  user.passwordHash = newPasswordHash;
+  user.resetPasswordExpires = null;
+  user.resetPasswordToken = null;
+
+  // save user
+  const newUser = await user.save();
+
+  return res.status(200).json({success: "Password successfully changed"});
 })
 
 // Get user by ID

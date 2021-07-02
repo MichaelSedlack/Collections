@@ -25,7 +25,7 @@ app.use('/users', usersRouter); // Users route
 app.use('/rooms', roomsRouter); // Rooms route
 
 if(process.env.NODE_ENV === 'production'){
-  app.use(express.static('frontend/build')); // Serves frontend if in production mode
+  app.use('/', express.static('frontend/build')); // Serves frontend if in production mode
 }
 
 module.exports = app;
