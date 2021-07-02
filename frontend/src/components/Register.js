@@ -19,9 +19,11 @@ function Register()
 
     const [message,setMessage] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [messageColor, setMessageColor] = useState('green');
     const [passwordError, setPasswordError] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [passwordErrorColor, setPasswordErrorColor] = useState('');
+    
 
     var hash;
 
@@ -70,7 +72,9 @@ function Register()
         })
         .catch(function (error) 
         {
-            console.log(error);
+          setMessage("Error");
+          setMessageColor('red');
+          console.log(error);
         });
     };
 
@@ -114,7 +118,7 @@ function Register()
         <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
         <Button variant="contained" size="large" color="primary" type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister}>Complete Registration</Button>
         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Back to Login</Button><br />
-        <span id="registrationResult" style={{color:'green'}}>{message}</span>
+        <span id="registrationResult" style={{color:messageColor}}>{<h1>{message}</h1>}</span>
         <br />
         
      </div>

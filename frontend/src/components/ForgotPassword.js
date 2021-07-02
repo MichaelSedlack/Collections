@@ -53,6 +53,7 @@ function ForgotPassword()
         })
         .catch(function (error) 
         {
+            setMessage("Error");
             console.log(error);
         });
     };

@@ -62,6 +62,7 @@ function Login()
         })
         .catch(function (error) 
         {
+            setMessage("Error");
             console.log(error);
         });
     }
