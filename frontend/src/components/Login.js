@@ -46,17 +46,18 @@ function Login()
                 var jwt = require('jsonwebtoken');
     
                 var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                var userId = ud.payload.userId;
-                var firstName = ud.payload.firstName;
-                var lastName = ud.payload.lastName;
+                var userId = ud.payload.id;
+
+                
+                alert(firstName)
+               
                   
-                var user = {firstName:firstName,lastName:lastName,id:userId}
+                var user = {userId:userId,firstName:firstName,lastName:lastName}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
                 setTimeout(
                     function(){
-                            
                             window.location.href = '/museum';
                     },2000)
             }

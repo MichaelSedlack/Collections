@@ -4,7 +4,9 @@ import axios from 'axios';
 function CreateRoomForm()
 {
     var bp = require('./Path.js');
-
+    var storage = require('../tokenStorage.js');
+    var jwt = require('jsonwebtoken');
+    
 
     var newRoomName;
     var choice;
@@ -12,15 +14,16 @@ function CreateRoomForm()
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
 
+    var _ud = localStorage.getItem('user_data');
+    var ud = JSON.parse(_ud);
+    var userId = ud.userId;
+
+    
     const createRoom = async event =>
     {
         event.preventDefault();
-
-        var uid = JSON.parse(localStorage.getItem('user_data'));
-
-        alert(uid.id);
-
-        var obj = {name:newRoomName.value,private:choice.value,uid:uid.id};
+        var tok = storage.retrieveToken();
+        var obj = {name:newRoomName.value,private:choice.value,uid:tok};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -44,8 +47,9 @@ function CreateRoomForm()
             }
             else 
             {
-              setMessage('New Room Created');
-              setTimeout(
+                
+                setMessage('New Room Created');
+                setTimeout(
                 function(){
                         window.location.href = '/museum';
                 },2000)
