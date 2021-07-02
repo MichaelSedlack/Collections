@@ -47,9 +47,11 @@ function Login()
     
                 var ud = jwt.decode(storage.retrieveToken(),{complete:true});
                 var userId = ud.payload.id;
-
+                var firstName = ud.payload.firstName;
+                var lastName = ud.payload.lastName;
                 
                 alert(firstName)
+                alert(lastName)
                
                   
                 var user = {userId:userId,firstName:firstName,lastName:lastName}
