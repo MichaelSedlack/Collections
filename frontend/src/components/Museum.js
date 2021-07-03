@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CreateRoomForm from './CreateRoomForm';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 function Museum() {
 
@@ -23,17 +25,17 @@ function Museum() {
             <div id="museumDiv">
             <br />
             <span id="createNewRoomFormResult" >{createRoomForm}</span>
-            {cancelButton ? <input type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}/> : null}
+            {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
             <br />
-            <input type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}/> <br />
+            <Button variant="contained" size="large" color="primary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
         </div>
         )
     }
     else{
         return(
             <div>
-                <input type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}/><br />
-                <input type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}/> <br />
+                <Button variant="contained" size="large" color="primary" type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}>Create New Room</Button><br />
+                <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
             </div>
         )
     }
