@@ -16,7 +16,12 @@ function CreateRoomForm()
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
-    var userId = ud.userId;
+    var firstName = ud.firstName;
+    var lastName = ud.lastName;
+    var email = ud.email;
+    alert(firstName)
+    alert(lastName)
+    alert(email)
     
     const createRoom = async event =>
     {

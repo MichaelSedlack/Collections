@@ -4,7 +4,7 @@
   "description": "Backend for Collections platform.",
   "main": "server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "NODE_ENV=production node server.js",
     "server": "cross-env NODE_ENV=development nodemon server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "concurrently": "^6.2.0",
     "cross-env": "^7.0.3",
+    "jest": "^27.0.6",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.3"
   },

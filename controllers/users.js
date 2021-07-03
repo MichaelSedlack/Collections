@@ -13,7 +13,7 @@ usersRouter.post('/register', async (req, res) => {
   const body = req.body;
 
   const firstName = (body.firstName) ? body.firstName : "";
-  const lastName = (body.lastName) ? body.lastNmae : "";
+  const lastName = (body.lastName) ? body.lastName : "";
   const passwordHash = await bcrypt.hash(body.password, saltRounds); // ADD HASHING
 
   const emailExists = await User.find({email: body.email});
