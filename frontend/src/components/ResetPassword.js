@@ -27,8 +27,7 @@ function ResetPassword ()
     useEffect(() => {
         (async () => {
 
-            var obj = {resetToken:id};
-            var js = JSON.stringify(obj);
+            var resetToken = {resetToken:id};
             var config = 
             {
                 method: 'get',
@@ -37,8 +36,9 @@ function ResetPassword ()
                 {
                     'Content-Type': 'application/json'
                 },
-                data: js
+                params: resetToken
             };
+
             axios(config)
                 .then(function(response)
             {
@@ -62,7 +62,7 @@ function ResetPassword ()
             {
                 setIsLoading(false);
                 setError(true);
-                console.log(error.response.data);
+                console.log(error.message);
             });
         })()
         
