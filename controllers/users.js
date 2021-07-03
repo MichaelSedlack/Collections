@@ -129,7 +129,7 @@ usersRouter.post('/forgotPassword', async (req, res) => {
 
 // Validate reset Token
 usersRouter.get('/reset', async (req, res) => {
-  const resetToken = req.body.resetToken; // Get Token from body
+  const resetToken = req.query.resetToken; // Get Token from body
   const currDate = Date.now(); // Create date now
 
   const user = await User.findOne({resetPasswordToken: resetToken, resetPasswordExpires: { $gt: currDate }});
