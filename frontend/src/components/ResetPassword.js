@@ -27,43 +27,72 @@ function ResetPassword ()
     useEffect(() => {
         (async () => {
 
-            var obj = {resetToken:id};
-            var js = JSON.stringify(obj);
-            var config = 
-            {
-                method: 'get',
-                url: bp.buildPath('users/reset'),	
-                headers: 
-                {
-                    'Content-Type': 'application/json'
-                },
-                data: js
-            };
-            axios(config)
+            // var obj = {resetToken:id};
+            // var js = JSON.stringify(obj);
+            // var config = 
+            // {
+            //     method: 'get',
+            //     url: bp.buildPath('users/reset'),	
+            //     headers: 
+            //     {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     data: js
+            // };
+
+            axios.get(bp.buildPath('users/reset'))
                 .then(function(response)
-            {
-                var res = response.data;
-                if(res.error)
                 {
-                    setMessage("There was an error");
-                    setMessageColor('red');
+                    var res = response.data;
+                    if(res.error)
+                    {
+                        setMessage("There was an error");
+                        setMessageColor('red');
+                        setError(true);
+                        setIsLoading(false);
+                    }
+                    else
+                    {
+                        setMessage('Reset Link is verified');
+                        setMessageColor('green');
+                        setError(false);
+                        setIsLoading(false);
+                    }
+                })
+                .catch(function(error)
+                {
+                    setIsLoading(false);
                     setError(true);
-                    setIsLoading(false);
-                }
-                else
-                {
-                    setMessage('Reset Link is verified');
-                    setMessageColor('green');
-                    setError(false);
-                    setIsLoading(false);
-                }
-            })
-            .catch(function(error)
-            {
-                setIsLoading(false);
-                setError(true);
-                console.log(error.response.data);
-            });
+                    console.log(error.response.data);
+                });
+              
+
+
+            // axios(config)
+            //     .then(function(response)
+            // {
+            //     var res = response.data;
+            //     if(res.error)
+            //     {
+            //         setMessage("There was an error");
+            //         setMessageColor('red');
+            //         setError(true);
+            //         setIsLoading(false);
+            //     }
+            //     else
+            //     {
+            //         setMessage('Reset Link is verified');
+            //         setMessageColor('green');
+            //         setError(false);
+            //         setIsLoading(false);
+            //     }
+            // })
+            // .catch(function(error)
+            // {
+            //     setIsLoading(false);
+            //     setError(true);
+            //     console.log(error.response.data);
+            // });
         })()
         
     },[])
