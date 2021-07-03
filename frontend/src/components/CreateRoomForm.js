@@ -19,9 +19,6 @@ function CreateRoomForm()
     var firstName = ud.firstName;
     var lastName = ud.lastName;
     var email = ud.email;
-    alert(firstName)
-    alert(lastName)
-    alert(email)
     
     const createRoom = async event =>
     {

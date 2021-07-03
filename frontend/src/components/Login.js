@@ -49,8 +49,9 @@ function Login()
                 var userId = ud.payload.id;
                 var firstName = ud.payload.firstName;
                 var lastName = ud.payload.lastName;
-               
-                var user = {userId:userId,firstName:firstName,lastName:lastName}
+                var email = res.email;
+
+                var user = {firstName:firstName,lastName:lastName,id:userId,email:email}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
@@ -62,8 +63,7 @@ function Login()
         })
         .catch(function (error) 
         {
-            setMessage("Error");
-            console.log(error);
+            console.log(error.response.data);
         });
     }
 

@@ -5,6 +5,7 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import MuseumPage from './pages/MuseumPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         </Route>
         <Route path="/forgotpassword" exact>
           <ForgotPasswordPage />
+        </Route>
+        <Route path='/reset/:id'>
+          <ResetPasswordPage />
         </Route>
       </Switch>
     </Router>

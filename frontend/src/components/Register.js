@@ -72,9 +72,7 @@ function Register()
         })
         .catch(function (error) 
         {
-          setMessage("Error");
-          setMessageColor('red');
-          console.log(error);
+          console.log(error.response.data);
         });
     };
 
