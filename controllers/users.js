@@ -13,7 +13,7 @@ usersRouter.post('/register', async (req, res) => {
   const body = req.body;
 
   const firstName = (body.firstName) ? body.firstName : "";
-  const lastName = (body.lastName) ? body.lastNmae : "";
+  const lastName = (body.lastName) ? body.lastName : "";
   const passwordHash = await bcrypt.hash(body.password, saltRounds); // ADD HASHING
 
   const emailExists = await User.find({email: body.email});
@@ -129,7 +129,7 @@ usersRouter.post('/forgotPassword', async (req, res) => {
 
 // Validate reset Token
 usersRouter.get('/reset', async (req, res) => {
-  const resetToken = req.body.resetToken; // Get Token from body
+  const resetToken = req.query.resetToken; // Get Token from body
   const currDate = Date.now(); // Create date now
 
   const user = await User.findOne({resetPasswordToken: resetToken, resetPasswordExpires: { $gt: currDate }});
