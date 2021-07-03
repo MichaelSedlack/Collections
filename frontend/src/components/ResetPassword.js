@@ -41,25 +41,20 @@ function ResetPassword ()
 
             axios(config)
                 .then(function(response)
+            {
+                var res = response.data;
+                if(res.error)
                 {
-                    var res = response.data;
-                    if(res.error)
-                    {
-                        setMessage("There was an error");
-                        setMessageColor('red');
-                        setError(true);
-                        setIsLoading(false);
-                    }
-                    else
-                    {
-                        setMessage('Reset Link is verified');
-                        setMessageColor('green');
-                        setError(false);
-                        setIsLoading(false);
-                    }
-                })
-                .catch(function(error)
+                    setMessage("There was an error");
+                    setMessageColor('red');
+                    setError(true);
+                    setIsLoading(false);
+                }
+                else
                 {
+                    setMessage('Reset Link is verified');
+                    setMessageColor('green');
+                    setError(false);
                     setIsLoading(false);
                 }
             })
