@@ -3,7 +3,7 @@ import CreateRoomForm from './CreateRoomForm';
 
 function Museum() {
 
-    const [createRoomForm,setCreateRoomForm] = useState(<div><input type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}/><br /></div>);
+    const [createRoomForm,setCreateRoomForm] = useState();
     const [cancelButton, setCancelButton] = useState(false);
 
 
@@ -15,21 +15,29 @@ function Museum() {
 
     function cancelClicked() {
         setCancelButton(false)
-        {window.location.href = '/museum'}
+        // {window.location.href = '/museum'}
     };
 
-
-
-    return (
-        <div id="museumDiv">
+    if(cancelButton){
+        return(
+            <div id="museumDiv">
             <br />
             <span id="createNewRoomFormResult" >{createRoomForm}</span>
             {cancelButton ? <input type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}/> : null}
             <br />
             <input type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}/> <br />
         </div>
-        
-    )
+        )
+    }
+    else{
+        return(
+            <div>
+                <input type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}/><br />
+                <input type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}/> <br />
+            </div>
+        )
+    }
+
 }
 
 export default Museum;
