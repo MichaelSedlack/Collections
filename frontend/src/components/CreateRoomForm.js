@@ -23,27 +23,19 @@ function CreateRoomForm()
 {
     const classes = useStyles();
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
-    var jwt = require('jsonwebtoken');
     
     const newRoomName = useRef(null);
-    var choice;
 
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
     const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
+    const [checkOption, setCheckOption] = useState(true);
 
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var firstName = ud.firstName;
-    var lastName = ud.lastName;
-    var email = ud.email;
-    
+
     const createRoom = async event =>
     {
         event.preventDefault();
-        var tok = storage.retrieveToken();
-        var obj = {name:newRoomName.value,private:choice.value,token:tok};
+        var obj = {name:newRoomName.value,private:checkOption};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -67,7 +59,6 @@ function CreateRoomForm()
             }
             else 
             {
-                
                 setMessage('New Room Created');
                 setTimeout(
                 function(){
@@ -77,7 +68,7 @@ function CreateRoomForm()
         })
         .catch(function (error) 
         {
-            console.log(error);
+            console.log(error.response.data);
         });
     };
 
@@ -87,10 +78,12 @@ function CreateRoomForm()
         if(choice === "Private"){
             setOption("Private");
             setOptionMessage('No one will be able to view your Room');
+            setCheckOption(true);
         }
         else{
             setOption("Public");
             setOptionMessage("Everyone will be able to view your Room");
+            setCheckOption(false);
         }
     }
 
@@ -98,7 +91,6 @@ function CreateRoomForm()
         <div>
             <span id="inner-title">Create New Room</span><br />
             <TextField margin="dense" variant="outlined" type="text" id="roomName" label="Room Name" inputRef={newRoomName}/><br />
-
 
             <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>Choose</InputLabel>
@@ -120,8 +112,6 @@ function CreateRoomForm()
             <span id="createRoomResult">{message}</span>
         </div>
     );
-
-
 };
 
 export default CreateRoomForm;
