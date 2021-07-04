@@ -23,6 +23,10 @@ function CreateRoomForm()
 {
     const classes = useStyles();
     var bp = require('./Path.js');
+
+    var _ud = localStorage.getItem('user_data');
+    var ud = JSON.parse(_ud);
+    var token = ud.accessToken;
     
     const newRoomName = useRef(null);
 
@@ -35,7 +39,8 @@ function CreateRoomForm()
     const createRoom = async event =>
     {
         event.preventDefault();
-        var obj = {name:newRoomName.value,private:checkOption};
+
+        var obj = {name:newRoomName.current.value,private:checkOption};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -44,7 +49,8 @@ function CreateRoomForm()
           url: bp.buildPath('rooms/create'),	
           headers: 
           {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `bearer ${token}`
           },
           data: js
       };
@@ -68,7 +74,7 @@ function CreateRoomForm()
         })
         .catch(function (error) 
         {
-            console.log(error.response.data);
+            console.log(error.message);
         });
     };
 
