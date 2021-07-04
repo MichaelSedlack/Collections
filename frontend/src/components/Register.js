@@ -3,6 +3,7 @@ import axios from 'axios';
 import validator from 'validator';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 var bcrypt = require('bcryptjs');
 
 
@@ -19,9 +20,14 @@ function Register()
 
     const [message,setMessage] = useState('');
     const [emailError, setEmailError] = useState('');
+    const [messageColor, setMessageColor] = useState('green');
     const [passwordError, setPasswordError] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [passwordErrorColor, setPasswordErrorColor] = useState('');
+    const [error, setError] = useState(false);
+    const [checkEmailError, setCheckEmailError] = useState(false);
+    const [checkPasswordError, setCheckPasswordError] = useState(false);
+    
 
     var hash;
 
@@ -57,11 +63,14 @@ function Register()
             var res = response.data;
             if (res.error) 
             {
-              setMessage('User/Password combination incorrect');
+              setMessage('There was an Error');
+              setMessageColor('red');
+              setError(true);
             }
             else 
             {
               setMessage('New Account Created');
+              setError(false);
               setTimeout(
                 function(){
                         window.location.href = '/';
@@ -70,6 +79,8 @@ function Register()
         })
         .catch(function (error) 
         {
+          setMessage('There was an Error');
+          setMessageColor('red');
           console.log(error.response.data);
         });
     };
@@ -80,10 +91,12 @@ function Register()
       if(registerPassword.current.value !== e.target.value){
         setPasswordError("Passwords need to match");
         setPasswordErrorColor('red');
+        setCheckPasswordError(true);
       }
       else{
           setPasswordError("The passwords match!");
           setPasswordErrorColor('green');
+          setCheckPasswordError(false);
       }
     }
 
@@ -95,30 +108,55 @@ function Register()
       if (validator.isEmail(email)) {
         setEmailError('Valid Email!')
         setEmailErrorColor('green');
+        setCheckEmailError(false);
       } else {
         setEmailError('Enter valid Email!')
         setEmailErrorColor('red');
+        setCheckEmailError(true);
       }
     } 
 
-
-    return(
-      <div id="registerDiv">
-        <span id="inner-title">PLEASE REGISTER</span><br />
-        <TextField margin="dense" variant="outlined" type="text" id="registerFirstName" label="First Name" inputRef={registerFirstName}  /><br />
-        <TextField margin="dense" variant="outlined"  type="text" id="registerLastName" label="Last Name" inputRef={registerLastName}  /><br />
-        <TextField margin="dense" variant="outlined" required type="text" id="registerEmail" label="Email" onChange={(e)=> validateEmail(e)} inputRef={registerEmail} />
-        <span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
-        <TextField margin="dense" variant="outlined" required type="password" id="registerPassword" label="Password" inputRef={registerPassword} /><br />
-        <TextField margin="dense" variant="outlined" required type="password" id="registerConfirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
-        <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
-        <Button variant="contained" size="large" color="primary" type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister}>Complete Registration</Button>
-        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Back to Login</Button><br />
-        <span id="registrationResult" style={{color:'green'}}>{message}</span>
-        <br />
-        
-     </div>
-    );
+    if(checkEmailError || checkPasswordError){
+      return(
+        <div id="registerDiv">
+            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+              <h4 id="inner-title">PLEASE REGISTER</h4><br />
+              <TextField margin="dense" variant="outlined" type="text" id="registerFirstName" label="First Name" inputRef={registerFirstName}  /><br />
+              <TextField margin="dense" variant="outlined"  type="text" id="registerLastName" label="Last Name" inputRef={registerLastName}  /><br />
+              <TextField margin="dense" variant="outlined" required type="text" id="registerEmail" label="Email" onChange={(e)=> validateEmail(e)} inputRef={registerEmail} />
+              <span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
+              <TextField margin="dense" variant="outlined" required type="password" id="registerPassword" label="Password" inputRef={registerPassword} /><br />
+              <TextField margin="dense" variant="outlined" required type="password" id="registerConfirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
+              <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
+              <Button disabled style={{marginBottom: "2em"}} variant="contained" size="large" color="primary" type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister}>Complete Registration</Button>
+              <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Back to Login</Button><br />
+              <span id="registrationResult" style={{color:messageColor}}>{<h1>{message}</h1>}</span>
+              <br />
+            </Grid>
+       </div>
+      );
+    }
+    else{
+      return(
+        <div id="registerDiv">
+            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+              <h4 id="inner-title">PLEASE REGISTER</h4><br />
+              <TextField margin="dense" variant="outlined" type="text" id="registerFirstName" label="First Name" inputRef={registerFirstName}  /><br />
+              <TextField margin="dense" variant="outlined"  type="text" id="registerLastName" label="Last Name" inputRef={registerLastName}  /><br />
+              <TextField margin="dense" variant="outlined" required type="text" id="registerEmail" label="Email" onChange={(e)=> validateEmail(e)} inputRef={registerEmail} />
+              <span id="registerEmailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
+              <TextField margin="dense" variant="outlined" required type="password" id="registerPassword" label="Password" inputRef={registerPassword} /><br />
+              <TextField margin="dense" variant="outlined" required type="password" id="registerConfirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
+              <span id="registerPasswordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
+              <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="primary" type="submit" id="registerButton" className="buttons" value = "Complete Registration" onClick={doRegister}>Complete Registration</Button>
+              <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Back to Login</Button><br />
+              <span id="registrationResult" style={{color:messageColor}}>{<h1>{message}</h1>}</span>
+              <br />
+            </Grid>
+       </div>
+      );
+    }
+    
 };
 
 export default Register;

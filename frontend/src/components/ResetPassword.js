@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 const loading = {
     margin: 'lem',
@@ -21,6 +22,7 @@ function ResetPassword ()
     const [passwordErrorColor, setPasswordErrorColor] = useState('');
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [checkPasswordError,setCheckPasswordError] = useState(false);
     const { id } = useParams(); // grabs the id from the url
 
     // once the page loads this fires
@@ -123,10 +125,12 @@ function ResetPassword ()
         if(password.current.value !== e.target.value){
           setPasswordError("Passwords need to match");
           setPasswordErrorColor('red');
+          setCheckPasswordError(true);
         }
         else{
             setPasswordError("The passwords match!");
             setPasswordErrorColor('green');
+            setCheckPasswordError(false);
         }
     }
     
@@ -146,18 +150,37 @@ function ResetPassword ()
             </div>
         );
     }
+    else if(checkPasswordError){
+        return(
+            <div>
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+                    <h4>Reset Your Password</h4>
+                    <TextField  variant="outlined" required label="Password" type="password" id="password" inputRef={password} /><br />
+                    <TextField margin="dense" variant="outlined" required type="password" id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
+                    <span id="passwordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
+            
+                    <Button disabled style={{marginBottom: "2em"}} variant="contained" size="large" color="primary" type="submit" id="updateButton" className="buttons" value = "Update" onClick={updatePassword}>Update Password</Button>
+                    <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Cancel</Button><br />
+            
+                    <span id="result" style={{color:messageColor}}>{message}</span>
+                </Grid>
+           </div>
+        );
+    }
     else{
         return(
             <div>
-                <h4>Reset Your Password</h4>
-                <TextField  variant="outlined" required label="Password" type="password" id="password" inputRef={password} /><br />
-                <TextField margin="dense" variant="outlined" required type="password" id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
-                <span id="passwordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
-    
-                <Button variant="contained" size="large" color="primary" type="submit" id="updateButton" className="buttons" value = "Update" onClick={updatePassword}>Update Password</Button>
-                <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Cancel</Button><br />
-    
-                <span id="result" style={{color:messageColor}}>{message}</span>
+                <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+                    <h4>Reset Your Password</h4>
+                    <TextField  variant="outlined" required label="Password" type="password" id="password" inputRef={password} /><br />
+                    <TextField margin="dense" variant="outlined" required type="password" id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
+                    <span id="passwordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
+            
+                    <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="primary" type="submit" id="updateButton" className="buttons" value = "Update" onClick={updatePassword}>Update Password</Button>
+                    <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Cancel</Button><br />
+            
+                    <span id="result" style={{color:messageColor}}>{message}</span>
+                </Grid>
            </div>
         );
     }
