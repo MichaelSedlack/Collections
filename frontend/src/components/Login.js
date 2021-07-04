@@ -46,7 +46,7 @@ function Login()
             {	
                 storage.storeToken(res);
                 var jwt = require('jsonwebtoken');
-
+                
                 var ud = jwt.decode(storage.retrieveToken(),{complete:true});
                 var userId = ud.payload.id;
                 var firstName = ud.payload.firstName;
