@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { Grid } from '@material-ui/core';
 

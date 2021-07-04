@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CreateRoomForm from './CreateRoomForm';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
