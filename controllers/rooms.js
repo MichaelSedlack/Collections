@@ -1,5 +1,6 @@
 // IMPORTS/DECLARATIONS
 const roomRouter = require('express').Router();
+const { Collection } = require('mongoose');
 const Room = require('../models/room');
 const User = require('../models/user');
 const token = require('../utils/token');
@@ -37,6 +38,28 @@ roomRouter.post('/create', async (req, res) => {
   await user.save();
 
   return res.send(savedRoom);
+})
+
+// Delete Room
+roomRouter.delete('/:id', async (req, res) => {
+  const roomID = req.params.id;
+  const verifiedToken = token.isExiprired(token.getToken(req));
+
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  const room = await Room.findById(roomID);
+
+  if(room.uid !== verifiedToken.id){
+    return res.status(403).json({error: "Cannot delete a room that is not yours."});
+  }
+
+  await Room.deleteOne({id: room.id}); // Delete room.
+  await Collection.deleteMany({roomID: room.id}); // Delete any Collections that are part of room
+  await Item.deleteMany({roomID: room.id}); // Delete any Items that are part of room.
+
+  return res.status(204).json({success: "Successfully deleted room and all associated Collections and Items."});
 })
 
 // GET Room by ID
