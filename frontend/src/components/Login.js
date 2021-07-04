@@ -14,6 +14,7 @@ function Login()
     const loginPassword = useRef(null);
 
     const [message,setMessage] = useState('');
+    const [messageColor, setMessageColor] = useState('');
 
     const doLogin = async event => 
     {
@@ -56,6 +57,7 @@ function Login()
                 localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
+                setMessageColor('green');
                 setTimeout(
                     function(){
                             window.location.href = '/museum';
@@ -75,7 +77,8 @@ function Login()
                 <h4 id="inner-title">Please Sign In</h4><br />
                 <TextField  style={{marginBottom: "2em"}} variant="outlined" required label="Email" type="text" id="loginName" inputRef={loginName}  />
                 <TextField  style={{marginBottom: "2em"}} variant="outlined" required label="Password" type="password" id="loginPassword" inputRef={loginPassword} />
-                <Button variant="contained" size="large" color="primary" type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin}>Log In</Button><br />
+                <Button variant="contained" size="large" color="primary" type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin}>Log In</Button>
+                <span id="loginResult" style={{color:messageColor}}>{message}</span><br />
                 <span>Don't have an account?</span>
                 <Button variant="contained" size="large" color="secondary" type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}>Register</Button><br />
                 <Button size="large" onClick={()=>{window.location.href = '/forgotpassword'}}>Forgot Password?</Button>
