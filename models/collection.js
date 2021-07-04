@@ -37,7 +37,7 @@ const collectionSchema = mongoose.Schema({
 });
 
 // Set options for translation to JSON
-roomSchema.set('toJSON', {
+collectionSchema.set('toJSON', {
   transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
