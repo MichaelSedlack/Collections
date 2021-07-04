@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,6 +22,7 @@ function CreateRoomForm()
 {
     const classes = useStyles();
     var bp = require('./Path.js');
+    var storage = require('../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
@@ -40,6 +40,7 @@ function CreateRoomForm()
     {
         event.preventDefault();
 
+        
         var obj = {name:newRoomName.current.value,private:checkOption};
         var js = JSON.stringify(obj);
 
@@ -65,6 +66,19 @@ function CreateRoomForm()
             }
             else 
             {
+                storage.storeToken(res);
+                
+                
+                var roomName = res.name;
+                var roomId = res.id;
+                var userId = res.uid;
+                var collections = res.collections;
+               
+
+                var user = {roomName:roomName,roomId:roomId,id:userId,collections:collections}
+                localStorage.setItem('user_data', JSON.stringify(user));
+
+
                 setMessage('New Room Created');
                 setTimeout(
                 function(){
