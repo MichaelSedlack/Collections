@@ -36,14 +36,14 @@ function Museum() {
                     </Grid>
                     <Grid item xs={12}/>
                     <Grid style={{backgroundColor: '#D31A50'}} item xs={7}>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
+                        <h1>Rooms Here</h1>
                     </Grid>
                     <Grid style={{backgroundColor: '#758283'}} item xs={5} sm={5}>
                         <span id="createNewRoomFormResult" >{createRoomForm}</span><br />
@@ -67,14 +67,14 @@ function Museum() {
                     </Grid>
                     <Grid item xs={12}/>
                     <Grid item xs={7}>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
-                        <h1>Search Results Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
+                    <h1>Rooms Here</h1>
                     </Grid>
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="primary" type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}>Create New Room</Button><br />
