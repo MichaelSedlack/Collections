@@ -73,10 +73,10 @@ function CreateRoomForm()
                 var roomId = res.id;
                 var userId = res.uid;
                 var collections = res.collections;
-               
+                
 
                 var user = {roomName:roomName,roomId:roomId,id:userId,collections:collections}
-                localStorage.setItem('user_data', JSON.stringify(user));
+                localStorage.setItem('room_data', JSON.stringify(user));
 
 
                 setMessage('New Room Created');
