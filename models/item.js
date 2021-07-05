@@ -42,6 +42,22 @@ itemSchema.post('save', async (obj) => {
   return;
 })
 
+itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
+  // Get collection that item belongs to
+  const collection = await Collection.findById(obj.collectionID);
+
+  // get idx of item
+  const idx = collection.items.indexOf(obj._id);
+
+  // remove item from array
+  collections.items.splice(idx, 1);
+
+  // Save collection
+  const savedCollection = await collection.save();
+
+  return;
+})
+
 // Create Item Object
 const Item = mongoose.model('Item', itemSchema);
 
