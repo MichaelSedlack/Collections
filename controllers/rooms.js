@@ -92,9 +92,6 @@ roomRouter.delete('/:id', async (req, res) => {
   }
 
   await room.deleteOne(); // Delete room.
-  // await User.updateOne({uid: verifiedToken.id}, {rooms: {$nin: [roomID.id]}});
-  //await Collection.deleteMany({roomID: room.id}); // Delete any Collections that are part of room
-  //await Item.deleteMany({roomID: room.id}); // Delete any Items that are part of room.
 
   return res.status(200).json({success: "Successfully deleted room and all associated Collections and Items."});
 })
