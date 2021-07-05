@@ -1,6 +1,5 @@
 // IMPORTS/DECLARATIONS
 const itemRouter = require('express').Router();
-const { Collection } = require('mongoose');
 const Item = require('../models/item');
 const Room = require('../models/room');
 const Collection = require('../models/collection');
