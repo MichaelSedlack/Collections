@@ -4,6 +4,8 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 const loading = {
     margin: 'lem',
@@ -24,6 +26,8 @@ function ResetPassword ()
     const [isLoading, setIsLoading] = useState(true);
     const [checkPasswordError,setCheckPasswordError] = useState(false);
     const { id } = useParams(); // grabs the id from the url
+    const [visibility, setVisibility] = useState(<VisibilityOffIcon/>);
+    const [type, setType] = useState("password");
 
     // once the page loads this fires
     useEffect(() => {
@@ -133,6 +137,17 @@ function ResetPassword ()
             setCheckPasswordError(false);
         }
     }
+
+    function changeVisibility(){
+        if(type === "text"){
+          setVisibility(<VisibilityOffIcon/>)
+          setType("password")
+        }
+        else{
+          setVisibility(<VisibilityIcon/>)
+          setType("text")
+        }
+      }
     
     if(error){
         return(
@@ -155,8 +170,8 @@ function ResetPassword ()
             <div>
                 <Grid container spacing={0} direction="column" alignItems="center" justify="center">
                     <h4>Reset Your Password</h4>
-                    <TextField  variant="outlined" required label="Password" type="password" id="password" inputRef={password} /><br />
-                    <TextField margin="dense" variant="outlined" required type="password" id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
+                    <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} variant="outlined" required label="Password" type={type} id="password" inputRef={password} /><br />
+                    <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} margin="dense" variant="outlined" required type={type} id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
                     <span id="passwordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
             
                     <Button disabled style={{marginBottom: "2em"}} variant="contained" size="large" color="primary" type="submit" id="updateButton" className="buttons" value = "Update" onClick={updatePassword}>Update Password</Button>
@@ -172,8 +187,8 @@ function ResetPassword ()
             <div>
                 <Grid container spacing={0} direction="column" alignItems="center" justify="center">
                     <h4>Reset Your Password</h4>
-                    <TextField  variant="outlined" required label="Password" type="password" id="password" inputRef={password} /><br />
-                    <TextField margin="dense" variant="outlined" required type="password" id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
+                    <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} variant="outlined" required label="Password" type={type} id="password" inputRef={password} /><br />
+                    <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} margin="dense" variant="outlined" required type={type} id="confirmPassword" label="Confirm Password" onChange={(e)=> checkValidation(e)} />
                     <span id="passwordResult" style={{color:passwordErrorColor}}>{passwordError}</span><br />
             
                     <Button style={{marginBottom: "2em"}} variant="contained" size="large" color="primary" type="submit" id="updateButton" className="buttons" value = "Update" onClick={updatePassword}>Update Password</Button>
