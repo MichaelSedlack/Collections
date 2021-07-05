@@ -33,11 +33,6 @@ collectionRouter.post('/create', async (req, res) => {
 
   const savedCollection = await newCollection.save(); // Save room
 
-  // Push collectionID to Users rooms array.
-  const user = await User.findById(verifiedToken.id);
-  user.collections.push(savedCollection.id);
-  await user.save();
-
   return res.send(savedCollection);
 })
 
@@ -98,8 +93,6 @@ collectionRouter.delete('/:id', async (req, res) => {
   }
 
   await Collection.deleteOne({_id: collection.id}); // Delete collection.
-  //await Collection.deleteMany({roomID: room.id}); // Delete any Collections that are part of room
-  //await Item.deleteMany({roomID: room.id}); // Delete any Items that are part of room.
 
   return res.status(204).json({success: "Successfully deleted collection and all associated Items."});
 })
@@ -119,7 +112,7 @@ collectionRouter.get('/:id', async (req, res) => {
   console.log("UID: " + collection.uid + "  Token: " + verifiedToken.id);
 
   // If collection private and not owner don't return room
-  if((collection.uid !== verifiedToken.id) && collection.private){
+  if((collection.uid != verifiedToken.id) && collection.private){
     return res.status(401).json({error: "Collection is private."})
   }
 
