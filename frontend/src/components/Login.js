@@ -56,8 +56,9 @@ function Login()
                 var firstName = ud.payload.firstName;
                 var lastName = ud.payload.lastName;
                 var email = res.email;
+                var accessToken = res.accessToken;
 
-                var user = {firstName:firstName,lastName:lastName,id:userId,email:email}
+                var user = {firstName:firstName,lastName:lastName,id:userId,email:email,accessToken:accessToken}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
