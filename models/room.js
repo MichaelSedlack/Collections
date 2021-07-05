@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('./user');
+const Collection = require('./collection');
+const Item = require('./item');
 
 // Lay out Schema
 const roomSchema = new mongoose.Schema({
@@ -42,7 +44,29 @@ roomSchema.post('save', async (obj) => {
   
   // Save user
   const savedUser = await user.save();
-  
+
+  return;
+})
+
+roomSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
+  // Find associated User
+  const user = await User.findById(obj.uid);
+
+  if(!user) return;
+
+  // Find index of id in user
+  const idx = user.rooms.indexOf(obj._id);
+
+  // Remove id from array
+  user.rooms.splice(idx, 1);
+
+  // Save User.
+  const savedUser = await user.save();
+
+  // Delete any and all associated documents.
+  await Collection.deleteMany({roomID: obj._id});
+  await Item.deleteMany({roomID: obj._id});
+
   return;
 })
 

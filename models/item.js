@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Collection = require('./collection');
 
 // Create Schema
 const itemSchema = mongoose.Schema({
@@ -26,6 +27,19 @@ itemSchema.set('toJSON', {
       delete returnedObject.__v
       delete returnedObject.passwordHash
   }
+})
+
+itemSchema.post('save', async (obj) => {
+  // Get collection
+  const collection = await Collection.findByID(obj.collectionID);
+
+  // Add item to collection.
+  collection.items.push(obj._id);
+
+  // Save Collection
+  const savedCollection = await collection.save();
+
+  return;
 })
 
 // Create Item Object

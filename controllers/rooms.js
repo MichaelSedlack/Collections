@@ -91,8 +91,8 @@ roomRouter.delete('/:id', async (req, res) => {
     return res.status(403).json({error: "Cannot delete a room that is not yours."});
   }
 
-  await Room.deleteOne({_id: room.id}); // Delete room.
-  await User.updateOne({uid: verifiedToken.id}, {rooms: {$nin: [roomID.id]}});
+  await room.deleteOne(); // Delete room.
+  // await User.updateOne({uid: verifiedToken.id}, {rooms: {$nin: [roomID.id]}});
   //await Collection.deleteMany({roomID: room.id}); // Delete any Collections that are part of room
   //await Item.deleteMany({roomID: room.id}); // Delete any Items that are part of room.
 
