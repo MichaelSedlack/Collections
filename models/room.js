@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./user');
 
 // Lay out Schema
 const roomSchema = new mongoose.Schema({
@@ -30,6 +31,19 @@ roomSchema.set('toJSON', {
       delete returnedObject.__v
       delete returnedObject.passwordHash
   }
+})
+
+roomSchema.post('save', async (obj) => {
+  // Grab user
+  const user = await User.findById(obj.uid);
+
+  // Add current room to users rooms array.
+  user.rooms.push(obj._id);
+  
+  // Save user
+  const savedUser = await user.save();
+  
+  return;
 })
 
 // Create Room 'object'
