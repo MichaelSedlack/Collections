@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const Room = require('./room');
+const Item = require('./item');
 
 // Create Schema
 const collectionSchema = mongoose.Schema({
