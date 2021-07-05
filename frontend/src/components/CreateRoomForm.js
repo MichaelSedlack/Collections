@@ -70,13 +70,14 @@ function CreateRoomForm()
                 
                 
                 var roomName = res.name;
+                var priv = res.private;
                 var roomId = res.id;
                 var userId = res.uid;
                 var collections = res.collections;
                 
-
-                var user = {roomName:roomName,roomId:roomId,id:userId,collections:collections}
-                localStorage.setItem('room_data', JSON.stringify(user));
+                
+                var room = {roomName:roomName,roomId:roomId,id:userId,collections:collections,priv:priv}
+                localStorage.setItem('room_data', JSON.stringify(room));
 
 
                 setMessage('New Room Created');
@@ -88,7 +89,7 @@ function CreateRoomForm()
         })
         .catch(function (error) 
         {
-            console.log(error.message);
+            console.log(error.response.data);
         });
     };
 
