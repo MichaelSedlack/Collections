@@ -3,6 +3,9 @@ import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 
 function DisplayRoom()
 {
@@ -16,13 +19,15 @@ function DisplayRoom()
     var _ud = localStorage.getItem('room_data');
     var ud = JSON.parse(_ud);
     var roomId = ud.roomId;
-  
+    // var roomName = ud.roomName;
+    // var priv = ud.priv;
+    // var collections = ud.collections;
 
-    const displayRoom = async event =>
-    {
-        event.preventDefault();
+    const [show,setShow] = useState();
 
-        var id = {roomID:roomId};
+    useEffect(() => {
+        (async () => {
+            var roomID = {roomID:roomId};
             var config = 
             {
                 method: 'get',
@@ -32,7 +37,7 @@ function DisplayRoom()
                     'Content-Type': 'application/json',
                     'Authorization': `bearer ${token}`
                 },
-                params: id
+                params: roomID
             };
 
             axios(config)
@@ -47,28 +52,51 @@ function DisplayRoom()
                 else
                 {
                     storage.storeToken(res);
-                    var roomId = res.uid;
-                    alert(roomId);
+                    var roomIdx = res.id;
+                    var priv = res.private;
+                    var userId = res.uid;
+                    var roomName = res.roomName;
+                    var collections = res.collections;
 
-  
+                    var room = {roomName:roomName,roomId:roomIdx,id:userId,collections:collections,priv:priv}
+                    localStorage.setItem('room_data', JSON.stringify(room));
+
                 }
             })
             .catch(function(error)
             {
                 console.log(error.message);
             });
-    }
+        })()
+    },[])
 
 
-            
-        
+    const display = () =>{
+        var _ud = localStorage.getItem('room_data');
+        var ud = JSON.parse(_ud);
+        var roomIdx = ud.roomId;
+        var roomName = ud.roomName;
+        var priv = ud.priv;
+        var collections = ud.collections;
+        setShow(
+            <div>
+                <Card>
+                    <CardContent>
+                        {roomName}<br />
+                        {roomIdx}<br />
+                        {priv.toString()}<br />
+                    </CardContent>
+                </Card>
+            </div>
+        )
+ 
+    };
 
 
-    
     return(
         <div>
-            <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton" className="buttons" value = "Set Up New Room" onClick={displayRoom}>Show Room</Button><br />
-
+            <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton" className="buttons" value = "Display Room" onClick={()=>{display()}}>Show Room</Button><br />
+            <span>{show}</span>
         </div>
         
         
