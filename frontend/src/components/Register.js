@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-var bcrypt = require('bcryptjs');
 
 
 function Register()
@@ -26,26 +25,15 @@ function Register()
     const [passwordError, setPasswordError] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [passwordErrorColor, setPasswordErrorColor] = useState('');
-    const [error, setError] = useState(false);
     const [checkEmailError, setCheckEmailError] = useState(false);
     const [checkPasswordError, setCheckPasswordError] = useState(false);
     const [visibility, setVisibility] = useState(<VisibilityOffIcon/>);
     const [type, setType] = useState("password");
     
 
-    var hash;
-
     const doRegister = async event => 
     {
       event.preventDefault();
-
-      // bcrypt.hash(registerPassword.value, 10, (err, hash) => {
-      //   if(err){
-      //     console.error("error");
-      //   }
-      //   alert(hash);
-      //   console.log(hash);
-      // })
 
       var obj = {firstName:registerFirstName.current.value,lastName:registerLastName.current.value,email:registerEmail.current.value,password:registerPassword.current.value};
       var js = JSON.stringify(obj);
@@ -69,12 +57,10 @@ function Register()
             {
               setMessage('There was an Error');
               setMessageColor('red');
-              setError(true);
             }
             else 
             {
               setMessage('New Account Created');
-              setError(false);
               setTimeout(
                 function(){
                         window.location.href = '/';
