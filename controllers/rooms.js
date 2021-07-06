@@ -36,10 +36,10 @@ roomRouter.post('/create', async (req, res) => {
 })
 
 // Update single room.
-roomRouter.put('/:id', async (req, res) => {
+roomRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const isPrivate = req.body.private;
-  const roomID = req.params.id;
+  const roomID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -75,8 +75,8 @@ roomRouter.put('/:id', async (req, res) => {
 })
 
 // Delete Room
-roomRouter.delete('/:id', async (req, res) => {
-  const roomID = req.params.id;
+roomRouter.delete('/single', async (req, res) => {
+  const roomID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
@@ -97,8 +97,8 @@ roomRouter.delete('/:id', async (req, res) => {
 })
 
 // GET Room by ID
-roomRouter.get('/:id', async (req, res) => {
-  const roomID = req.params.id;
+roomRouter.get('/single', async (req, res) => {
+  const roomID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
