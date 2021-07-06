@@ -34,11 +34,11 @@ describe('/users/register', () => {
       password: 'test'
     }
 
-  await api
-    .post('/users/register')
-    .send(newUser)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+    await api
+      .post('/users/register')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
   });
 
   test('User cannot be created with already used email', async () => {
@@ -56,6 +56,70 @@ describe('/users/register', () => {
       .expect('Content-Type', /application\/json/)
   })
 
+})
+
+describe('/users/login', () => {
+
+  test('Can login with valid user', async () => {
+    const newUser = {
+      firstName: 'Tester',
+      lastName: 'Testerson',
+      email: 'testy@tester.com',
+      password: 'test'
+    }
+
+
+    await api
+      .post('/users/register')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const loginObj = {
+      email: newUser.email,
+      password: newUser.password
+    }
+    
+    const res = await api
+      .post('/users/login')
+      .send(loginObj)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    expect(res.body).toHaveProperty('accessToken');
+    expect(res.body).toHaveProperty('email');
+    expect(res.body).toHaveProperty('id');
+  })
+
+  test('Cannot login with invalid email', async () => {
+    const loginObj = {
+      email: "testy@test.com",
+      password: "123456"
+    }
+
+    const res = await api
+      .post('/users/login')
+      .send(loginObj)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(res.body.error).toBe("User does not exist");
+  })
+  
+  test('Cannot login with invalid password', async () => {
+    const loginObj = {
+      email: "kxngvenom@gmail.com",
+      password: "123456"
+    }
+
+    const res = await api
+      .post('/users/login')
+      .send(loginObj)
+      .expect(400)
+      .expect('Content-Type', /application\/json/)
+
+    expect(res.body.error).toBe("Incorrect Password");
+  })
 })
 
 afterAll(() => {
