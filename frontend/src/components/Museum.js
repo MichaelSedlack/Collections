@@ -73,7 +73,10 @@ function Museum() {
     },[])
 
 
-
+    const handleLogout = () => {
+      storage.clearTokens();
+      return window.location.href = '/';
+    }
 
     const createNewRoomForm = () => {
         setCancelButton(true)  
@@ -143,7 +146,7 @@ function Museum() {
                         <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
                     </Grid>
                     <Grid item xs={5}>
-                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
+                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
                     </Grid>
                     <Grid item xs={12}/>
                     <Grid item xs={7}>
