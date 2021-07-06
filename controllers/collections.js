@@ -97,6 +97,18 @@ collectionRouter.delete('/:id', async (req, res) => {
   return res.status(204).json({success: "Successfully deleted collection and all associated Items."});
 })
 
+collectionRouter.get('/search', async (req, res) => {
+  const search = req.query.search;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  // TODO: Search Logic
+})
+
 // GET Collection by ID
 collectionRouter.get('/:id', async (req, res) => {
   const collectionID = req.params.id;
