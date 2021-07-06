@@ -26,7 +26,7 @@ function PageHeader(){
                             <h1>Create New Account</h1>
                         </header>
                     </Route>
-                    <Route path='/museum' exact>
+                    <Route path='/museum'>
                         <header>
                             <h1>Your Myuseum</h1>
                         </header>
