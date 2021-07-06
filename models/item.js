@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Collection = require('./collection');
 
 // Create Schema
 const itemSchema = mongoose.Schema({
@@ -19,13 +20,42 @@ const itemSchema = mongoose.Schema({
 })
 
 // Set options for translation to JSON
-roomSchema.set('toJSON', {
+itemSchema.set('toJSON', {
   transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject._id
       delete returnedObject.__v
       delete returnedObject.passwordHash
   }
+})
+
+itemSchema.post('save', async (obj) => {
+  // Get collection
+  const collection = await Collection.findByID(obj.collectionID);
+
+  // Add item to collection.
+  collection.items.push(obj._id);
+
+  // Save Collection
+  const savedCollection = await collection.save();
+
+  return;
+})
+
+itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
+  // Get collection that item belongs to
+  const collection = await Collection.findById(obj.collectionID);
+
+  // get idx of item
+  const idx = collection.items.indexOf(obj._id);
+
+  // remove item from array
+  collections.items.splice(idx, 1);
+
+  // Save collection
+  const savedCollection = await collection.save();
+
+  return;
 })
 
 // Create Item Object

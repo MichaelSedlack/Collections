@@ -1,6 +1,6 @@
 // IMPORTS/DECLARATIONS
 const roomRouter = require('express').Router();
-const { Collection } = require('mongoose');
+const Collection = require('../models/collection');
 const Room = require('../models/room');
 const User = require('../models/user');
 const token = require('../utils/token');
@@ -32,18 +32,13 @@ roomRouter.post('/create', async (req, res) => {
 
   const savedRoom = await newRoom.save(); // Save room
 
-  // Push RoomID to Users rooms array.
-  const user = await User.findById(verifiedToken.id);
-  user.rooms.push(savedRoom.id);
-  await user.save();
-
   return res.send(savedRoom);
 })
 
 // Update single room.
 roomRouter.put('/:id', async (req, res) => {
   const newName = req.body.name;
-  const private = req.body.private;
+  const isPrivate = req.body.private;
   const roomID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -72,7 +67,7 @@ roomRouter.put('/:id', async (req, res) => {
   }
 
   room.name = newName;
-  room.private = private;
+  room.private = isPrivate;
 
   await room.save();
 
@@ -96,11 +91,9 @@ roomRouter.delete('/:id', async (req, res) => {
     return res.status(403).json({error: "Cannot delete a room that is not yours."});
   }
 
-  await Room.deleteOne({_id: room.id}); // Delete room.
-  //await Collection.deleteMany({roomID: room.id}); // Delete any Collections that are part of room
-  //await Item.deleteMany({roomID: room.id}); // Delete any Items that are part of room.
+  await room.deleteOne(); // Delete room.
 
-  return res.status(204).json({success: "Successfully deleted room and all associated Collections and Items."});
+  return res.status(200).json({success: "Successfully deleted room and all associated Collections and Items."});
 })
 
 // GET Room by ID
@@ -115,11 +108,10 @@ roomRouter.get('/:id', async (req, res) => {
 
   const room = await Room.findById(roomID);
 
-  console.log("UID: " + room.uid + "  Token: " + verifiedToken.id);
-
-  // If room private and not owner don't return room
-  if((room.uid !== verifiedToken.id) && room.private){
-    return res.status(401).json({error: "Room is private."})
+  if(!room){ // Room already doesn't exist.
+    return res.status(404).json({error: "Cannot delete a room that does not exist."});
+  }else if((room.uid != verifiedToken.id) && room.private){ // If room private and not owner don't return room
+    return res.status(403).json({error: "Room is private."})
   }
 
   return res.json(room);

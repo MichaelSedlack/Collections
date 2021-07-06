@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const Room = require('../models/room');
+const Collection = require('../models/collection');
 const usersRouter = require('express').Router();
 const token = require('../utils/token');
 const crypto = require('crypto');
@@ -166,6 +168,50 @@ usersRouter.put('/updatePasswordByEmail', async (req, res) => {
   const newUser = await user.save();
 
   return res.status(200).json({success: "Password successfully changed"});
+})
+
+usersRouter.get('/:id/rooms', async (req,res) => {
+  const id = req.params.id;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+  
+  var rooms = null;
+
+  if(id !== verifiedToken.id){
+    rooms = await Room.find({uid: id, private: { $ne: false }});
+
+    return res.status(200).json(rooms);
+  }
+
+  rooms = await Room.find({uid: id});
+
+  return res.send(rooms);
+})
+
+usersRouter.get('/:id/collections', async (req,res) => {
+  const id = req.params.id;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+  
+  var rooms = null;
+
+  if(id !== verifiedToken.id){
+    rooms = await Collection.find({uid: id, private: { $ne: false }});
+
+    return res.status(200).json(rooms);
+  }
+
+  rooms = await Collection.find({uid: id});
+
+  return res.send(rooms);
 })
 
 // Get user by ID
