@@ -31,9 +31,10 @@ itemRouter.post('/create', async (req, res) => {
   // Create item object
   const newItem = new Item({
     description: body.description,
-    //item: ?,
-    //collectionID: params.id,
-    //roomID: params.id,
+    //this is prob wrong
+    item: [],
+    collectionID: body.collectionID,
+    roomID: body.roomId,
     //name: body.name,
     uid: verifiedToken.id
   })
@@ -71,7 +72,8 @@ itemRouter.get('/:id', async (req, res) => {
 itemRouter.put('/:id', async (req, res) => {
   //const newName = req.body.name;
   const newDescription = req.body.description;
-  //const newItem =
+  const roomID = req.params.roomID;
+  const collectionID = req.params.collectionID;
   const itemID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -100,7 +102,7 @@ itemRouter.put('/:id', async (req, res) => {
     return res.status(404).json({error: "Item does not exist."});
   }
 
-  item.name = newName;
+  //item.name = newName;
 
   await item.save();
 
