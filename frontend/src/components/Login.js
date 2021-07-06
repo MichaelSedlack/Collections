@@ -16,6 +16,7 @@ function Login()
     const loginPassword = useRef(null);
 
     const [message,setMessage] = useState('');
+    const [messageColor, setMessageColor] = useState('');
     const [visibility, setVisibility] = useState(<VisibilityOffIcon/>);
     const [type, setType] = useState("password");
 
@@ -45,6 +46,7 @@ function Login()
             if (res.error) 
             {
                 setMessage("User/Password combination incorrect");
+                setMessageColor('red');
             }
             else 
             {	
@@ -56,14 +58,16 @@ function Login()
                 var firstName = ud.payload.firstName;
                 var lastName = ud.payload.lastName;
                 var email = res.email;
+                var accessToken = res.accessToken;
 
-                var user = {firstName:firstName,lastName:lastName,id:userId,email:email}
+                var user = {firstName:firstName,lastName:lastName,id:userId,email:email,accessToken:accessToken}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
+                setMessageColor('green');
                 setTimeout(
                     function(){
-                            window.location.href = '/museum';
+                            window.location.href = `/museum/${userId}`;
                     },2000)
             }
         })
@@ -90,7 +94,8 @@ function Login()
                 <h4 id="inner-title">Please Sign In</h4><br />
                 <TextField  style={{marginBottom: "2em"}} variant="outlined" required label="Email" type="text" id="loginName" inputRef={loginName}  />
                 <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} style={{marginBottom: "2em"}} variant="outlined" required label="Password" type={type} id="loginPassword" inputRef={loginPassword} />
-                <Button variant="contained" size="large" color="primary" type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin}>Log In</Button><br />
+                <Button variant="contained" size="large" color="primary" type="submit" id="loginButton" className="buttons" value = "Log In" onClick={doLogin}>Log In</Button>
+                <span style={{color:messageColor}}>{message}</span><br />
                 <span>Don't have an account?</span>
                 <Button variant="contained" size="large" color="secondary" type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}>Register</Button><br />
                 <Button size="large" onClick={()=>{window.location.href = '/forgotpassword'}}>Forgot Password?</Button>

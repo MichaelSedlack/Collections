@@ -1,6 +1,6 @@
 import React from 'react';
 import '../App.css';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { Grid } from '@material-ui/core';
 
@@ -24,6 +24,11 @@ function PageHeader(){
                     <Route path='/register' exact>
                         <header>
                             <h1>Create New Account</h1>
+                        </header>
+                    </Route>
+                    <Route path='/museum'>
+                        <header>
+                            <h1>Your Myuseum</h1>
                         </header>
                     </Route>
                     <Route path='/forgotpassword' exact>
