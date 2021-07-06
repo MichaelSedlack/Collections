@@ -9,11 +9,15 @@ function SearchRooms(){
     var bp = require('./Path.js');
     var storage = require('../tokenStorage.js');
 
+    var _ud = localStorage.getItem('user_data');
+    var ud = JSON.parse(_ud);
+    var token = ud.accessToken;
+
     const [message,setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
     const { userId } = useParams(); // grabs the id from the url
-
+    
     useEffect(() => {
         (async() => {
             var id = {id:userId};
@@ -23,7 +27,8 @@ function SearchRooms(){
                 url: bp.buildPath('users/:id/rooms'),
                 headers:
                 {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `bearer ${token}`
                 },
                 params: id
             };

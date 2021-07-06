@@ -16,11 +16,17 @@ function Museum() {
     var bp = require('./Path.js');
     var storage = require('../tokenStorage.js');
 
+    var _ud = localStorage.getItem('user_data');
+    var ud = JSON.parse(_ud);
+    var token = ud.accessToken;
+
     const [createRoomForm,setCreateRoomForm] = useState();
     const [cancelButton, setCancelButton] = useState(false);
     const [display, setDisplay] = useState();
     const [message,setMessage] = useState('');
     const { userId } = useParams(); // grabs the id from the url
+    const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
@@ -32,7 +38,8 @@ function Museum() {
                 url: bp.buildPath('users/:id'),
                 headers:
                 {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `bearer ${token}`
                 },
                 params: id
             };
@@ -42,9 +49,13 @@ function Museum() {
                 var res = response.data;
                 if(res.error)
                 {
+                    setError(true);
                     setMessage("There was an error");
+                    setIsLoading(false);
                 }
                 else{
+                    setIsLoading(false);
+                    setError(false);
                     storage.storeToken(res);
                     var jwt = require('jsonwebtoken');
                     var ud = jwt.decode(storage.retrieveToken(),{complete:true});
@@ -53,6 +64,8 @@ function Museum() {
             })
             .catch(function(error)
             {
+                setIsLoading(false);
+                setError(true);
                 console.log(error.message);
             });
 
@@ -78,7 +91,18 @@ function Museum() {
         setDisplay(<SearchRooms/>)
     };
 
-    if(cancelButton){
+
+    if(isLoading){
+        return(
+            <h4>Loading Webpage</h4>
+        );
+    }
+    else if(error){
+        return(
+            <h4>There was an Error! Please try again!</h4>
+        );
+    }
+    else if(cancelButton){
         return(
             <div id="museumDiv">
                 <Grid container spacing={3}>
