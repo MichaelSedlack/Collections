@@ -1,17 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CreateRoomForm from './CreateRoomForm';
-import DisplayRoom from './DisplayRoom';
+import SearchRooms from './SearchRooms';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import bodyParser from 'body-parser';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+
 
 
 
 function Museum() {
 
+    var bp = require('./Path.js');
+    var storage = require('../tokenStorage.js');
+
     const [createRoomForm,setCreateRoomForm] = useState();
     const [cancelButton, setCancelButton] = useState(false);
     const [display, setDisplay] = useState();
+    const [message,setMessage] = useState('');
+    const { userId } = useParams(); // grabs the id from the url
+
+
+    useEffect(() => {
+        (async() => {
+            var id = {id:userId};
+            var config = 
+            {
+                method: 'get',
+                url: bp.buildPath('users/:id'),
+                headers:
+                {
+                    'Content-Type': 'application/json'
+                },
+                params: id
+            };
+            axios(config)
+                .then(function(response)
+            {
+                var res = response.data;
+                if(res.error)
+                {
+                    setMessage("There was an error");
+                }
+                else{
+                    storage.storeToken(res);
+                    var jwt = require('jsonwebtoken');
+                    var ud = jwt.decode(storage.retrieveToken(),{complete:true});
+                    var firstName = ud.payload.firstName;
+                }
+            })
+            .catch(function(error)
+            {
+                console.log(error.message);
+            });
+
+        })()
+    },[])
+
+
 
 
     const createNewRoomForm = () => {
@@ -26,8 +74,8 @@ function Museum() {
     };
 
 
-    const displayRoom = () => {
-        setDisplay(<DisplayRoom/>)
+    const search = () => {
+        setDisplay(<SearchRooms/>)
     };
 
     if(cancelButton){
@@ -35,15 +83,15 @@ function Museum() {
             <div id="museumDiv">
                 <Grid container spacing={3}>
                     <Grid item xs={12}/>
-                    <Grid style={{backgroundColor: '#9F2BC1'}} item xs={7} >
+                    <Grid item xs={7} >
                         <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{displayRoom()}}>Search Rooms</Button>
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
                     </Grid>
-                    <Grid style={{backgroundColor: '#4C3AE3'}} item xs={5}>
+                    <Grid item xs={5}>
                         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
                     </Grid>
                     <Grid item xs={12}/>
-                    <Grid style={{backgroundColor: '#D31A50'}} item xs={7}>
+                    <Grid item xs={7}>
                         <span id="displayRoom">{display}</span>
                         <h1>Rooms Here</h1>
                         <h1>Rooms Here</h1>
@@ -53,7 +101,7 @@ function Museum() {
                         <h1>Rooms Here</h1>
                         <h1>Rooms Here</h1>
                     </Grid>
-                    <Grid style={{backgroundColor: '#758283'}} item xs={5} sm={5}>
+                    <Grid item xs={5} sm={5}>
                         <span id="createNewRoomFormResult" >{createRoomForm}</span><br />
                         {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
                     </Grid>
@@ -68,7 +116,7 @@ function Museum() {
                     <Grid item xs={12} />
                     <Grid item xs={7} >
                         <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{displayRoom()}}>Search Rooms</Button>
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
                     </Grid>
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
@@ -76,7 +124,6 @@ function Museum() {
                     <Grid item xs={12}/>
                     <Grid item xs={7}>
                     <span id="displayRoom">{display}</span>
-                    <h1>Rooms Here</h1>
                     <h1>Rooms Here</h1>
                     <h1>Rooms Here</h1>
                     <h1>Rooms Here</h1>
