@@ -16,7 +16,7 @@ function App() {
         <Route path="/" exact>
           <LoginPage />
         </Route>
-        <Route path="/museum" exact>
+        <Route path="/museum/:userId">
           <MuseumPage />
         </Route>
         <Route path="/forgotpassword" exact>
@@ -25,6 +25,7 @@ function App() {
         <Route path='/reset/:id'>
           <ResetPasswordPage />
         </Route>
+        
       </Switch>
     </Router>
   );
