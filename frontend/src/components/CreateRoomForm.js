@@ -83,7 +83,7 @@ function CreateRoomForm()
                 setMessage('New Room Created');
                 setTimeout(
                 function(){
-                        window.location.href = '/museum';
+                        window.location.href = `/museum/${userId}`;
                 },2000)
             }
         })
