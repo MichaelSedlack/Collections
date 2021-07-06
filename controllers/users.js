@@ -171,8 +171,8 @@ usersRouter.put('/updatePasswordByEmail', async (req, res) => {
 })
 
 // Get user by ID
-usersRouter.get('/:id', async (req, res) => {
-  const id = req.params.id;
+usersRouter.get('/', async (req, res) => {
+  const id = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
@@ -190,8 +190,8 @@ usersRouter.get('/:id', async (req, res) => {
   }
 })
 
-usersRouter.get('/:id/rooms', async (req,res) => {
-  const id = req.params.id;
+usersRouter.get('/rooms', async (req,res) => {
+  const id = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -212,8 +212,8 @@ usersRouter.get('/:id/rooms', async (req,res) => {
   return res.send(rooms);
 })
 
-usersRouter.get('/:id/collections', async (req,res) => {
-  const id = req.params.id;
+usersRouter.get('/collections', async (req,res) => {
+  const id = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
