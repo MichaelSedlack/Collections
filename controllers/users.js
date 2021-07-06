@@ -170,6 +170,26 @@ usersRouter.put('/updatePasswordByEmail', async (req, res) => {
   return res.status(200).json({success: "Password successfully changed"});
 })
 
+// Get user by ID
+usersRouter.get('/:id', async (req, res) => {
+  const id = req.params.id;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  if(id === verifiedToken.id){
+    const userInfo = await User.findById(id);
+
+    return res.send(userInfo);
+  }else{
+    const userInfo = await User.findById(id, 'firstName lastName');
+
+    return res.send(userInfo);
+  }
+})
+
 usersRouter.get('/:id/rooms', async (req,res) => {
   const id = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
@@ -212,26 +232,6 @@ usersRouter.get('/:id/collections', async (req,res) => {
   rooms = await Collection.find({uid: id});
 
   return res.send(rooms);
-})
-
-// Get user by ID
-usersRouter.get('/:id', async (req, res) => {
-  const id = req.params.id;
-  const verifiedToken = token.isExpired(token.getToken(req));
-
-  if(!verifiedToken){
-    return res.status(401).json({error: "JSON WebToken NULL"});
-  }
-
-  if(id === verifiedToken.id){
-    const userInfo = await User.findById(id);
-
-    return res.send(userInfo);
-  }else{
-    const userInfo = await User.findById(id, 'firstName lastName');
-
-    return res.send(userInfo);
-  }
 })
 
 module.exports = usersRouter;
