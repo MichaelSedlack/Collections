@@ -56,17 +56,17 @@ function Museum() {
                 else{
                     setIsLoading(false);
                     setError(false);
-                    storage.storeToken(res);
-                    var jwt = require('jsonwebtoken');
-                    var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                    var firstName = ud.payload.firstName;
+                    // storage.storeToken(res);
+                    // var jwt = require('jsonwebtoken');
+                    // var ud = jwt.decode(storage.retrieveToken(),{complete:true});
+                    // var firstName = ud.payload.firstName;
                 }
             })
             .catch(function(error)
             {
                 setIsLoading(false);
                 setError(true);
-                console.log(error.message);
+               console.log(error.message);
             });
 
         })()
