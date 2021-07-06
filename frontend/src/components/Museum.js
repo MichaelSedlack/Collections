@@ -35,7 +35,7 @@ function Museum() {
             var config = 
             {
                 method: 'get',
-                url: bp.buildPath('users/:id'),
+                url: bp.buildPath(`users/`),
                 headers:
                 {
                     'Content-Type': 'application/json',
