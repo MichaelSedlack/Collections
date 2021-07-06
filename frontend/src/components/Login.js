@@ -64,7 +64,7 @@ function Login()
                 setMessage("Logging In");
                 setTimeout(
                     function(){
-                            window.location.href = '/museum';
+                            window.location.href = `/museum/${userId}`;
                     },2000)
             }
         })
