@@ -13,24 +13,26 @@ function SearchRooms(){
     var ud = JSON.parse(_ud);
     var token = ud.accessToken;
 
+    const searchName = useRef(null);
+
     const [message,setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
-    const { userId } = useParams(); // grabs the id from the url
+    // const { userId } = useParams(); // grabs the id from the url
     
     useEffect(() => {
         (async() => {
-            var id = {id:userId};
+            var search = {search:searchName};
             var config = 
             {
                 method: 'get',
-                url: bp.buildPath('users/:id/rooms'),
+                url: bp.buildPath('rooms/search'),
                 headers:
                 {
                     'Content-Type': 'application/json',
                     'Authorization': `bearer ${token}`
                 },
-                params: id
+                params: search
             };
             axios(config)
                 .then(function(response)
@@ -79,7 +81,9 @@ function SearchRooms(){
     else{
         return(
             <div>
-                <h4>Search Results!</h4>
+                <TextField id="outlined-basic" label="Search Rooms" variant="outlined" inputRef={searchName} />
+                <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button was clicked!")}}>Search Rooms</Button>
+
             </div>
         );
     }
