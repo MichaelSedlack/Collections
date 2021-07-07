@@ -3,6 +3,7 @@ const Collection = require('./collection');
 
 // Create Schema
 const itemSchema = mongoose.Schema({
+  name: String,
   description: String,
   item: Object,
   collectionID: {
