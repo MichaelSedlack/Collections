@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import bodyParser from 'body-parser';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import DisplayRooms from './DisplayRooms';
 
 
 
@@ -57,6 +58,8 @@ function Museum() {
                     setIsLoading(false);
                     setError(false);
                     storage.storeToken(res);
+                    var firstName=res.firstName;
+                    setDisplay(firstName);
                     // var jwt = require('jsonwebtoken');
                     // var ud = jwt.decode(storage.retrieveToken(),{complete:true});
                     // var firstName = ud.payload.firstName;
@@ -90,10 +93,6 @@ function Museum() {
     };
 
 
-    const search = () => {
-        setDisplay(<SearchRooms/>)
-    };
-
 
     if(isLoading){
         return(
@@ -109,29 +108,33 @@ function Museum() {
         return(
             <div id="museumDiv">
                 <Grid container spacing={3}>
+                    {/* Set up in to rows of length 12 */}
                     <Grid item xs={12}/>
-                    <Grid item xs={7} >
+
+                    {/* Begin Row (This row is split into 2+5+5=12)*/}
+                    <Grid item xs={2}/>
+                    <Grid item xs={5}>  
+                        {/* <SearchRooms/> */}
                         <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
-                    </Grid>
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("search button clicked")}}>Search Rooms</Button>
+                    </Grid> 
                     <Grid item xs={5}>
-                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
+                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
                     </Grid>
+                    {/* End Row */}
+
                     <Grid item xs={12}/>
-                    <Grid item xs={7}>
-                        <span id="displayRoom">{display}</span>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
+
+                    <Grid item xs={1}/>
+                    <Grid item xs={4}>
+                        <span id="displayRoom"><h1>{display}'s Rooms</h1></span>
+                        <DisplayRooms/>
                     </Grid>
-                    <Grid item xs={5} sm={5}>
+                    <Grid item xs={2}/>
+                    <Grid item xs={5}>
                         <span id="createNewRoomFormResult" >{createRoomForm}</span><br />
                         {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
-                    </Grid>
+                    </Grid> 
                 </Grid>
             </div>
         )
@@ -140,29 +143,35 @@ function Museum() {
         return(
             <div>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} />
-                    <Grid item xs={7} >
+                    {/* Set up in to rows of length 12 */}
+                    <Grid item xs={12}/>
+
+                    {/* Begin Row (This row is split into 2+5+5=12)*/}
+                    <Grid item xs={2}/>
+                    <Grid item xs={5}>    
+                        {/* <SearchRooms/> */}                    
                         <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button>
                     </Grid>
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
                     </Grid>
+                    {/* End Row */}
+
                     <Grid item xs={12}/>
-                    <Grid item xs={7}>
-                    <span id="displayRoom">{display}</span>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
+
+                    <Grid item xs={1}/>
+                    <Grid item xs={4}>
+                       <span id="displayRoom"><h1>{display}'s Rooms</h1></span>  
+                        <DisplayRooms/>
                     </Grid>
+                    <Grid item xs={2}/>
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="primary" type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}>Create New Room</Button><br />
                     </Grid>
-                </Grid>  
+
+                    <Grid item xs={12}/>
+                </Grid>
             </div>
         )
     }
