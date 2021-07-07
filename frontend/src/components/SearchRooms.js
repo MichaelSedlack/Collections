@@ -20,6 +20,7 @@ function SearchRooms(){
     const [error, setError] = useState(false);
     // const { userId } = useParams(); // grabs the id from the url
     
+    // fires only once at the beginning
     useEffect(() => {
         (async() => {
             var search = {search:searchName};
@@ -65,7 +66,7 @@ function SearchRooms(){
     },[])
 
 
-   
+   // If useEffect hasn't finished
     if(isLoading){
         return(
             <div>
@@ -73,6 +74,7 @@ function SearchRooms(){
             </div>
         );
     }
+    // If API returns an error
     else if(error){
         return(
             <h4>There was an error! Please Try Again!</h4>

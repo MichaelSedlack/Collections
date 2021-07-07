@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
 import { useParams } from 'react-router-dom';
 import RoomForm from './RoomForm.js';
 
@@ -14,12 +11,12 @@ function DisplayRooms(){
     var ud = JSON.parse(_ud);
     var token = ud.accessToken;
 
-    const searchName = useRef(null);
+    const { userId } = useParams(); // grabs the id from the url
 
+    // Initial States
     const [message,setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
-    const { userId } = useParams(); // grabs the id from the url
     const [data, setData] = useState([]);
     
     useEffect(() => {
@@ -80,9 +77,7 @@ function DisplayRooms(){
             <div>
                 <RoomForm data={data}/>
             </div>
-        
-
-            );
+        );
     }
 };
 

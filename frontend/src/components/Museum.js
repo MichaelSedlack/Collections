@@ -21,15 +21,17 @@ function Museum() {
     var ud = JSON.parse(_ud);
     var token = ud.accessToken;
 
+    const { userId } = useParams(); // grabs the id from the url
+
+    // Initial States
     const [createRoomForm,setCreateRoomForm] = useState();
     const [cancelButton, setCancelButton] = useState(false);
     const [display, setDisplay] = useState();
     const [message,setMessage] = useState('');
-    const { userId } = useParams(); // grabs the id from the url
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-
+    // only fires at beginning
     useEffect(() => {
         (async() => {
             var id = {id:userId};
@@ -76,24 +78,27 @@ function Museum() {
     },[])
 
 
+    
     const handleLogout = () => {
       storage.clearTokens();
       return window.location.href = '/';
     }
 
+
+    // Renders the Create New Room Form 
     const createNewRoomForm = () => {
         setCancelButton(true)  
         setCreateRoomForm(<CreateRoomForm />)
         
     };
 
+    // Used to hide the Create New Room Form
     function cancelClicked() {
         setCancelButton(false)
         // {window.location.href = '/museum'}
     };
 
-
-
+    // If UseEffect hasn't finished then show loading message
     if(isLoading){
         return(
             <h4>Loading Webpage</h4>
@@ -123,8 +128,10 @@ function Museum() {
                     </Grid>
                     {/* End Row */}
 
-                    <Grid item xs={12}/>
+                    {/* single row of nothing. Im using this to space things out */}
+                    <Grid item xs={12}/> 
 
+                    {/* Begin Row */}
                     <Grid item xs={1}/>
                     <Grid item xs={4}>
                         <span id="displayRoom"><h1>{display}'s Rooms</h1></span>
@@ -135,6 +142,7 @@ function Museum() {
                         <span id="createNewRoomFormResult" >{createRoomForm}</span><br />
                         {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
                     </Grid> 
+                    {/* End Row */}
                 </Grid>
             </div>
         )
@@ -158,8 +166,10 @@ function Museum() {
                     </Grid>
                     {/* End Row */}
 
+                    {/* single row of nothing. Im using this to space things out */}
                     <Grid item xs={12}/>
 
+                    {/* Begin Row */}
                     <Grid item xs={1}/>
                     <Grid item xs={4}>
                        <span id="displayRoom"><h1>{display}'s Rooms</h1></span>  
@@ -169,6 +179,7 @@ function Museum() {
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="primary" type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}>Create New Room</Button><br />
                     </Grid>
+                    {/* End Row */}
 
                     <Grid item xs={12}/>
                 </Grid>

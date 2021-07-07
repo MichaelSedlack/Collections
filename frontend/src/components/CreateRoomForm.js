@@ -30,6 +30,7 @@ function CreateRoomForm()
     
     const newRoomName = useRef(null);
 
+    // Initial States
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
     const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');

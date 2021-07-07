@@ -40,6 +40,8 @@ function RoomForm({data}){
     var token = ud.accessToken;
 
     const { userId } = useParams(); // grabs the id from the url
+    
+    // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = React.useState(false);
 
@@ -105,21 +107,19 @@ function RoomForm({data}){
                                    
                                 </CardContent>
                                 <CardActions>
+                                    {/* Enter/Update/Delete Room Buttons */}
                                     <IconButton size="medium" onClick={()=>{alert("Enter Room Button was clicked!")}}><MeetingRoomIcon/></IconButton>
                                     <IconButton size="medium" onClick={()=>{alert("Edit Room Button was clicked!")}}><EditIcon/></IconButton>
 
                                     {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
                                     <IconButton size ="small" onClick={handleClickOpen}><DeleteIcon/></IconButton>
-                                    <Dialog open={open}
-                                            TransitionComponent={Transition}
-                                            keepMounted
-                                            onClose={handleClose}>
-                                            <DialogTitle>{`Are you sure you want to DELETE the "${detail.name}" room?`}</DialogTitle>
-                                            <DialogContent><span>{message}</span></DialogContent>
-                                            <DialogActions>
-                                                <Button onClick={doDelete(detail.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
-                                                <Button onClick={handleClose} color="primary">CANCEL</Button>
-                                            </DialogActions>
+                                    <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
+                                        <DialogTitle>{`Are you sure you want to DELETE the "${detail.name}" room?`}</DialogTitle>
+                                        <DialogContent><span>{message}</span></DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={doDelete(detail.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                                            <Button onClick={handleClose} color="primary">CANCEL</Button>
+                                        </DialogActions>
                                     </Dialog>
 
                                 </CardActions>

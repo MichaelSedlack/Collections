@@ -19,6 +19,7 @@ function Register()
     const registerPassword = useRef(null);
 
 
+    // Initial States
     const [message,setMessage] = useState('');
     const [emailError, setEmailError] = useState('');
     const [messageColor, setMessageColor] = useState('green');
@@ -91,7 +92,7 @@ function Register()
     }
 
 
-    // validates email
+    // validates email; only checks syntax
     const validateEmail = (e) => {
       var email = e.target.value
     
@@ -106,6 +107,7 @@ function Register()
       }
     } 
 
+    // Reveals or hides password
     function changeVisibility(){
       if(type === "text"){
         setVisibility(<VisibilityOffIcon/>)
@@ -117,6 +119,7 @@ function Register()
       }
     }
 
+    // Disables the Register button if the passwords don't match or the email isn't syntactically valid
     if(checkEmailError || checkPasswordError){
       return(
         <div id="registerDiv">

@@ -25,6 +25,7 @@ function UpdateRoom()
 
     const [show,setShow] = useState();
 
+    // only fires once at the beginning
     useEffect(() => {
         (async () => {
             var roomID = {roomID:roomId};

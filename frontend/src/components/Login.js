@@ -15,6 +15,7 @@ function Login()
     const loginName = useRef(null);
     const loginPassword = useRef(null);
 
+    // Initial States
     const [message,setMessage] = useState('');
     const [messageColor, setMessageColor] = useState('');
     const [visibility, setVisibility] = useState(<VisibilityOffIcon/>);
@@ -77,6 +78,7 @@ function Login()
         });
     }
 
+    // Reveals or hides password
     function changeVisibility(){
         if(type === "text"){
           setVisibility(<VisibilityOffIcon/>)
