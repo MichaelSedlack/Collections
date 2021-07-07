@@ -56,9 +56,7 @@ collectionSchema.post('save', async (obj) => {
   room.collections.push(obj._id);
 
   // Save collection
-  const savedRoom = await room.save();
-
-  return;
+  await room.save();
 })
 
 collectionSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
@@ -74,12 +72,10 @@ collectionSchema.post('deleteOne', {document: true, query: false}, async (obj) =
   room.collections.splice(idx, 1);
 
   // Save Room.
-  const savedRoom = await room.save();
+  await room.save();
 
   // Delete any and all associated documents.
   await Item.deleteMany({collectionID: obj._id});
-
-  return;
 })
 
 const Collection = mongoose.model('Collection', collectionSchema);

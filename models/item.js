@@ -38,9 +38,7 @@ itemSchema.post('save', async (obj) => {
   collection.items.push(obj._id);
 
   // Save Collection
-  const savedCollection = await collection.save();
-
-  return;
+  await collection.save();
 })
 
 itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
@@ -54,9 +52,7 @@ itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
   collections.items.splice(idx, 1);
 
   // Save collection
-  const savedCollection = await collection.save();
-
-  return;
+  await collection.save();
 })
 
 // Create Item Object

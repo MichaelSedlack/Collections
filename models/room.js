@@ -43,9 +43,7 @@ roomSchema.post('save', async (obj) => {
   user.rooms.push(obj._id);
   
   // Save user
-  const savedUser = await user.save();
-
-  return;
+  await user.save();
 })
 
 roomSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
@@ -61,13 +59,11 @@ roomSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
   user.rooms.splice(idx, 1);
 
   // Save User.
-  const savedUser = await user.save();
+  await user.save();
 
   // Delete any and all associated documents.
   await Collection.deleteMany({roomID: obj._id});
   await Item.deleteMany({roomID: obj._id});
-
-  return;
 })
 
 // Create Room 'object'
