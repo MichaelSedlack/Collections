@@ -68,7 +68,7 @@ itemRouter.post('/create', async (req, res) => {
 // GET Item
 //TODO: Figure out how to search by given tags
 //'/:id'
-itemRouter.get('single', async (req, res) => {
+itemRouter.get('/single', async (req, res) => {
   const itemID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -94,7 +94,7 @@ itemRouter.get('single', async (req, res) => {
 
 // Update Item
 //'/:id'
-itemRouter.put('single', async (req, res) => {
+itemRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const newDescription = req.body.description;
   const newItem = req.body.item;
@@ -145,7 +145,7 @@ itemRouter.put('single', async (req, res) => {
 
 // Delete Item
 //'/:id'
-itemRouter.delete('single', async (req, res) => {
+itemRouter.delete('/single', async (req, res) => {
   const itemID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
