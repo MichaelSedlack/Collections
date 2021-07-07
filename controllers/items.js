@@ -19,23 +19,20 @@ itemRouter.post('/create', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  // Item uniqueness across user validation.
-  //TODO: Decide if the same item can exist in different collections (Remember to delete from all collections)
-  //TODO: Figure out how to check based on tags
-  //For Now: Will throw an error if the item exists anywhere in the museum already
-  const nameInUse = await Item.find({uid: verifiedToken.id, name: body.name});
+  // Item uniqueness across collection validation.
+  const nameInUse = await Item.find({uid: verifiedToken.id, name: body.name,collectionID : body.collectionID, item: body.item});
   if(nameInUse.length > 0){
-    return res.status(409).json({error: "Item already in museum."});
+    return res.status(409).json({error: "Item already in collection."});
   }
 
   // Create item object
   const newItem = new Item({
     description: body.description,
     //this is prob wrong
-    item: [],
+    item: body.item,
     collectionID: body.collectionID,
     roomID: body.roomId,
-    //name: body.name,
+    name: body.name,
     uid: verifiedToken.id
   })
 
@@ -45,9 +42,10 @@ itemRouter.post('/create', async (req, res) => {
 })
 // GET Item
 //TODO: Figure out how to search by given tags
-itemRouter.get('/:id', async (req, res) => {
-  const itemID = req.params.id;
-  //const collectionID = req.params
+//'/:id'
+itemRouter.get('single', async (req, res) => {
+  const itemID = req.query.id;
+  const collectionID = req.query.collectionID;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -56,11 +54,12 @@ itemRouter.get('/:id', async (req, res) => {
   }
 
   const item = await Item.findById(itemID);
+  //find collection here to check if its private?
 
-  if(!item){ // Item already doesn't exist.
+  if(!item){ // Item doesn't exist.
     return res.status(404).json({error: "Cannot delete an item that does not exist."});
-//TODO: check if this is even necessary.
-  }else if(item.uid != verifiedToken.id){ // If item owner don't return item
+//TODO: check if collection is private .
+}else if(item.uid != verifiedToken.id){ // If item owner don't return item
     return res.status(403).json({error: "Item is unavailable."})
   }
 
@@ -69,12 +68,14 @@ itemRouter.get('/:id', async (req, res) => {
 
 
 // Update Item
-itemRouter.put('/:id', async (req, res) => {
-  //const newName = req.body.name;
-  const newDescription = req.body.description;
-  const roomID = req.params.roomID;
-  const collectionID = req.params.collectionID;
-  const itemID = req.params.id;
+//'/:id'
+itemRouter.put('single', async (req, res) => {
+  const newName = req.query.name;
+  const newDescription = req.query.description;
+  const roomID = req.query.roomID;
+  const collectionID = req.query.collectionID;
+  const itemID = req.query.id;
+  //get new tags
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -84,7 +85,9 @@ itemRouter.put('/:id', async (req, res) => {
 
   // User already has item with name
   const nameExists = await Item.find({
-    //name: newName,
+    name: newName,
+    description: newDescription,
+    collectionID: collectionID,
     uid: verifiedToken.id,
     _id: { $ne: itemID }
     //TODO: update if item can exist in different collections/rooms
@@ -102,7 +105,9 @@ itemRouter.put('/:id', async (req, res) => {
     return res.status(404).json({error: "Item does not exist."});
   }
 
-  //item.name = newName;
+  item.name = newName;
+  item.description = newDescription;
+  //add new tags
 
   await item.save();
 
@@ -110,8 +115,9 @@ itemRouter.put('/:id', async (req, res) => {
 })
 
 // Delete Item
-itemRouter.delete('/:id', async (req, res) => {
-  const itemID = req.params.id;
+//'/:id'
+itemRouter.delete('single', async (req, res) => {
+  const itemID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
