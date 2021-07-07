@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import { useParams } from 'react-router-dom';
-import Data from './Data.js';
+import RoomForm from './RoomForm.js';
 
 function DisplayRooms(){
     var bp = require('./Path.js');
@@ -78,7 +78,7 @@ function DisplayRooms(){
     else{
         return(
             <div>
-                <Data data={data}/>
+                <RoomForm data={data}/>
             </div>
         
 
