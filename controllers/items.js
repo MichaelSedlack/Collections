@@ -7,6 +7,15 @@ const Collection = require('../models/collection');
 const User = require('../models/user');
 const token = require('../utils/token');
 
+// Helper functions
+const containsKeys = (keys, item) => {
+  const result = keys.map(key => {
+    return (item[key] != null);
+  })
+
+  return result.includes(false) ? false : true;
+}
+
 // TODO: ROUTES
 // blah
 // Create Item
@@ -19,16 +28,31 @@ itemRouter.post('/create', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
+  // CHECK IF KEYS VALID
+  const collectionKeys = await Collection.findById(body.collectionID, 'keys');
+
+  if(!containsKeys(collectionKeys, body.item)){
+    return res.status(400).json({error: "Item does not conform to collection keys."});
+  }
+  //-----
+
   // Item uniqueness across collection validation.
-  const nameInUse = await Item.find({uid: verifiedToken.id, name: body.name,collectionID : body.collectionID, item: body.item});
-  if(nameInUse.length > 0){
+  const itemExists = await Item.find({
+    uid: verifiedToken.id, 
+    name: body.name,
+    collectionID: body.collectionID, 
+    item: body.item
+  });
+  
+  if(itemExists.length > 0){
     return res.status(409).json({error: "Item already in collection."});
   }
+  // TODO: Update rather than add new item.
+  //-------
 
   // Create item object
   const newItem = new Item({
     description: body.description,
-    //this is prob wrong
     item: body.item,
     collectionID: body.collectionID,
     roomID: body.roomId,
@@ -40,6 +64,7 @@ itemRouter.post('/create', async (req, res) => {
 
   return res.send(savedItem);
 })
+
 // GET Item
 //TODO: Figure out how to search by given tags
 //'/:id'
