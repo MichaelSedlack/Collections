@@ -45,7 +45,6 @@ itemRouter.post('/create', async (req, res) => {
 //'/:id'
 itemRouter.get('single', async (req, res) => {
   const itemID = req.query.id;
-  const collectionID = req.query.collectionID;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -58,9 +57,10 @@ itemRouter.get('single', async (req, res) => {
 
   if(!item){ // Item doesn't exist.
     return res.status(404).json({error: "Cannot delete an item that does not exist."});
-//TODO: check if collection is private .
-}else if(item.uid != verifiedToken.id){ // If item owner don't return item
-    return res.status(403).json({error: "Item is unavailable."})
+  }else if(item.uid != verifiedToken.id){
+    const collection = await Collection.findById(item.collectionID);
+    if(collection.private)
+      return res.status(403).json({error: "Item is in a private collection."});
   }
 
   return res.json(item);
@@ -70,10 +70,11 @@ itemRouter.get('single', async (req, res) => {
 // Update Item
 //'/:id'
 itemRouter.put('single', async (req, res) => {
-  const newName = req.query.name;
-  const newDescription = req.query.description;
-  const roomID = req.query.roomID;
-  const collectionID = req.query.collectionID;
+  const newName = req.body.name;
+  const newDescription = req.body.description;
+  const newItem = req.body.item;
+  const roomID = req.body.roomID;
+  const collectionID = req.body.collectionID;
   const itemID = req.query.id;
   //get new tags
   const verifiedToken = token.isExpired(token.getToken(req));
@@ -84,16 +85,18 @@ itemRouter.put('single', async (req, res) => {
   }
 
   // User already has item with name
-  const nameExists = await Item.find({
+  const itemExists = await Item.find({
     name: newName,
-    description: newDescription,
+    item: newItem,
+    roomID: roomID,
     collectionID: collectionID,
     uid: verifiedToken.id,
     _id: { $ne: itemID }
     //TODO: update if item can exist in different collections/rooms
   });
 
-  if(nameExists.length > 0){
+  // ADD LOGIC TO UPDATE IF THIS IS TRUE
+  if(itemExists.length > 0){
     return res.status(409).json({error: "Item name already exists."});
   }
 
@@ -107,6 +110,7 @@ itemRouter.put('single', async (req, res) => {
 
   item.name = newName;
   item.description = newDescription;
+  item.item = item;
   //add new tags
 
   await item.save();
