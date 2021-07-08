@@ -16,54 +16,47 @@ function SearchRooms(){
     const searchName = useRef(null);
 
     const [message,setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     // const { userId } = useParams(); // grabs the id from the url
     
-    // fires only once at the beginning
-    useEffect(() => {
-        (async() => {
-            var search = {search:searchName};
-            var config = 
-            {
-                method: 'get',
-                url: bp.buildPath('rooms/search'),
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                    'Authorization': `bearer ${token}`
-                },
-                params: search
-            };
-            axios(config)
-                .then(function(response)
-            {
-                var res = response.data;
-                if(res.error)
-                {
-                    setError(true);
-                    setMessage("There was an error");
-                    setIsLoading(false);
-                }
-                else{
-                    setError(false);
-                    setIsLoading(false);
-                    storage.storeToken(res);
-                    var jwt = require('jsonwebtoken');
-                    var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                    var name = res.name;
-                    alert(name)
-                }
-            })
-            .catch(function(error)
-            {
-                setError(true);
-                setIsLoading(false);
-                console.log(error.message);
-            });
+    const searchRoom = async event =>
+    {
+        event.preventDefault();
 
-        })()
-    },[])
+        var obj = {search:searchName.current.value};
+        var js = JSON.stringify(obj);
+
+        var config = 
+        {
+            method: 'get',
+            url: bp.buildPath('rooms/create'),	
+            headers: 
+            {
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            data: js
+        };
+        
+        axios(config)
+            .then(function (response) 
+        {
+            var res = response.data;
+            if (res.error) 
+            {
+              setMessage('There was an error');
+            }
+            else 
+            {
+                console.log("Response from API:",res)
+            }
+        })
+        .catch(function (error) 
+        {
+            console.log(error.message);
+        });
+    }
 
 
    // If useEffect hasn't finished
@@ -84,7 +77,7 @@ function SearchRooms(){
         return(
             <div>
                 <TextField id="outlined-basic" label="Search Rooms" variant="outlined" inputRef={searchName} />
-                <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button was clicked!")}}>Search Rooms</Button>
+                <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={searchRoom}>Search Rooms</Button>
 
             </div>
         );
