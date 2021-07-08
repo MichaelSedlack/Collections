@@ -15,7 +15,6 @@ const loading = {
 function ResetPassword () 
 {
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
 
     const password = useRef(null);
 
@@ -75,7 +74,7 @@ function ResetPassword ()
             });
         })()
         
-    },[])
+    },[bp,id])
 
     
     const updatePassword = async event => {

@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import RoomForm from './RoomForm.js';
 
 function DisplayRooms(){
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
@@ -64,13 +63,13 @@ function DisplayRooms(){
             });
 
         })()
-    },[])
+    },[bp, token, userId])
     
     if(isLoading){
         return(<div><h4>Loading Rooms!</h4></div>);
     }
     else if(error){
-        return(<h4>There was an error display rooms!</h4>);
+        return(<h4>{message}</h4>);
     }
     else{
         return(
