@@ -7,6 +7,8 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const usersRouter = require('./controllers/users');
 const roomsRouter = require('./controllers/rooms');
+const collectionsRouter = require('./controllers/collections');
+const itemsRouter = require('./controllers/items');
 
 // Variables
 const app = express();
@@ -23,6 +25,8 @@ app.use(cors()); // Allows for cross-origin requests
 app.use(express.json()); // Parses json in request.body for us
 app.use('/users', usersRouter); // Users route
 app.use('/rooms', roomsRouter); // Rooms route
+app.use('/collections', collectionsRouter);
+app.use('/items', itemsRouter);
 
 if(process.env.NODE_ENV === 'production'){
   app.use('/', express.static('frontend/build')); // Serves frontend if in production mode

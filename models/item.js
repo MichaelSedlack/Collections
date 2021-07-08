@@ -32,7 +32,7 @@ itemSchema.set('toJSON', {
 
 itemSchema.post('save', async (obj) => {
   // Get collection
-  const collection = await Collection.findByID(obj.collectionID);
+  const collection = await Collection.findById(obj.collectionID);
 
   // Add item to collection.
   collection.items.push(obj._id);

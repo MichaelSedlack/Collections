@@ -1,5 +1,5 @@
 // IMPORTS/DECLARATIONS
-const collectionRouter = require('express').Router();
+const collectionsRouter = require('express').Router();
 const Room = require('../models/room');
 const Collection = require('../models/collection');
 const User = require('../models/user');
@@ -7,7 +7,7 @@ const token = require('../utils/token');
 
 // ROUTES
 // Create Collection
-collectionRouter.post('/create', async (req, res) => {
+collectionsRouter.post('/create', async (req, res) => {
   const body = req.body;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -15,6 +15,8 @@ collectionRouter.post('/create', async (req, res) => {
   if(!verifiedToken){
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
+
+  console.log(body);
 
   // Collection uniqueness check across user validation.
   const nameInUse = await Collection.find({uid: verifiedToken.id, name: body.name});
@@ -26,6 +28,8 @@ collectionRouter.post('/create', async (req, res) => {
   const newCollection = new Collection({
     name: body.name,
     private: body.private,
+    keys: body.keys,
+    tags: body.tags,
     items: [],
     roomID: body.roomID,
     uid: verifiedToken.id
@@ -37,7 +41,7 @@ collectionRouter.post('/create', async (req, res) => {
 })
 
 // Update single collection.
-collectionRouter.put('/:id', async (req, res) => {
+collectionsRouter.put('/:id', async (req, res) => {
   const newName = req.body.name;
   const private = req.body.private;
   const roomID = req.params.roomID;
@@ -76,7 +80,7 @@ collectionRouter.put('/:id', async (req, res) => {
 })
 
 // Delete Collection
-collectionRouter.delete('/:id', async (req, res) => {
+collectionsRouter.delete('/:id', async (req, res) => {
   const collectionID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -97,7 +101,7 @@ collectionRouter.delete('/:id', async (req, res) => {
   return res.status(204).json({success: "Successfully deleted collection and all associated Items."});
 })
 
-collectionRouter.get('/search', async (req, res) => {
+collectionsRouter.get('/search', async (req, res) => {
   const search = req.query.search;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -110,7 +114,7 @@ collectionRouter.get('/search', async (req, res) => {
 })
 
 // GET Collection by ID
-collectionRouter.get('/:id', async (req, res) => {
+collectionsRouter.get('/:id', async (req, res) => {
   const collectionID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -132,4 +136,4 @@ collectionRouter.get('/:id', async (req, res) => {
 })
 
 // EXPORTS
-module.exports = collectionRouter;
+module.exports = collectionsRouter;

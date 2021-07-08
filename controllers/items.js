@@ -1,5 +1,5 @@
 // IMPORTS/DECLARATIONS
-const itemRouter = require('express').Router();
+const itemsRouter = require('express').Router();
 const Item = require('../models/item');
 //room may not be required, can only access item through collection and nothing else
 const Room = require('../models/room');
@@ -19,7 +19,7 @@ const containsKeys = (keys, item) => {
 // TODO: ROUTES
 // blah
 // Create Item
-itemRouter.post('/create', async (req, res) => {
+itemsRouter.post('/create', async (req, res) => {
   const body = req.body;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -31,7 +31,7 @@ itemRouter.post('/create', async (req, res) => {
   // CHECK IF KEYS VALID
   const collectionKeys = await Collection.findById(body.collectionID, 'keys');
 
-  if(!containsKeys(collectionKeys, body.item)){
+  if(!containsKeys(collectionKeys.keys, body.item)){
     return res.status(400).json({error: "Item does not conform to collection keys."});
   }
   //-----
@@ -68,7 +68,7 @@ itemRouter.post('/create', async (req, res) => {
 // GET Item
 //TODO: Figure out how to search by given tags
 //'/:id'
-itemRouter.get('/single', async (req, res) => {
+itemsRouter.get('/single', async (req, res) => {
   const itemID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -91,10 +91,10 @@ itemRouter.get('/single', async (req, res) => {
   return res.json(item);
 })
 
-
+// TROUBLESHOOT FURTHER
 // Update Item
 //'/:id'
-itemRouter.put('/single', async (req, res) => {
+itemsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const newDescription = req.body.description;
   const newItem = req.body.item;
@@ -109,6 +109,8 @@ itemRouter.put('/single', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
+  console.log("Here");
+
   // User already has item with name
   const itemExists = await Item.find({
     name: newName,
@@ -120,6 +122,7 @@ itemRouter.put('/single', async (req, res) => {
     //TODO: update if item can exist in different collections/rooms
   });
 
+  console.log(itemExists);
   // ADD LOGIC TO UPDATE IF THIS IS TRUE
   if(itemExists.length > 0){
     return res.status(409).json({error: "Item name already exists."});
@@ -127,7 +130,6 @@ itemRouter.put('/single', async (req, res) => {
 
   const item = await Item.findOne({_id: itemID, uid: verifiedToken.id});
 
-  console.log(item);
   // Item does not exist.
   if(!item){
     return res.status(404).json({error: "Item does not exist."});
@@ -145,7 +147,7 @@ itemRouter.put('/single', async (req, res) => {
 
 // Delete Item
 //'/:id'
-itemRouter.delete('/single', async (req, res) => {
+itemsRouter.delete('/single', async (req, res) => {
   const itemID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -167,4 +169,4 @@ itemRouter.delete('/single', async (req, res) => {
 })
 
 // EXPORTS
-module.exports = itemRouter;
+module.exports = itemsRouter;
