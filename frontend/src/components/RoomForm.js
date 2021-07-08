@@ -14,11 +14,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import UpdateRoom from './UpdateRoom.js';
 
 
-  const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
-  });
+});
 
 
 function RoomForm({data}){
@@ -34,7 +35,7 @@ function RoomForm({data}){
     // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = React.useState(false);
-
+    const [edit, setEdit] = useState(false);
 
     const doDelete = (roomId,roomName) => async event =>
     {
@@ -71,7 +72,6 @@ function RoomForm({data}){
         {
             console.log(error.message);
         })
-        
     }
 
     const handleClickOpen = () => {
@@ -82,44 +82,69 @@ function RoomForm({data}){
         setOpen(false);
     };
 
-    return(
-        <div>
-            {data.map(room=>{
-                return(
-                    <div key={room.id}>
-                        {/* Displays the content from the rooms array from /users/rooms */}
-                        <Card >                            
-                            <CardContent>
-                                <p>Room: {room.name}</p>
-                                <p>Private: {room.private.toString()}</p>
-                                <p>Collections: {room.collections}</p>
-                                
-                               
-                            </CardContent>
-                            <CardActions>
-                                {/* Enter/Update/Delete Room Buttons */}
-                                <IconButton size="medium" color="primary" onClick={()=>{alert("Enter Room Button was clicked!")}}><MeetingRoomIcon/></IconButton>
-                                <IconButton size="medium" color="primary" onClick={()=>{alert("Update Room Button was clicked!")}}><EditIcon/></IconButton>
-                                <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton>
-                                <span>{message}</span>
-                                {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
-                                <IconButton size ="small" onClick={handleClickOpen}><DeleteIcon/></IconButton>
-                                <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                                    <DialogTitle>{`Are you sure you want to DELETE the "${room.name}" room?`}</DialogTitle>
-                                    <DialogContent><span>{message}</span></DialogContent>
-                                    <DialogActions>
-                                        <Button onClick={doDelete(room.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
-                                        <Button onClick={handleClose} color="primary">CANCEL</Button>
-                                    </DialogActions>
-                                </Dialog>
-                            </CardActions>
-                        </Card>
-                        <br />
-                    </div>
-                );
-            })}
-        </div>
-    );
+    const editRoom = () => {
+        setEdit(true);
+    }
+
+    if(edit){
+        return(
+            <div>
+                {data.map(room=>{
+                    return(
+                        <div key={room.id}>
+                            {/* Displays the content as editable */}
+                            <Card >                            
+                                <CardContent>
+                                    <UpdateRoom roomData={{roomId:room.id, roomName:room.name}}/>
+                                </CardContent>
+                            </Card>
+                            <br />
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+    else{
+        return(
+            <div>
+                {data.map(room=>{
+                    return(
+                        <div key={room.id}>
+                            {/* Displays the content from the rooms array from /users/rooms */}
+                            <Card >                            
+                                <CardContent>
+                                <div>
+                                    <p>Room: {room.name}</p>
+                                    <p>Private: {room.private.toString()}</p>
+                                    <p>Collections: {room.collections}</p>
+                                </div>
+                                </CardContent>
+                                <CardActions>
+                                    {/* Enter/Update/Delete Room Buttons */}
+                                    <IconButton size="medium" color="primary" onClick={()=>{alert("Enter Room Button was clicked!")}}><MeetingRoomIcon/></IconButton>
+                                    <IconButton size="medium" color="primary" onClick={()=>{editRoom()}}><EditIcon/></IconButton>
+                                    <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton>
+                                    <span>{message}</span>
+                                    {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
+                                    <IconButton size ="small" onClick={handleClickOpen}><DeleteIcon/></IconButton>
+                                    <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
+                                        <DialogTitle>{`Are you sure you want to DELETE the "${room.name}" room?`}</DialogTitle>
+                                        <DialogContent><span>{message}</span></DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={doDelete(room.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                                            <Button onClick={handleClose} color="primary">CANCEL</Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </CardActions>
+                            </Card>
+                            <br />
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
 }
 
 export default RoomForm;
