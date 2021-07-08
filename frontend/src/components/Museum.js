@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import CreateRoomForm from './CreateRoomForm';
-import SearchRooms from './SearchRooms';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import bodyParser from 'body-parser';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import DisplayRooms from './DisplayRooms';
+import SearchRooms from './SearchRooms';
 
 
 
@@ -75,7 +73,7 @@ function Museum() {
             });
 
         })()
-    },[])
+    },[bp, storage, token, userId])
 
 
     
@@ -106,7 +104,7 @@ function Museum() {
     }
     else if(error){
         return(
-            <h4>There was an Error! Please try again!</h4>
+            <h4>{message}</h4>
         );
     }
     else if(cancelButton){
@@ -119,9 +117,9 @@ function Museum() {
                     {/* Begin Row (This row is split into 2+5+5=12)*/}
                     <Grid item xs={2}/>
                     <Grid item xs={5}>  
-                        {/* <SearchRooms/> */}
-                        <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("search button clicked")}}>Search Rooms</Button>
+                        <SearchRooms/>
+                        {/* <TextField id="outlined-basic" label="Search Rooms" variant="outlined" inputRef={searchRoomName} />
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("search button clicked")}}>Search Rooms</Button> */}
                     </Grid> 
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
@@ -157,9 +155,9 @@ function Museum() {
                     {/* Begin Row (This row is split into 2+5+5=12)*/}
                     <Grid item xs={2}/>
                     <Grid item xs={5}>    
-                        {/* <SearchRooms/> */}                    
-                        <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button>
+                        <SearchRooms/>                    
+                        {/* <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button> */}
                     </Grid>
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
