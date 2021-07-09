@@ -39,6 +39,8 @@ roomSchema.post('save', async (obj) => {
   // Grab user
   const user = await User.findById(obj.uid);
 
+  console.log("UPDATING")
+
   // Add current room to users rooms array.
   user.rooms.push(obj._id);
   

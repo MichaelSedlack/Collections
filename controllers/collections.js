@@ -19,7 +19,7 @@ collectionsRouter.post('/create', async (req, res) => {
   console.log(body);
 
   // Collection uniqueness check across user validation.
-  const nameInUse = await Collection.find({uid: verifiedToken.id, name: body.name});
+  const nameInUse = await Collection.find({uid: verifiedToken.id, name: body.name, roomID: body.roomID});
   if(nameInUse.length > 0){
     return res.status(409).json({error: "Collection name already in use."});
   }

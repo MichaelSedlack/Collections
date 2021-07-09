@@ -16,7 +16,12 @@ const url = config.MONGODB_URI;
 
 
 // Database Connection
-mongoose.connect(url.toString(), {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(url.toString(), {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  useFindAndModify: false, 
+  useCreateIndex: true
+})
 .then(() => console.log("Mongo DB connected"))
 .catch(err => console.log(err));
 

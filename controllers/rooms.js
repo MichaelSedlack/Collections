@@ -69,7 +69,7 @@ roomRouter.put('/:id', async (req, res) => {
   room.name = newName;
   room.private = isPrivate;
 
-  await room.save();
+  await Room.findByIdAndUpdate(roomID, room);
 
   return res.status(200).json({success: "Room updated."});
 })

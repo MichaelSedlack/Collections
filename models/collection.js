@@ -50,7 +50,9 @@ collectionSchema.set('toJSON', {
 
 collectionSchema.post('save', async (obj) => {
   // Get room
-  const room = await Room.findById(obj.roomID);
+  const room = await mongoose.model('Room').findById(obj.uid);
+
+  console.log(room);
 
   // Add collection to room
   room.collections.push(obj._id);
