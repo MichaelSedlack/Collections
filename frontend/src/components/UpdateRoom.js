@@ -83,7 +83,7 @@ function UpdateRoom({roomData})
             var res = response.data;
             if (res.error) 
             {
-                console.log(res.error.message);
+                console.log(res.message);
                 setMessage('There was an error');
             }
             else 
@@ -97,6 +97,7 @@ function UpdateRoom({roomData})
         })
         .catch(function (error) 
         {
+            setMessage(error.message);
             console.log(error.message);
         });
     };
