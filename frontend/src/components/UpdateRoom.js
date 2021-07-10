@@ -6,9 +6,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
 
@@ -62,7 +59,7 @@ function UpdateRoom({roomData})
     const updateRoom = async event =>
     {
         event.preventDefault();
-        var obj = {newName:newRoomName.current.value,isPrivate:checkOption,roomID:roomId};
+        var obj = {name:newRoomName.current.value,private:checkOption,id:roomId};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -122,7 +119,6 @@ function UpdateRoom({roomData})
             <p id="result">{optionMessage}</p>
             <br /><br />
             <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton" className="buttons" value = "Update Room" onClick={updateRoom}>Update Room</Button>
-            <Button variant="contained" size="large" color="secondary" type="submit" id="createRoomButton" className="buttons" value = "Cancel Room" onClick={()=>{window.location.href = `/museum/${userId}`}}>Cancel</Button><br />
             <span id="createRoomResult">{message}</span>
         </div>
     );

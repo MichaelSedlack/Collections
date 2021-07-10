@@ -15,6 +15,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import UpdateRoom from './UpdateRoom.js';
+import Room from './Room.js';
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -35,44 +36,11 @@ function RoomForm({data}){
     // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = React.useState(false);
-    const [edit, setEdit] = useState(false);
+    const [cancelButton, setCancelButton] = useState(false);
+    const [showEdit, setShowEdit] = useState();
+    const [showDialog, setShowDialog] = useState();
 
-    const doDelete = (roomId,roomName) => async event =>
-    {
-        event.preventDefault();
-        var id = {id:roomId};
-        var config = 
-        {
-            method: 'delete',
-            url: bp.buildPath('rooms/single'),
-            headers:
-            {
-                'Content-Type':'application/json',
-                'Authorization': `bearer ${token}`
-            },
-            params: id
-        };
-        axios(config)
-            .then(function(response)
-        {
-            var res = response.data;
-            if(res.error)
-            {
-                console.log(res.error);
-            }
-            else{
-                setMessage(`${roomName} room Successfully Deleted`);
-                setTimeout(
-                    function(){
-                            window.location.href = `/museum/${userId}`;
-                    },2000)
-            }
-        })
-        .catch(function(error)
-        {
-            console.log(error.message);
-        })
-    }
+    
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -82,11 +50,24 @@ function RoomForm({data}){
         setOpen(false);
     };
 
-    const editRoom = () => {
-        setEdit(true);
+    const editRoom = (roomId, roomName) => {
+        setCancelButton(true);
+        setShowEdit(<UpdateRoom roomData={{roomId, roomName}}/>);
+        
     }
 
-    if(edit){
+    const doDelete = (roomId,roomName) => {
+        setOpen(true);
+        setShowDialog(<Room roomData={{roomId,roomName}}/>)
+    }
+
+    // Used to hide the Create New Room Form
+    function cancelClicked() {
+        setCancelButton(false)
+        // {window.location.href = '/museum'}
+    };
+
+    if(cancelButton){
         return(
             <div>
                 {data.map(room=>{
@@ -95,7 +76,8 @@ function RoomForm({data}){
                             {/* Displays the content as editable */}
                             <Card >                            
                                 <CardContent>
-                                    <UpdateRoom roomData={{roomId:room.id, roomName:room.name}}/>
+                                    <span>{showEdit}</span><br />
+                                    {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
                                 </CardContent>
                             </Card>
                             <br />
@@ -123,19 +105,12 @@ function RoomForm({data}){
                                 <CardActions>
                                     {/* Enter/Update/Delete Room Buttons */}
                                     <IconButton size="medium" color="primary" onClick={()=>{alert("Enter Room Button was clicked!")}}><MeetingRoomIcon/></IconButton>
-                                    <IconButton size="medium" color="primary" onClick={()=>{editRoom()}}><EditIcon/></IconButton>
-                                    <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton>
+                                    <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
+                                    {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
                                     <span>{message}</span>
                                     {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
-                                    <IconButton size ="small" onClick={handleClickOpen}><DeleteIcon/></IconButton>
-                                    <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                                        <DialogTitle>{`Are you sure you want to DELETE the "${room.name}" room?`}</DialogTitle>
-                                        <DialogContent><span>{message}</span></DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={doDelete(room.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
-                                            <Button onClick={handleClose} color="primary">CANCEL</Button>
-                                        </DialogActions>
-                                    </Dialog>
+                                    <IconButton color="secondary" size ="small" onClick={()=>{doDelete(room.id,room.name)}}><DeleteIcon/></IconButton>
+                                    <span id="createDialog">{showDialog}</span>
                                 </CardActions>
                             </Card>
                             <br />
