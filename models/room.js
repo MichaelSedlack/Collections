@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const User = require('./user');
-const Collection = require('./collection');
 const Item = require('./item');
 
 // Lay out Schema
@@ -61,11 +60,11 @@ roomSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
   user.rooms.splice(idx, 1);
 
   // Save User.
-  await user.save();
+  await user.save();å
 
   // Delete any and all associated documents.
-  await Collection.deleteMany({roomID: obj._id});
-  await Item.deleteMany({roomID: obj._id});
+  // await Collection.deleteMany({roomID: obj._id});
+  // await Item.deleteMany({roomID: obj._id});
 })
 
 // Create Room 'object'

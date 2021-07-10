@@ -38,7 +38,7 @@ itemSchema.post('save', async (obj) => {
   collection.items.push(obj._id);
 
   // Save Collection
-  await collection.save();
+  await Collection.findByIdAndUpdate(obj.collectionID, collection);
 })
 
 itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
@@ -49,10 +49,10 @@ itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
   const idx = collection.items.indexOf(obj._id);
 
   // remove item from array
-  collections.items.splice(idx, 1);
+  collection.items.splice(idx, 1);
 
-  // Save collection
-  await collection.save();
+  // Update collection
+  await Collection.findByIdAndUpdate(obj.collectionID, collection);
 })
 
 // Create Item Object

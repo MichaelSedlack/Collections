@@ -16,6 +16,23 @@ const containsKeys = (keys, item) => {
   return result.includes(false) ? false : true;
 }
 
+function shallowEqual(object1, object2) {
+  const keys1 = Object.keys(object1);
+  const keys2 = Object.keys(object2);
+
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+
+  for (let key of keys1) {
+    if (object1[key] !== object2[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 // TODO: ROUTES
 // blah
 // Create Item
@@ -55,7 +72,7 @@ itemsRouter.post('/create', async (req, res) => {
     description: body.description,
     item: body.item,
     collectionID: body.collectionID,
-    roomID: body.roomId,
+    roomID: body.roomID,
     name: body.name,
     uid: verifiedToken.id
   })
@@ -81,7 +98,7 @@ itemsRouter.get('/single', async (req, res) => {
   //find collection here to check if its private?
 
   if(!item){ // Item doesn't exist.
-    return res.status(404).json({error: "Cannot delete an item that does not exist."});
+    return res.status(404).json({error: "Item does not exist."});
   }else if(item.uid != verifiedToken.id){
     const collection = await Collection.findById(item.collectionID);
     if(collection.private)
@@ -91,17 +108,11 @@ itemsRouter.get('/single', async (req, res) => {
   return res.json(item);
 })
 
-// TROUBLESHOOT FURTHER
 // Update Item
 //'/:id'
 itemsRouter.put('/single', async (req, res) => {
-  const newName = req.body.name;
-  const newDescription = req.body.description;
-  const newItem = req.body.item;
-  const roomID = req.body.roomID;
-  const collectionID = req.body.collectionID;
+  const body = req.body;
   const itemID = req.query.id;
-  //get new tags
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -109,39 +120,31 @@ itemsRouter.put('/single', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  console.log("Here");
-
-  // User already has item with name
+  // Validate that item doesn't already exist.
   const itemExists = await Item.find({
-    name: newName,
-    item: newItem,
-    roomID: roomID,
-    collectionID: collectionID,
+    name: body.name,
+    roomID: body.roomID,
+    item: body.item,
+    collectionID: body.collectionID,
     uid: verifiedToken.id,
     _id: { $ne: itemID }
-    //TODO: update if item can exist in different collections/rooms
-  });
+  })
 
-  console.log(itemExists);
-  // ADD LOGIC TO UPDATE IF THIS IS TRUE
   if(itemExists.length > 0){
-    return res.status(409).json({error: "Item name already exists."});
+    return res.status(409).json({error: "Item already exists."});
   }
 
-  const item = await Item.findOne({_id: itemID, uid: verifiedToken.id});
+  const item = await Item.findById(itemID);
 
-  // Item does not exist.
-  if(!item){
-    return res.status(404).json({error: "Item does not exist."});
+  if(item.uid != verifiedToken.id){
+    return res.status(403).json({error: "Cannot modify an item that is not yours."});
   }
 
-  item.name = newName;
-  item.description = newDescription;
-  item.item = item;
-  //add new tags
+  item.name = body.name;
+  item.description = body.description;
+  item.item = body.item;
 
-  await item.save();
-
+  console.log(await Item.findByIdAndUpdate(itemID, item))
   return res.status(200).json({success: "Item updated."});
 })
 
