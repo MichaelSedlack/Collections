@@ -16,23 +16,6 @@ const containsKeys = (keys, item) => {
   return result.includes(false) ? false : true;
 }
 
-function shallowEqual(object1, object2) {
-  const keys1 = Object.keys(object1);
-  const keys2 = Object.keys(object2);
-
-  if (keys1.length !== keys2.length) {
-    return false;
-  }
-
-  for (let key of keys1) {
-    if (object1[key] !== object2[key]) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 // TODO: ROUTES
 // blah
 // Create Item
@@ -162,7 +145,7 @@ itemsRouter.delete('/single', async (req, res) => {
 
   if(!item){ // ITEM DOES NOT EXIST
     return res.status(404).json({error: "Item does not exist."});
-  }else if(item.uid != verifiedToken.id){ // ITEMS OWNER IS NOT OWNER MAKING REQUEST
+  }else if(item.uid != verifiedToken.id){ // ITEMS OWNER IS NOT USER MAKING REQUEST
     return res.status(403).json({error: "Cannot delete an item that is not yours."});
   }
 

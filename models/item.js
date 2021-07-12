@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Collection = require('./collection');
+const Collection = mongoose.model('Collection');
 
 // Create Schema
 const itemSchema = mongoose.Schema({
