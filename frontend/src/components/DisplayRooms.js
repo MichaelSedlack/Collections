@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import RoomForm from './RoomForm.js';
+import {ApiContext} from './ApiContext';
+import { UserContext } from './UserContext';
+import {deleteRoom} from './helpers/api';
 
 function DisplayRooms(){
     var bp = require('./Path.js');
 
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
-
-    const { userId } = useParams(); // grabs the id from the url
+    const { user } = useContext(UserContext);
 
     // Initial States
     const [message,setMessage] = useState('');
@@ -20,7 +18,7 @@ function DisplayRooms(){
     
     useEffect(() => {
         (async() => {
-            var id = {id:userId};
+            var id = {id:user.id};
             var config = 
             {
                 method: 'get',
@@ -28,7 +26,7 @@ function DisplayRooms(){
                 headers:
                 {
                     'Content-Type': 'application/json',
-                    'Authorization': `bearer ${token}`
+                    'Authorization': `bearer ${user.accessToken}`
                 },
                 params: id
             };
@@ -48,22 +46,27 @@ function DisplayRooms(){
                     setData(res)
                     console.log('Response from API:',res)
                     console.log('data:',res.data)
-                    // storage.storeToken(res);
-                    // var jwt = require('jsonwebtoken');
-                    // var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                    // var results = ud.results;
-                    // alert(results)
                 }
             })
-            .catch(function(error)
+            .catch(function(err)
             {
                 setError(true);
                 setIsLoading(false);
-                console.log(error.message);
+                console.log(err.message);
             });
 
         })()
-    },[bp, token, userId])
+    },[bp, user])
+
+    const doDelete = (roomID) => {
+      if(!deleteRoom(roomID, user.accessToken)){
+        return false;
+      }
+
+      setTimeout(function(){
+          setData(data.filter(room => room.id !== roomID));
+      },1000)
+    }
     
     if(isLoading){
         return(<div><h4>Loading Rooms!</h4></div>);
@@ -74,7 +77,9 @@ function DisplayRooms(){
     else{
         return(
             <div>
+              <ApiContext.Provider value={{doDelete}}>
                 <RoomForm data={data}/>
+              </ApiContext.Provider>
             </div>
         );
     }
