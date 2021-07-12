@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const Room = mongoose.model('Room');
-const Item = mongoose.model('Item');
 
 // Create Schema
 const collectionSchema = mongoose.Schema({
@@ -50,6 +48,7 @@ collectionSchema.set('toJSON', {
 
 collectionSchema.post('save', async (obj) => {
   // Get room
+  const Room = mongoose.model('Room');
   const room = await Room.findById(obj.roomID);
   console.log(room);
 
@@ -61,6 +60,10 @@ collectionSchema.post('save', async (obj) => {
 })
 
 collectionSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
+  // Import models
+  const Room = mongoose.model('Room');
+  const Item = mongoose.model('Item');
+
   // Find associated Room
   const room = await Room.findById(obj.roomID);
 

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const User = mongoose.model('User');
-const Item = mongoose.model('Item');
+const User = require('../models/collection');
+const Item = require('../models/item');
 
 // Lay out Schema
 const roomSchema = new mongoose.Schema({
