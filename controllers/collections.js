@@ -41,10 +41,10 @@ collectionsRouter.post('/create', async (req, res) => {
 })
 
 // Update single collection.
-collectionsRouter.put('/:id', async (req, res) => {
+collectionsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const private = req.body.private;
-  const roomID = req.params.roomID;
+  const roomID = req.query.roomID;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -80,8 +80,8 @@ collectionsRouter.put('/:id', async (req, res) => {
 })
 
 // Delete Collection
-collectionsRouter.delete('/:id', async (req, res) => {
-  const collectionID = req.params.id;
+collectionsRouter.delete('/single', async (req, res) => {
+  const collectionID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
@@ -114,8 +114,8 @@ collectionsRouter.get('/search', async (req, res) => {
 })
 
 // GET Collection by ID
-collectionsRouter.get('/:id', async (req, res) => {
-  const collectionID = req.params.id;
+collectionsRouter.get('/single', async (req, res) => {
+  const collectionID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
