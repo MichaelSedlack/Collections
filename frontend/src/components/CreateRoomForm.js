@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -27,8 +27,6 @@ function CreateRoomForm()
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
     var token = ud.accessToken;
-    
-    //const newRoomName = useRef(null);
 
     // Initial States
     const [message,setMessage] = useState('');
@@ -70,18 +68,6 @@ function CreateRoomForm()
             else 
             {
                 storage.storeToken(res);
-                
-                
-                var roomName = res.name;
-                var priv = res.private;
-                var roomId = res.id;
-                var userId = res.uid;
-                var collections = res.collections;
-                
-                
-                var room = {roomName:roomName,roomId:roomId,id:userId,collections:collections,priv:priv}
-                localStorage.setItem('room_data', JSON.stringify(room));
-
 
                 setMessage('New Room Created');
                 setTimeout(
@@ -150,6 +136,6 @@ function CreateRoomForm()
         </div>
       )
     }
-};
+}
 
 export default CreateRoomForm;

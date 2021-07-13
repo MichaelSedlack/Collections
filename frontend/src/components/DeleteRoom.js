@@ -18,8 +18,6 @@ function DeleteRoom({roomData, closeDelete}) {
     // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = useState(true);
-    const [name,setName] = useState(roomData.roomName);
-    const [roomId,setRoomId] = useState(roomData.roomId);
     
     const handleClose = () => {
         setOpen(false);
@@ -27,8 +25,15 @@ function DeleteRoom({roomData, closeDelete}) {
     };
 
     const handleDelete = (roomId) => {
-      if(!doDelete(roomId)){
-        setMessage("There was an error. Please try again later.");
+      console.log(roomData);
+      const res = doDelete(roomId);
+      if(res.error){
+        setMessage(res.error);
+        setTimeout(function(){
+          handleClose();
+          setMessage("");
+        },500)
+        return;
       }
 
       setMessage("Successfully deleted the room!");
@@ -40,19 +45,15 @@ function DeleteRoom({roomData, closeDelete}) {
     return(
         <div>
            <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                <DialogTitle>{`Are you sure you want to DELETE the "${name}" room?`}</DialogTitle>
+                <DialogTitle>{`Are you sure you want to DELETE the "${roomData.name}" room?`}</DialogTitle>
                 <DialogContent><span>{message}</span></DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleDelete(roomId)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                    <Button onClick={() => handleDelete(roomData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
                     <Button onClick={handleClose} color="primary">CANCEL</Button>
                  </DialogActions>
             </Dialog>
          </div>
     );
-    
-
-
-
-};
+}
 
 export default DeleteRoom;

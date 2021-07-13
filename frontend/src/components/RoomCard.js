@@ -28,17 +28,16 @@ function RoomCard({room}){
     setShowDialog("");
   }
 
-  const openDelete = (roomId,roomName) => {
+  const openDelete = (id,name) => {
       setOpen(true);
-      setShowDialog(<DeleteRoom roomData={{roomId,roomName}} closeDelete={()=> closeDelete()}/>)
+      setShowDialog(<DeleteRoom roomData={{id,name}} closeDelete={()=> closeDelete()}/>)
   }
 
   // Used to hide the Create New Room Form
   function cancelClicked() {
     setCancelButton(false);
     setEdit(false);
-      // {window.location.href = '/museum'}
-  };
+  }
 
     if(edit){
       return (

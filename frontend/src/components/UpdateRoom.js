@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -8,6 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { useParams } from 'react-router-dom';
+import { UserContext} from './UserContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -21,15 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 function UpdateRoom({roomData})
 {
-    const newRoomName = useRef(null);
+  const { user } = useContext(UserContext);
     const { userId } = useParams(); // grabs the id from the url
     const classes = useStyles();
 
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
 
     
     // Initial states
@@ -38,7 +35,7 @@ function UpdateRoom({roomData})
     const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
     const [checkOption, setCheckOption] = useState(true);
     const [name,setName] = useState(roomData.roomName);
-    const [roomId,setRoomId] = useState(roomData.roomId);
+    const [roomId] = useState(roomData.roomId);
     
     // Displays to the user what the private/public options mean
     const displayChoice = (e) => {
@@ -59,7 +56,11 @@ function UpdateRoom({roomData})
     const updateRoom = async event =>
     {
         event.preventDefault();
-        var obj = {name:newRoomName.current.value,private:checkOption,id:roomId};
+        var obj = {
+          name: name,
+          private:checkOption,
+          id: roomId
+        };
         var js = JSON.stringify(obj);
 
         var config = 
@@ -69,8 +70,9 @@ function UpdateRoom({roomData})
           headers: 
           {
               'Content-Type': 'application/json',
-              'Authorization': `bearer ${token}`
+              'Authorization': `bearer ${user.accessToken}`
           },
+          params: {id: roomId},
           data: js
       };
       
@@ -101,7 +103,7 @@ function UpdateRoom({roomData})
 
     return(
         <div>
-            <TextField margin="dense" variant="outlined" type="text" id="roomName" defaultValue={name} label="Room Name" inputRef={newRoomName}/><br />
+            <TextField margin="dense" variant="outlined" type="text" id="roomName" defaultValue={name} label="Room Name" onChange={(e) => setName(e.target.value)}/><br />
             <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>Choose</InputLabel>
                 <Select
@@ -122,6 +124,6 @@ function UpdateRoom({roomData})
             <span id="createRoomResult">{message}</span>
         </div>
     );
-};
+}
 
 export default UpdateRoom;

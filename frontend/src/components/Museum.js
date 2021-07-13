@@ -3,13 +3,10 @@ import CreateRoomForm from './CreateRoomForm';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-import { useParams, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import DisplayRooms from './DisplayRooms';
 import SearchRooms from './SearchRooms';
 import { UserContext } from './UserContext';
-const { deleteRoom } = require('./helpers/api');
-
-
 
 
 function Museum() {
@@ -21,8 +18,6 @@ function Museum() {
   var storage = require('../tokenStorage.js');
 
   // Initial States
-  const [createRoomForm,setCreateRoomForm] = useState();
-  const [cancelButton, setCancelButton] = useState(false);
   const [message,setMessage] = useState('');
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

@@ -59,13 +59,18 @@ function DisplayRooms(){
     },[bp, user])
 
     const doDelete = (roomID) => {
-      if(!deleteRoom(roomID, user.accessToken)){
-        return false;
+      const res = deleteRoom(roomID, user.accessToken);
+      
+      if(res.error){
+        return res;
       }
 
       setTimeout(function(){
           setData(data.filter(room => room.id !== roomID));
+          return res;
       },1000)
+
+      return true;
     }
     
     if(isLoading){
@@ -83,6 +88,6 @@ function DisplayRooms(){
             </div>
         );
     }
-};
+}
 
 export default DisplayRooms;
