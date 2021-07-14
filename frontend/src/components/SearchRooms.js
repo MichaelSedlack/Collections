@@ -1,13 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import { useParams } from 'react-router-dom';
 
 function SearchRooms(){
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
@@ -18,11 +15,12 @@ function SearchRooms(){
     const [message,setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
-    // const { userId } = useParams(); // grabs the id from the url
     
     const searchRoom = async event =>
     {
         event.preventDefault();
+
+        setIsLoading(true);
 
         var obj = {search:searchName.current.value};
         var js = JSON.stringify(obj);
@@ -30,7 +28,7 @@ function SearchRooms(){
         var config = 
         {
             method: 'get',
-            url: bp.buildPath('rooms/create'),	
+            url: bp.buildPath('rooms/search'),	
             headers: 
             {
                 'Content-Type': 'application/json',
@@ -46,15 +44,17 @@ function SearchRooms(){
             if (res.error) 
             {
               setMessage('There was an error');
+              setError(true);
             }
             else 
             {
                 console.log("Response from API:",res)
+                setIsLoading(false);
             }
         })
-        .catch(function (error) 
+        .catch(function (err) 
         {
-            console.log(error.message);
+            console.log(err.message);
         });
     }
 
@@ -70,7 +70,10 @@ function SearchRooms(){
     // If API returns an error
     else if(error){
         return(
+          <div>
             <h4>There was an error! Please Try Again!</h4>
+            <p>{message}</p>
+          </div>
         );
     }
     else{
@@ -84,6 +87,6 @@ function SearchRooms(){
     }
 
     
-};
+}
 
 export default SearchRooms;
