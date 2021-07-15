@@ -8,14 +8,16 @@ import MuseumPage from './pages/MuseumPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import CollectionsPage from './pages/CollectionsPage';
-import { UserContext } from './components/UserContext';
+import { UserContext, RoomContext } from './components/UserContext';
 
 function App() {
 
   const [user, setUser] = useState(null);
+  const [room, setRoom] = useState(null);
 
   return (
     <UserContext.Provider value={{user, setUser}}>
+      <RoomContext.Provider value={{room, setRoom}}>
       <Layout>
         <Router>
           <Switch> {/* Switch: Wraps multiple Route components. Only picks the first matching route among all the routes */}
@@ -31,8 +33,8 @@ function App() {
             <Route path="/forgotpassword" exact>
               <ForgotPasswordPage />
             </Route>
-            <Route path='/collections/:userId/:roomId'>
-            <CollectionsPage/>
+            <Route path='/collections'>
+              {!user ? <Redirect to='/'/> : <CollectionsPage/>}
             </Route>
             <Route path='/reset/:id'>
               <ResetPasswordPage />
@@ -41,6 +43,7 @@ function App() {
           </Switch>
         </Router>
       </Layout>
+      </RoomContext.Provider>
     </UserContext.Provider>
   );
 }

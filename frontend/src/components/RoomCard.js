@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,9 +9,14 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import IconButton from '@material-ui/core/IconButton';
 import UpdateRoom from './UpdateRoom';
 import DeleteRoom from './DeleteRoom';
+import { useHistory } from 'react-router-dom';
+import { RoomContext } from './UserContext';
 
 function RoomCard({room}){
   // Initial States
+  const history = useHistory();
+  const context = useContext(RoomContext);
+
   const [message, setMessage]=  useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
@@ -37,6 +42,11 @@ function RoomCard({room}){
   function cancelClicked() {
     setCancelButton(false);
     setEdit(false);
+  }
+
+  const enterRoom = (roomId, roomName) => {
+    context.setRoom({name:roomName,id:roomId});
+    history.push("/collections")
   }
 
     if(edit){
@@ -66,7 +76,7 @@ function RoomCard({room}){
               </CardContent>
               <CardActions>
                 {/* Enter/Update/Delete Room Buttons */}
-                <IconButton size="medium" color="primary" onClick={()=>{alert("Enter Room Button was clicked!")}}><MeetingRoomIcon/></IconButton>
+                <IconButton size="medium" color="primary" onClick={()=>{enterRoom(room.id,room.name)}}><MeetingRoomIcon/></IconButton>
                 <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
                 {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
                 <span>{message}</span>

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
+import { RoomContext } from './UserContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateCollectionForm()
 {
-    const { roomId } = useParams(); // grabs the id from the url
+    const {room} = useContext(RoomContext);
 
     const classes = useStyles();
     var bp = require('./Path.js');
@@ -31,24 +31,20 @@ function CreateCollectionForm()
     var ud = JSON.parse(_ud);
     var token = ud.accessToken;
 
-
-    var roomID = roomId;
-    
-    const newCollectionName = useRef(null);
-
     // Initial States
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
-    const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
+    const [optionMessage,setOptionMessage] = useState('No one will be able to view your Collection');
     const [checkOption, setCheckOption] = useState(true);
+    const [open, setOpen] = useState(false);
+    const [collectionName, setCollectionName] = useState("");
 
 
     const createCollection = async event =>
     {
         event.preventDefault();
 
-        
-        var obj = {name:newCollectionName.current.value,private:checkOption,roomID};
+        var obj = {name:collectionName,private:checkOption, roomID:room.id};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -74,29 +70,18 @@ function CreateCollectionForm()
             else 
             {
                 storage.storeToken(res);
-                
-                
-                var collectionName = res.name;
-                var priv = res.private;
-                var collectionId = res.id;
-                var userId = res.uid;
-                var collections = res.collections;
-                
-                
-                var collection = {collectionName,collectionId,id:userId,collections,priv}
-                localStorage.setItem('collection_data', JSON.stringify(collection));
-
 
                 setMessage('New Collection Created');
                 setTimeout(
                 function(){
-                        window.location.href = `/collections/${userId}/${roomId}`;
+                        setCollectionName("");
+                        setOpen(false);
                 },2000)
             }
         })
         .catch(function (error) 
         {
-            console.log(error.response.data);
+            setMessage(error.message);
         });
     };
 
@@ -115,31 +100,44 @@ function CreateCollectionForm()
         }
     }
 
-    return(
+    const handleNameChange = (e) => {
+      setCollectionName(e.target.value);
+    }
+
+    if(open){
+        return(
+          <div>
+              <span id="inner-title">Create New Collection</span><br />
+              <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
+
+              <FormControl variant="outlined" className={classes.formControl}>
+                  <InputLabel>Choose</InputLabel>
+                  <Select
+                      labelId="option"
+                      id="option"
+                      value={option}
+                      onChange={(e)=>displayChoice(e)}
+                      label="option"
+                  >
+                      <MenuItem value="Private">Private</MenuItem>
+                      <MenuItem value="Public">Public</MenuItem>
+                  </Select>
+              </FormControl>
+
+              <span id="result">{optionMessage}</span>
+              <br /><br />
+              <Button variant="contained" size="large" color="primary" type="submit" id="CreateCollectionButton" className="buttons" value = "Set Up New Collection" onClick={createCollection}>Set Up New Collection</Button>
+              <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{setOpen(false)}}>Cancel</Button><br />
+              <span id="CreateCollectionResult">{message}</span>
+          </div>
+      );
+    }else{
+      return(
         <div>
-            <span id="inner-title">Create New Collection</span><br />
-            <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" inputRef={newCollectionName}/><br />
-
-            <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel>Choose</InputLabel>
-                <Select
-                    labelId="option"
-                    id="option"
-                    value={option}
-                    onChange={(e)=>displayChoice(e)}
-                    label="option"
-                >
-                    <MenuItem value="Private">Private</MenuItem>
-                    <MenuItem value="Public">Public</MenuItem>
-                </Select>
-            </FormControl>
-
-            <span id="result">{optionMessage}</span>
-            <br /><br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createCollectionButton" className="buttons" value = "Set Up New Collection" onClick={createCollection}>Set Up New Collection</Button><br />
-            <span id="createCollectionResult">{message}</span>
+          <Button variant="contained" size="large" color="primary" type="submit" id="CreateCollectionFormButton" className="buttons" value="Create New Collection" onClick={() => setOpen(true)}>Create New Collection</Button><br />
         </div>
-    );
-};
+      )
+    }
+}
 
 export default CreateCollectionForm;
