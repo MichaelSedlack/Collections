@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateCollectionForm()
 {
+    const keyName = useRef(null);
     const {room} = useContext(RoomContext);
 
     const classes = useStyles();
@@ -38,13 +39,14 @@ function CreateCollectionForm()
     const [checkOption, setCheckOption] = useState(true);
     const [open, setOpen] = useState(false);
     const [collectionName, setCollectionName] = useState("");
+    const [collectionKeys, setCollectionKeys] = useState([]);
 
 
     const createCollection = async event =>
     {
         event.preventDefault();
 
-        var obj = {name:collectionName,private:checkOption, roomID:room.id};
+        var obj = {name:collectionName,private:checkOption, roomID:room.id, keys:collectionKeys};
         var js = JSON.stringify(obj);
 
         var config = 
@@ -104,12 +106,20 @@ function CreateCollectionForm()
       setCollectionName(e.target.value);
     }
 
+    function handleKeys() {
+        setCollectionKeys(collectionKeys => [...collectionKeys, keyName.current.value]);
+        console.log(collectionKeys);
+    }
+
     if(open){
         return(
           <div>
               <span id="inner-title">Create New Collection</span><br />
               <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
-
+              
+              <TextField margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
+              <Button variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
+                <br/>
               <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Choose</InputLabel>
                   <Select
