@@ -40,6 +40,7 @@ function CreateCollectionForm()
     const [open, setOpen] = useState(false);
     const [collectionName, setCollectionName] = useState("");
     const [collectionKeys, setCollectionKeys] = useState([]);
+    const [keyMessage, setKeyMessage] = useState("");
 
 
     const createCollection = async event =>
@@ -106,9 +107,12 @@ function CreateCollectionForm()
       setCollectionName(e.target.value);
     }
 
+    // Adds a new key element to the collectionKeys array
     function handleKeys() {
         setCollectionKeys(collectionKeys => [...collectionKeys, keyName.current.value]);
         console.log(collectionKeys);
+        keyName.current.value="";
+        setKeyMessage("Added Key");
     }
 
     if(open){
@@ -119,6 +123,7 @@ function CreateCollectionForm()
               
               <TextField margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
               <Button variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
+                {<span>{keyMessage}</span>}
                 <br/>
               <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Choose</InputLabel>
