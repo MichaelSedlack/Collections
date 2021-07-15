@@ -1,5 +1,5 @@
 // IMPORTS/DECLARATIONS
-const roomRouter = require('express').Router();
+const roomsRouter = require('express').Router();
 const Collection = require('../models/collection');
 const Room = require('../models/room');
 const User = require('../models/user');
@@ -7,7 +7,7 @@ const token = require('../utils/token');
 
 // ROUTES
 // Create Room
-roomRouter.post('/create', async (req, res) => {
+roomsRouter.post('/create', async (req, res) => {
   const body = req.body;
   const verifiedToken = token.isExpired(token.getToken(req));
 
@@ -36,7 +36,7 @@ roomRouter.post('/create', async (req, res) => {
 })
 
 // Update single room.
-roomRouter.put('/single', async (req, res) => {
+roomsRouter.put('/:id', async (req, res) => {
   const newName = req.body.name;
   const isPrivate = req.body.private;
   const roomID = req.query.id;
@@ -49,8 +49,8 @@ roomRouter.put('/single', async (req, res) => {
 
   // User already has room with name
   const nameExists = await Room.find({
-    name: newName, 
-    uid: verifiedToken.id, 
+    name: newName,
+    uid: verifiedToken.id,
     _id: { $ne: roomID }
   });
 
@@ -69,14 +69,14 @@ roomRouter.put('/single', async (req, res) => {
   room.name = newName;
   room.private = isPrivate;
 
-  await room.save();
+  await Room.findByIdAndUpdate(roomID, room);
 
   return res.status(200).json({success: "Room updated."});
 })
 
 // Delete Room
-roomRouter.delete('/single', async (req, res) => {
-  const roomID = req.query.id;
+roomsRouter.delete('/:id', async (req, res) => {
+  const roomID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
@@ -97,8 +97,8 @@ roomRouter.delete('/single', async (req, res) => {
 })
 
 // GET Room by ID
-roomRouter.get('/single', async (req, res) => {
-  const roomID = req.query.id;
+roomsRouter.get('/:id', async (req, res) => {
+  const roomID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -118,4 +118,4 @@ roomRouter.get('/single', async (req, res) => {
 })
 
 // EXPORTS
-module.exports = roomRouter;
+module.exports = roomsRouter;
