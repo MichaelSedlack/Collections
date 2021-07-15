@@ -104,7 +104,7 @@ function Login()
 
     return(
         <div id="loginDiv">
-            <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center">
+            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
                 <h4 id="inner-title">Please Sign In</h4><br />
                 <TextField  style={{marginBottom: "2em"}} variant="outlined" required label="Email" type="text" id="loginName" inputRef={loginName}  />
                 <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} style={{marginBottom: "2em"}} variant="outlined" required label="Password" type={type} id="loginPassword" inputRef={loginPassword} />

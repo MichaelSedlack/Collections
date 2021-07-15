@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const Collection = require('./collection');
+const Collection = mongoose.model('Collection');
 
 // Create Schema
 const itemSchema = mongoose.Schema({
+  name: String,
   description: String,
   item: Object,
   collectionID: {
@@ -31,15 +32,13 @@ itemSchema.set('toJSON', {
 
 itemSchema.post('save', async (obj) => {
   // Get collection
-  const collection = await Collection.findByID(obj.collectionID);
+  const collection = await Collection.findById(obj.collectionID);
 
   // Add item to collection.
   collection.items.push(obj._id);
 
   // Save Collection
-  const savedCollection = await collection.save();
-
-  return;
+  await Collection.findByIdAndUpdate(obj.collectionID, collection);
 })
 
 itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
@@ -50,12 +49,10 @@ itemSchema.post('deleteOne', {document: true, query: true}, async (obj) => {
   const idx = collection.items.indexOf(obj._id);
 
   // remove item from array
-  collections.items.splice(idx, 1);
+  collection.items.splice(idx, 1);
 
-  // Save collection
-  const savedCollection = await collection.save();
-
-  return;
+  // Update collection
+  await Collection.findByIdAndUpdate(obj.collectionID, collection);
 })
 
 // Create Item Object
