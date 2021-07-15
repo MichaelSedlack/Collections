@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import CollectionForm from './CollectionForm';
-
+import CollectionForm from './CollectionForm.js';
+import {ApiContext} from './ApiContext';
+import { UserContext } from './UserContext';
+// import {deleteCollection} from './helpers/api';
 
 function DisplayCollections(){
     var bp = require('./Path.js');
 
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
-
-    const { userId } = useParams(); // grabs the id from the url
+    const { user } = useContext(UserContext);
 
     // Initial States
     const [message,setMessage] = useState('');
@@ -21,15 +18,15 @@ function DisplayCollections(){
     
     useEffect(() => {
         (async() => {
-            var id = {id:userId};
+            var id = {id:user.id};
             var config = 
             {
                 method: 'get',
-                url: bp.buildPath('users/collections'),
+                url: bp.buildPath('users/Collections'),
                 headers:
                 {
                     'Content-Type': 'application/json',
-                    'Authorization': `bearer ${token}`
+                    'Authorization': `bearer ${user.accessToken}`
                 },
                 params: id
             };
@@ -49,25 +46,35 @@ function DisplayCollections(){
                     setData(res)
                     console.log('Response from API:',res)
                     console.log('data:',res.data)
-                    // storage.storeToken(res);
-                    // var jwt = require('jsonwebtoken');
-                    // var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                    // var results = ud.results;
-                    // alert(results)
                 }
             })
-            .catch(function(error)
+            .catch(function(err)
             {
                 setError(true);
                 setIsLoading(false);
-                console.log(error.message);
+                console.log(err.message);
             });
 
         })()
-    },[])
+    },[bp, user])
+
+    // const doDelete = (CollectionID) => {
+    //   const res = deleteCollection(CollectionID, user.accessToken);
+      
+    //   if(res.error){
+    //     return res;
+    //   }
+
+    //   setTimeout(function(){
+    //       setData(data.filter(Collection => Collection.id !== CollectionID));
+    //       return res;
+    //   },1000)
+
+    //   return true;
+    // }
     
     if(isLoading){
-        return(<div><h4>Loading Rooms!</h4></div>);
+        return(<div><h4>Loading Collections!</h4></div>);
     }
     else if(error){
         return(<h4>{message}</h4>);
@@ -75,10 +82,12 @@ function DisplayCollections(){
     else{
         return(
             <div>
+              {/* <ApiContext.Provider value={{doDelete}}> */}
                 <CollectionForm data={data}/>
+              {/* </ApiContext.Provider> */}
             </div>
         );
     }
-};
+}
 
 export default DisplayCollections;

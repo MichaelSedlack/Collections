@@ -31,7 +31,7 @@ function Museum() {
           var config = 
           {
               method: 'get',
-              url: bp.buildPath(`users/collections`),
+              url: bp.buildPath(`users/`),
               headers:
               {
                   'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ function Museum() {
                     <Grid item xs={1}/>
                     <Grid item xs={4}>
                        <span id="displayCollection"><h1>{room.name} Collections</h1></span>  
-                        {/* <DisplayCollections/> */}
+                        <DisplayCollections/>
                     </Grid>
                     <Grid item xs={2}/>
                     <Grid item xs={5}>
