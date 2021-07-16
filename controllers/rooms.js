@@ -1,10 +1,5 @@
 // IMPORTS/DECLARATIONS
-<<<<<<< HEAD
-const roomRouter = require('express').Router();
-=======
 const roomsRouter = require('express').Router();
-const Collection = require('../models/collection');
->>>>>>> ec16cda5e74b6aa1d349a0e94f66f25e6b0259bc
 const Room = require('../models/room');
 const token = require('../utils/token');
 
@@ -39,11 +34,7 @@ roomsRouter.post('/create', async (req, res) => {
 })
 
 // Update single room.
-<<<<<<< HEAD
-roomRouter.put('/single', async (req, res) => {
-=======
-roomsRouter.put('/:id', async (req, res) => {
->>>>>>> ec16cda5e74b6aa1d349a0e94f66f25e6b0259bc
+roomsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const isPrivate = req.body.private;
   const roomID = req.query.id;
@@ -81,13 +72,8 @@ roomsRouter.put('/:id', async (req, res) => {
 })
 
 // Delete Room
-<<<<<<< HEAD
-roomRouter.delete('/single', async (req, res) => {
+roomsRouter.delete('/single', async (req, res) => {
   const roomID = req.query.id;
-=======
-roomsRouter.delete('/:id', async (req, res) => {
-  const roomID = req.params.id;
->>>>>>> ec16cda5e74b6aa1d349a0e94f66f25e6b0259bc
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
@@ -108,13 +94,8 @@ roomsRouter.delete('/:id', async (req, res) => {
 })
 
 // GET Room by ID
-<<<<<<< HEAD
-roomRouter.get('/single', async (req, res) => {
+roomsRouter.get('/single', async (req, res) => {
   const roomID = req.query.id;
-=======
-roomsRouter.get('/:id', async (req, res) => {
-  const roomID = req.params.id;
->>>>>>> ec16cda5e74b6aa1d349a0e94f66f25e6b0259bc
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -138,10 +119,5 @@ roomsRouter.get('/:id', async (req, res) => {
 })
 
 // EXPORTS
-<<<<<<< HEAD
-module.exports = roomRouter;
-
-//60f21149eb0a907a4cab608a
-=======
 module.exports = roomsRouter;
->>>>>>> ec16cda5e74b6aa1d349a0e94f66f25e6b0259bc
+
