@@ -1,8 +1,6 @@
 // IMPORTS/DECLARATIONS
 const roomsRouter = require('express').Router();
-const Collection = require('../models/collection');
 const Room = require('../models/room');
-const User = require('../models/user');
 const token = require('../utils/token');
 
 // ROUTES
@@ -60,7 +58,6 @@ roomsRouter.put('/single', async (req, res) => {
 
   const room = await Room.findOne({_id: roomID, uid: verifiedToken.id});
 
-  console.log(room);
   // Room does not exist.
   if(!room){
     return res.status(404).json({error: "Room does not exist."});
@@ -75,8 +72,9 @@ roomsRouter.put('/single', async (req, res) => {
 })
 
 // Delete Room
-roomsRouter.delete('/:id', async (req, res) => {
-  const roomID = req.params.id;
+
+roomsRouter.delete('/single', async (req, res) => {
+  const roomID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   if(!verifiedToken){
@@ -97,8 +95,9 @@ roomsRouter.delete('/:id', async (req, res) => {
 })
 
 // GET Room by ID
+
 roomsRouter.get('/single', async (req, res) => {
-  const roomID = req.params.id;
+  const roomID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -106,16 +105,21 @@ roomsRouter.get('/single', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  const room = await Room.findById(roomID);
+  var room = await Room.findById(roomID);
 
   if(!room){ // Room already doesn't exist.
-    return res.status(404).json({error: "Cannot delete a room that does not exist."});
+    return res.status(404).json({error: "Room does not exist."});
   }else if((room.uid != verifiedToken.id) && room.private){ // If room private and not owner don't return room
     return res.status(403).json({error: "Room is private."})
   }
 
-  return res.json(room);
+  if(room.uid != verifiedToken.id){
+    return res.json(await Room.findById(roomID).populate('collections', null, { private: false }));
+  }
+
+  return res.json(await Room.findById(roomID).populate('collections'));
 })
 
 // EXPORTS
 module.exports = roomsRouter;
+

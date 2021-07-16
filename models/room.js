@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const User = require('../models/collection');
+const User = require('../models/user');
+const Collection = require('../models/collection');
 const Item = require('../models/item');
 
 // Lay out Schema
