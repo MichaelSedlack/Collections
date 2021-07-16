@@ -97,7 +97,7 @@ roomsRouter.delete('/:id', async (req, res) => {
 })
 
 // GET Room by ID
-roomsRouter.get('/:id', async (req, res) => {
+roomsRouter.get('/single', async (req, res) => {
   const roomID = req.params.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
