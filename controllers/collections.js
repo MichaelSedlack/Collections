@@ -44,7 +44,7 @@ collectionsRouter.post('/create', async (req, res) => {
 collectionsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const private = req.body.private;
-  const roomID = req.query.roomID;
+  const collectionID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
