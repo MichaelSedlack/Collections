@@ -1,6 +1,4 @@
-const mongoose = require('mongoose')
-const Room = require('./room');
-const Item = require('./item');
+const mongoose = require('mongoose');
 
 // Create Schema
 const collectionSchema = mongoose.Schema({
@@ -50,18 +48,22 @@ collectionSchema.set('toJSON', {
 
 collectionSchema.post('save', async (obj) => {
   // Get room
+  const Room = mongoose.model('Room');
   const room = await Room.findById(obj.roomID);
+  console.log(room);
 
   // Add collection to room
   room.collections.push(obj._id);
 
   // Save collection
-  const savedRoom = await room.save();
-
-  return;
+  await Room.findByIdAndUpdate(obj.roomID, room);
 })
 
 collectionSchema.post('deleteOne', {document: true, query: false}, async (obj) => {
+  // Import models
+  const Room = mongoose.model('Room');
+  const Item = mongoose.model('Item');
+
   // Find associated Room
   const room = await Room.findById(obj.roomID);
 
@@ -74,12 +76,10 @@ collectionSchema.post('deleteOne', {document: true, query: false}, async (obj) =
   room.collections.splice(idx, 1);
 
   // Save Room.
-  const savedRoom = await room.save();
+  await Room.findByIdAndUpdate(obj.roomID, room);
 
   // Delete any and all associated documents.
   await Item.deleteMany({collectionID: obj._id});
-
-  return;
 })
 
 const Collection = mongoose.model('Collection', collectionSchema);
