@@ -6,14 +6,14 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import { UserContext,RoomContext } from './UserContext';
+import { UserContext,RoomContext } from './../UserContext';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function DeleteCollection({collectionData, closeDelete}) {
-    var bp = require('./Path.js');
+    var bp = require('./../Path.js');
     const {user} = useContext(UserContext)
     const {room} = useContext(RoomContext)
     // Initial States

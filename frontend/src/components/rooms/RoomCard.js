@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UpdateRoom from './UpdateRoom';
 import DeleteRoom from './DeleteRoom';
 import { useHistory } from 'react-router-dom';
-import { RoomContext } from './UserContext';
+import { RoomContext } from './../UserContext';
 
 function RoomCard({room}){
   // Initial States

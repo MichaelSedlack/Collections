@@ -1,5 +1,5 @@
 import React from 'react';
-import Collections from '../components/Collections';
+import Collections from '../components/collections/Collections';
 
 
 const CollectionsPage = () =>

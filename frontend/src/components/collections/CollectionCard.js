@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UpdateCollection from './UpdateCollection';
 import DeleteCollection from './DeleteCollection';
 import { useHistory } from 'react-router-dom';
-import { RoomContext } from './UserContext';
+import { RoomContext } from './../UserContext';
 
 function CollectionCard({collection}){
   // Initial States

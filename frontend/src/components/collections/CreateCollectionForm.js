@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { RoomContext } from './UserContext';
+import { RoomContext } from './../UserContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -25,8 +25,8 @@ function CreateCollectionForm()
     const {room} = useContext(RoomContext);
 
     const classes = useStyles();
-    var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
+    var bp = require('./../Path.js');
+    var storage = require('../../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);

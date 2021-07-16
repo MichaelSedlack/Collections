@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import DisplayCollections from './DisplayCollections';
 // import SearchCollections from './SearchCollections';
-import { UserContext, RoomContext } from './UserContext';
+import { UserContext, RoomContext } from './../UserContext';
 
 
 function Museum() {
@@ -16,8 +16,8 @@ function Museum() {
 
   const history = useHistory();
 
-  var bp = require('./Path.js');
-  var storage = require('../tokenStorage.js');
+  var bp = require('./../Path.js');
+  var storage = require('../../tokenStorage.js');
 
   // Initial States
   const [message,setMessage] = useState('');

@@ -7,8 +7,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { UserContext} from './UserContext';
-import { RoomContext } from './UserContext';
+import { useParams } from 'react-router-dom';
+import { UserContext} from './../UserContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -20,13 +20,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function UpdateCollection({collectionData})
+function UpdateRoom({roomData})
 {
-    const {room} = useContext(RoomContext);
-    const { user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
+    const { userId } = useParams(); // grabs the id from the url
     const classes = useStyles();
 
-    var bp = require('./Path.js');
+    var bp = require('./../Path.js');
 
     
     // Initial states
@@ -34,8 +34,8 @@ function UpdateCollection({collectionData})
     const [option,setOption] = useState('Private');
     const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
     const [checkOption, setCheckOption] = useState(true);
-    const [name,setName] = useState(collectionData.collectionName);
-    const [collectionId] = useState(collectionData.collectionId);
+    const [name,setName] = useState(roomData.roomName);
+    const [roomId] = useState(roomData.roomId);
     
     // Displays to the user what the private/public options mean
     const displayChoice = (e) => {
@@ -43,36 +43,36 @@ function UpdateCollection({collectionData})
 
         if(choice === "Private"){
             setOption("Private");
-            setOptionMessage('No one will be able to view your collection');
+            setOptionMessage('No one will be able to view your Room');
             setCheckOption(true);
         }
         else{
             setOption("Public");
-            setOptionMessage("Everyone will be able to view your collection");
+            setOptionMessage("Everyone will be able to view your Room");
             setCheckOption(false);
         }
     }
 
-    const updateCollection = async event =>
+    const updateRoom = async event =>
     {
         event.preventDefault();
         var obj = {
           name: name,
           private:checkOption,
-          
+          id: roomId
         };
         var js = JSON.stringify(obj);
 
         var config = 
       {
           method: 'put',
-          url: bp.buildPath('collections/single'),	
+          url: bp.buildPath('rooms/single'),	
           headers: 
           {
               'Content-Type': 'application/json',
               'Authorization': `bearer ${user.accessToken}`
           },
-          params: {id: collectionId},
+          params: {id: roomId},
           data: js
       };
       
@@ -87,7 +87,11 @@ function UpdateCollection({collectionData})
             }
             else 
             {
-                setMessage('Collection Updated');
+                setMessage('Room Updated');
+                setTimeout(
+                function(){
+                        window.location.href = `/museum/${userId}`;
+                },2000)
             }
         })
         .catch(function (error) 
@@ -99,7 +103,7 @@ function UpdateCollection({collectionData})
 
     return(
         <div>
-            <TextField margin="dense" variant="outlined" type="text" id="collectionName" defaultValue={name} label="Room Name" onChange={(e) => setName(e.target.value)}/><br />
+            <TextField margin="dense" variant="outlined" type="text" id="roomName" defaultValue={name} label="Room Name" onChange={(e) => setName(e.target.value)}/><br />
             <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel>Choose</InputLabel>
                 <Select
@@ -116,10 +120,10 @@ function UpdateCollection({collectionData})
 
             <p id="result">{optionMessage}</p>
             <br /><br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createcollectionButton" className="buttons" value = "Update collection" onClick={updateCollection}>Update collection</Button>
-            <span id="createcollectionResult">{message}</span>
+            <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton" className="buttons" value = "Update Room" onClick={updateRoom}>Update Room</Button>
+            <span id="createRoomResult">{message}</span>
         </div>
     );
 }
 
-export default UpdateCollection;
+export default UpdateRoom;

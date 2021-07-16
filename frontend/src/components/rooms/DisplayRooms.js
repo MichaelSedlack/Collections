@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
 import RoomForm from './RoomForm.js';
-import {ApiContext} from './ApiContext';
-import { UserContext } from './UserContext';
-import {deleteRoom} from './helpers/api';
+import {ApiContext} from './../ApiContext';
+import { UserContext } from './../UserContext';
+import {deleteRoom} from './../helpers/api';
 
 function DisplayRooms(){
-    var bp = require('./Path.js');
+    var bp = require('./../Path.js');
 
     const { user } = useContext(UserContext);
 

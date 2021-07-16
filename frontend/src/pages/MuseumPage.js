@@ -1,5 +1,5 @@
 import React from 'react';
-import Museum from '../components/Museum';
+import Museum from '../components/rooms/Museum';
 
 
 const MuseumPage = () =>

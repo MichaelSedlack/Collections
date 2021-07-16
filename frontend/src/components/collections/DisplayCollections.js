@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
 import CollectionForm from './CollectionForm.js';
-import {ApiContext} from './ApiContext';
-import { UserContext, RoomContext } from './UserContext';
+import {ApiContext} from './../ApiContext';
+import { UserContext, RoomContext } from './../UserContext';
 // import {deleteCollection} from './helpers/api';
 
 function DisplayCollections(){
-    var bp = require('./Path.js');
+    var bp = require('./../Path.js');
 
     const { user } = useContext(UserContext);
     const { room } = useContext(RoomContext);
