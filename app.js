@@ -1,5 +1,6 @@
 // IMPORTS
 const config = require('./utils/config');
+const path = require('path');
 require('express-async-errors');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -34,7 +35,10 @@ app.use('/collections', collectionsRouter);
 app.use('/items', itemsRouter);
 
 if(process.env.NODE_ENV === 'production'){
-  app.use('/', express.static('frontend/build')); // Serves frontend if in production mode
+  app.use(express.static(path.join(__dirname, "frontend", "build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+  });; // Serves frontend if in production mode
 }
 
 module.exports = app;

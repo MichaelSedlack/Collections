@@ -43,6 +43,10 @@ header {
 footer {
   background-color: rgb(0, 0, 0);
   min-height: 50px;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
   margin-top: auto;
   display: flex;
   flex-direction: column;
