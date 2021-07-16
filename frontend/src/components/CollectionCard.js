@@ -8,6 +8,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import IconButton from '@material-ui/core/IconButton';
 import UpdateCollection from './UpdateCollection';
+import DeleteCollection from './DeleteCollection';
 import { useHistory } from 'react-router-dom';
 import { RoomContext } from './UserContext';
 
@@ -32,10 +33,10 @@ function CollectionCard({collection}){
     setShowDialog("");
   }
 
-  // const openDelete = (id,name) => {
-  //     setOpen(true);
-  //     setShowDialog(<DeleteCollection collectionData={{id,name}} closeDelete={()=> closeDelete()}/>)
-  // }
+  const openDelete = (id,name) => {
+      setOpen(true);
+      setShowDialog(<DeleteCollection collectionData={{id,name}} closeDelete={()=> closeDelete()}/>)
+  }
 
   // Used to hide the Create New Collection Form
   function cancelClicked() {
@@ -81,7 +82,7 @@ function CollectionCard({collection}){
                 {/* <IconButton size="small" color="secondary" onClick={doDelete(collection.id,collection.name)}><DeleteIcon/></IconButton> */}
                 <span>{message}</span>
                 {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
-                <IconButton color="secondary" size ="small" onClick={()=>{alert("clicked")}}><DeleteIcon/></IconButton>
+                <IconButton color="secondary" size ="small" onClick={()=>{openDelete(collection.id,collection.name)}}><DeleteIcon/></IconButton>
                 <span id="createDialog">{showDialog}</span>
               </CardActions>
           </Card>
