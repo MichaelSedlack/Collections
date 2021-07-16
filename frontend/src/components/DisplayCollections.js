@@ -2,13 +2,14 @@ import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
 import CollectionForm from './CollectionForm.js';
 import {ApiContext} from './ApiContext';
-import { UserContext } from './UserContext';
+import { UserContext, RoomContext } from './UserContext';
 // import {deleteCollection} from './helpers/api';
 
 function DisplayCollections(){
     var bp = require('./Path.js');
 
     const { user } = useContext(UserContext);
+    const { room } = useContext(RoomContext);
 
     // Initial States
     const [message,setMessage] = useState('');
@@ -18,11 +19,11 @@ function DisplayCollections(){
     
     useEffect(() => {
         (async() => {
-            var id = {id:user.id};
+            var id = {id:room.id};
             var config = 
             {
                 method: 'get',
-                url: bp.buildPath('users/Collections'),
+                url: bp.buildPath('rooms/single'),
                 headers:
                 {
                     'Content-Type': 'application/json',
@@ -43,9 +44,8 @@ function DisplayCollections(){
                 else{
                     setError(false);
                     setIsLoading(false);
-                    setData(res)
-                    console.log('Response from API:',res)
-                    console.log('data:',res.data)
+                    setData(res.collections)
+                    console.log('Response from API Collections:',res.collections)
                 }
             })
             .catch(function(err)

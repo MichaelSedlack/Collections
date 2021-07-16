@@ -44,8 +44,7 @@ function DisplayRooms(){
                     setError(false);
                     setIsLoading(false);
                     setData(res)
-                    console.log('Response from API:',res)
-                    console.log('data:',res.data)
+                    console.log('Response from API Rooms:',res)
                 }
             })
             .catch(function(err)
