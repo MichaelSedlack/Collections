@@ -45,8 +45,7 @@ function CreateCollectionForm()
     const [collectionKeys, setCollectionKeys] = useState([]);
     const [keyMessage, setKeyMessage] = useState("");
     const [showKeyMessage, setShowKeyMessage] = useState(false);
-    const [radio, setRadio] = useState("");
-
+    const [template, setTemplate] = useState(false);
 
     const createCollection = async event =>
     {
@@ -114,24 +113,7 @@ function CreateCollectionForm()
 
     // Adds new key elements to the collectionKeys array
     function handleKeys() {
-      switch(radio){
-        case "Books":
-          setCollectionKeys(collectionKeys => [...collectionKeys, "Author", "Genre", "Year", "Edition"]);
-          break;
-        case "Movies":
-          setCollectionKeys(collectionKeys => [...collectionKeys, "Author", "Genre", "Year", "Platform"]);
-          break;  
-        case "Trading Cards":
-          setCollectionKeys(collectionKeys => [...collectionKeys, "Set", "Condition", "Year", "Rarity"]);
-          break;  
-        case "Art":
-          setCollectionKeys(collectionKeys => [...collectionKeys, "Artist", "Condition", "Year", "Style"]);
-          break;  
-        default:
-          setCollectionKeys(collectionKeys => [...collectionKeys, keyName.current.value]);
-          break;
-      }
-      
+      setCollectionKeys(collectionKeys => [...collectionKeys, keyName.current.value]);
       console.log(collectionKeys);
       keyName.current.value="";
       setShowKeyMessage(true);
@@ -143,7 +125,25 @@ function CreateCollectionForm()
     }
 
     const handleRadioChange = (event) => {
-      setRadio(event.target.value);
+      setTemplate(true);
+      switch(event.target.value){
+        case "Books":
+          setCollectionKeys(["Author", "Genre", "Year", "Edition"]);
+          break;
+        case "Movies":
+          setCollectionKeys(["Author", "Genre", "Year", "Platform"]);
+          break;  
+        case "Trading Cards":
+          setCollectionKeys(["Set", "Condition", "Year", "Rarity"]);
+          break;  
+        case "Art":
+          setCollectionKeys(["Artist", "Condition", "Year", "Style"]);
+          break;  
+        default:
+          setTemplate(false);
+          setCollectionKeys([]);
+          break;
+      }
     };
 
     if(open){
@@ -153,12 +153,12 @@ function CreateCollectionForm()
               
               <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
               <h4>Custom Properties</h4>
-              <TextField margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
-              <Button variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
+              <TextField disabled={template ? true : false} margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
+              <Button disabled={template ? true : false} variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
               {showKeyMessage ? <span>{keyMessage}</span> : null}
               <br/>
               <h4>OR Choose a Template</h4>
-              <RadioGroup row aria-label="position" name="position" defaultValue="top" onChange={handleRadioChange}>
+              <RadioGroup row aria-label="position" name="position" defaultValue="top" onChange={e=>handleRadioChange(e)}>
                 <FormControlLabel
                   value="None"
                   control={<Radio color="primary" />}
@@ -178,7 +178,7 @@ function CreateCollectionForm()
                   labelPlacement="top"
                 />
                 <FormControlLabel
-                  value="Cards"
+                  value="Trading Cards"
                   control={<Radio color="primary" />}
                   label="Trading Cards"
                   labelPlacement="top"
