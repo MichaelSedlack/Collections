@@ -43,8 +43,7 @@ collectionsRouter.post('/create', async (req, res) => {
 // Update single collection.
 collectionsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
-  const private = req.body.private;
-  const collectionID = req.query.id;
+  const isPrivate = req.body.private;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -72,9 +71,9 @@ collectionsRouter.put('/single', async (req, res) => {
   }
 
   collection.name = newName;
-  collection.private = private;
+  collection.private = isPrivate;
 
-  await collection.save();
+  await collection.findByIdAndUpdate(collectionID, collection);
 
   return res.status(200).json({success: "Collection updated."});
 })
@@ -125,14 +124,12 @@ collectionsRouter.get('/single', async (req, res) => {
 
   const collection = await Collection.findById(collectionID);
 
-  console.log("UID: " + collection.uid + "  Token: " + verifiedToken.id);
-
   // If collection private and not owner don't return room
   if((collection.uid != verifiedToken.id) && collection.private){
     return res.status(401).json({error: "Collection is private."})
   }
 
-  return res.json(collection);
+  return res.json(await Collection.findById(collectionID).populate('items'));
 })
 
 // EXPORTS
