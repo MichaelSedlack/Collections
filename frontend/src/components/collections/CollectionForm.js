@@ -17,7 +17,7 @@ function CollectionForm({data}){
           </div>
         )
       })} */}
-      {alert(`Collections: ${data[0]}`)}
+      {alert(`Collections: ${data}`)}
     </div>
   )
 }

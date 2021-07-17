@@ -6,6 +6,9 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import { RoomContext } from './../UserContext';
 
@@ -42,6 +45,7 @@ function CreateCollectionForm()
     const [collectionKeys, setCollectionKeys] = useState([]);
     const [keyMessage, setKeyMessage] = useState("");
     const [showKeyMessage, setShowKeyMessage] = useState(false);
+    const [radio, setRadio] = useState("");
 
 
     const createCollection = async event =>
@@ -108,29 +112,89 @@ function CreateCollectionForm()
       setCollectionName(e.target.value);
     }
 
-    // Adds a new key element to the collectionKeys array
+    // Adds new key elements to the collectionKeys array
     function handleKeys() {
-        setCollectionKeys(collectionKeys => [...collectionKeys, keyName.current.value]);
-        console.log(collectionKeys);
-        keyName.current.value="";
-        setShowKeyMessage(true);
-        setKeyMessage("Added Key");
-        setTimeout(
-          function(){
-            setShowKeyMessage(false);
-          },700)
+      switch(radio){
+        case "Books":
+          setCollectionKeys(collectionKeys => [...collectionKeys, "Author", "Genre", "Year", "Edition"]);
+          break;
+        case "Movies":
+          setCollectionKeys(collectionKeys => [...collectionKeys, "Author", "Genre", "Year", "Platform"]);
+          break;  
+        case "Trading Cards":
+          setCollectionKeys(collectionKeys => [...collectionKeys, "Set", "Condition", "Year", "Rarity"]);
+          break;  
+        case "Art":
+          setCollectionKeys(collectionKeys => [...collectionKeys, "Artist", "Condition", "Year", "Style"]);
+          break;  
+        default:
+          setCollectionKeys(collectionKeys => [...collectionKeys, keyName.current.value]);
+          break;
+      }
+      
+      console.log(collectionKeys);
+      keyName.current.value="";
+      setShowKeyMessage(true);
+      setKeyMessage("Added Key");
+      setTimeout(
+        function(){
+          setShowKeyMessage(false);
+        },700)
     }
+
+    const handleRadioChange = (event) => {
+      setRadio(event.target.value);
+    };
 
     if(open){
         return(
           <div>
               <span id="inner-title">Create New Collection</span><br />
-              <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
               
+              <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
+              <h4>Custom Properties</h4>
               <TextField margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
               <Button variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
               {showKeyMessage ? <span>{keyMessage}</span> : null}
-                <br/>
+              <br/>
+              <h4>OR Choose a Template</h4>
+              <RadioGroup row aria-label="position" name="position" defaultValue="top" onChange={handleRadioChange}>
+                <FormControlLabel
+                  value="None"
+                  control={<Radio color="primary" />}
+                  label="None"
+                  labelPlacement="top"
+                />
+                <FormControlLabel
+                  value="Books"
+                  control={<Radio color="primary" />}
+                  label="Books"
+                  labelPlacement="top"
+                />
+                <FormControlLabel
+                  value="Movies"
+                  control={<Radio color="primary" />}
+                  label="Movies"
+                  labelPlacement="top"
+                />
+                <FormControlLabel
+                  value="Cards"
+                  control={<Radio color="primary" />}
+                  label="Trading Cards"
+                  labelPlacement="top"
+                />
+                <FormControlLabel
+                  value="Art"
+                  control={<Radio color="primary" />}
+                  label="Art"
+                  labelPlacement="top"
+                />
+              </RadioGroup>       
+
+              <br/>
+              <hr align="left" width="60%"/> 
+              <br/>
+
               <FormControl variant="outlined" className={classes.formControl}>
                   <InputLabel>Choose</InputLabel>
                   <Select
