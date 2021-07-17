@@ -69,9 +69,9 @@ function RoomCard({room}){
           <Card >                            
             <CardContent>
             <div>
-              <p>Room: {room.name}</p>
-              <p>Private: {room.private.toString()}</p>
-              <p>Collections: {room.collections}</p>
+              <p>{room.name} Room</p>
+              <p>{room.private ? "Private - No one can view this room" : "Public - Anyone can view this room"}</p>
+              <p>{room.collections.length} Collections Found</p>
             </div>
               </CardContent>
               <CardActions>

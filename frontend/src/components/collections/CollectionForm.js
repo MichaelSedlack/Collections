@@ -10,14 +10,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function CollectionForm({data}){
   return (
     <div>
-      {/* {data.collections.map(collection => {
+      {data.map(collection => {
         return(
           <div key={collection.id}>
             <CollectionCard collection={collection}/>
           </div>
         )
-      })} */}
-      {alert(`Collections: ${data}`)}
+      })}
     </div>
   )
 }
