@@ -3,7 +3,7 @@ import axios from 'axios';
 import RoomForm from './RoomForm.js';
 import {ApiContext} from './ApiContext';
 import { UserContext } from './UserContext';
-import {deleteRoom} from './helpers/api';
+import { deleteRoom, updateRoom } from './helpers/api';
 
 function DisplayRooms(){
     var bp = require('./Path.js');
@@ -61,6 +61,8 @@ function DisplayRooms(){
     const doDelete = (roomID) => {
       const res = deleteRoom(roomID, user.accessToken);
       
+      console.log(res);
+      
       if(res.error){
         return res;
       }
@@ -72,6 +74,25 @@ function DisplayRooms(){
 
       return true;
     }
+
+    const doUpdate = ( roomID, newRoom ) => {
+      const res = updateRoom(roomID, newRoom, user.accessToken);
+
+      console.log("API RESPONSE TO UPDATE: " + res);
+      if(res.error){
+        return res.data;
+      }
+
+      setTimeout(function(){
+        setData(data.map(room => {
+          if(roomID === room.id){
+            return {...room, ...newRoom}
+          }
+
+          return room;
+        }))
+      }, 500);
+    }
     
     if(isLoading){
         return(<div><h4>Loading Rooms!</h4></div>);
@@ -82,7 +103,7 @@ function DisplayRooms(){
     else{
         return(
             <div>
-              <ApiContext.Provider value={{doDelete}}>
+              <ApiContext.Provider value={{doDelete, doUpdate}}>
                 <RoomForm data={data}/>
               </ApiContext.Provider>
             </div>
