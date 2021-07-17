@@ -4,6 +4,7 @@ import Museum from '../components/Museum';
 
 const MuseumPage = () =>
 {
+
     return(
         <div>
             <Museum />

@@ -1,13 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { UserContext } from './UserContext';
+import { useHistory } from 'react-router-dom';
 
 function Login()
 {
+
+    const context = useContext(UserContext);
+    const history = useHistory();
 
     var bp = require('./Path.js');
     var storage = require('../tokenStorage.js');
@@ -15,17 +20,22 @@ function Login()
     const loginName = useRef(null);
     const loginPassword = useRef(null);
 
+    // Initial States
     const [message,setMessage] = useState('');
     const [messageColor, setMessageColor] = useState('');
     const [visibility, setVisibility] = useState(<VisibilityOffIcon/>);
     const [type, setType] = useState("password");
 
 
-    const doLogin = async event => 
+    const doLogin = event => 
     {
         event.preventDefault();
 
-        var obj = {email:loginName.current.value,password:loginPassword.current.value};
+        var obj = {
+          email: loginName.current.value,
+          password: loginPassword.current.value
+        };
+
         var js = JSON.stringify(obj);
 
         var config = 
@@ -60,14 +70,17 @@ function Login()
                 var email = res.email;
                 var accessToken = res.accessToken;
 
+                console.log(ud);
+
                 var user = {firstName:firstName,lastName:lastName,id:userId,email:email,accessToken:accessToken}
                 localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
                 setMessageColor('green');
+                context.setUser(user);
                 setTimeout(
                     function(){
-                            window.location.href = `/museum/${userId}`;
+                            history.push('/museum/');
                     },2000)
             }
         })
@@ -77,6 +90,7 @@ function Login()
         });
     }
 
+    // Reveals or hides password
     function changeVisibility(){
         if(type === "text"){
           setVisibility(<VisibilityOffIcon/>)
@@ -90,7 +104,7 @@ function Login()
 
     return(
         <div id="loginDiv">
-            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+            <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center">
                 <h4 id="inner-title">Please Sign In</h4><br />
                 <TextField  style={{marginBottom: "2em"}} variant="outlined" required label="Email" type="text" id="loginName" inputRef={loginName}  />
                 <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} style={{marginBottom: "2em"}} variant="outlined" required label="Password" type={type} id="loginPassword" inputRef={loginPassword} />
@@ -98,10 +112,10 @@ function Login()
                 <span style={{color:messageColor}}>{message}</span><br />
                 <span>Don't have an account?</span>
                 <Button variant="contained" size="large" color="secondary" type="submit" id="registerButton" className="buttons" value="Register" onClick={()=>{window.location.href = '/register'}}>Register</Button><br />
-                <Button size="large" onClick={()=>{window.location.href = '/forgotpassword'}}>Forgot Password?</Button>
+                <Button size="large" onClick={()=>{history.push('/forgotpassword')}}>Forgot Password?</Button>
           </Grid>
      </div>
     );
-};
+}
 
 export default Login;
