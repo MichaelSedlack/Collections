@@ -14,6 +14,7 @@ function ForgotPassword()
     const newEmail = useRef(null);
 
 
+    // Initial States
     const [message,setMessage] = useState('');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -62,7 +63,7 @@ function ForgotPassword()
     };
 
 
-    // validates email
+    // validates email; only checks syntax
     const validateEmail = (e) => {
         var email = e.target.value
       
@@ -78,7 +79,7 @@ function ForgotPassword()
       };
       
 
-
+    // Disables the Send Email button if not valid email
     if(checkEmailError){
       return (
         <div id="forgotPasswordDiv">

@@ -1,69 +1,65 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import { useParams } from 'react-router-dom';
 
 function SearchRooms(){
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
     var token = ud.accessToken;
 
+    const searchName = useRef(null);
+
     const [message,setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
-    const { userId } = useParams(); // grabs the id from the url
     
-    useEffect(() => {
-        (async() => {
-            var id = {id:userId};
-            var config = 
+    const searchRoom = async event =>
+    {
+        event.preventDefault();
+
+        setIsLoading(true);
+
+        var obj = {search:searchName.current.value};
+        var js = JSON.stringify(obj);
+
+        var config = 
+        {
+            method: 'get',
+            url: bp.buildPath('rooms/search'),	
+            headers: 
             {
-                method: 'get',
-                url: bp.buildPath('users/:id/rooms'),
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                    'Authorization': `bearer ${token}`
-                },
-                params: id
-            };
-            axios(config)
-                .then(function(response)
+                'Content-Type': 'application/json',
+                'Authorization': `bearer ${token}`
+            },
+            data: js
+        };
+        
+        axios(config)
+            .then(function (response) 
+        {
+            var res = response.data;
+            if (res.error) 
             {
-                var res = response.data;
-                if(res.error)
-                {
-                    setError(true);
-                    setMessage("There was an error");
-                    setIsLoading(false);
-                }
-                else{
-                    setError(false);
-                    setIsLoading(false);
-                    storage.storeToken(res);
-                    var jwt = require('jsonwebtoken');
-                    var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                    var name = res.name;
-                    alert(name)
-                }
-            })
-            .catch(function(error)
+              setMessage('There was an error');
+              setError(true);
+            }
+            else 
             {
-                setError(true);
+                console.log("Response from API:",res)
                 setIsLoading(false);
-                console.log(error.message);
-            });
+            }
+        })
+        .catch(function (err) 
+        {
+            console.log(err.message);
+        });
+    }
 
-        })()
-    },[])
 
-
-   
+   // If useEffect hasn't finished
     if(isLoading){
         return(
             <div>
@@ -71,20 +67,26 @@ function SearchRooms(){
             </div>
         );
     }
+    // If API returns an error
     else if(error){
         return(
+          <div>
             <h4>There was an error! Please Try Again!</h4>
+            <p>{message}</p>
+          </div>
         );
     }
     else{
         return(
             <div>
-                <h4>Search Results!</h4>
+                <TextField id="outlined-basic" label="Search Rooms" variant="outlined" inputRef={searchName} />
+                <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={searchRoom}>Search Rooms</Button>
+
             </div>
         );
     }
 
     
-};
+}
 
 export default SearchRooms;

@@ -23,3 +23,11 @@ exports.retrieveToken = function ()
     }
     return ud;
 }
+
+exports.clearTokens = function () {
+  try{
+    localStorage.clear();
+  }catch(e){
+    console.log(e.message);
+  }
+}

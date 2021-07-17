@@ -122,7 +122,7 @@ usersRouter.post('/forgotPassword', async (req, res) => {
 
   // Email not accepted case.
   if(!info.accepted.includes(user.email)){
-    return res.status(500).json({error: "Email was not sent."});
+    return res.status(503).json({error: "Email was not sent."});
   }
 
   // Email sent fine.

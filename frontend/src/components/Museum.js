@@ -1,97 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import CreateRoomForm from './CreateRoomForm';
-import SearchRooms from './SearchRooms';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import bodyParser from 'body-parser';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-
-
+import { useHistory } from 'react-router-dom';
+import DisplayRooms from './DisplayRooms';
+import SearchRooms from './SearchRooms';
+import { UserContext } from './UserContext';
 
 
 function Museum() {
 
-    var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
+  const {user, setUser} = useContext(UserContext)
+  const history = useHistory();
 
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
+  var bp = require('./Path.js');
+  var storage = require('../tokenStorage.js');
 
-    const [createRoomForm,setCreateRoomForm] = useState();
-    const [cancelButton, setCancelButton] = useState(false);
-    const [display, setDisplay] = useState();
-    const [message,setMessage] = useState('');
-    const { userId } = useParams(); // grabs the id from the url
-    const [error, setError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+  // Initial States
+  const [message,setMessage] = useState('');
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // only fires at beginning
+  useEffect(() => {
+      (async() => {
+          var id = {id: user.id};
+          var config = 
+          {
+              method: 'get',
+              url: bp.buildPath(`users/`),
+              headers:
+              {
+                  'Content-Type': 'application/json',
+                  'Authorization': `bearer ${user.accessToken}`
+              },
+              params: id
+          };
+          axios(config)
+              .then(function(response)
+          {
+              var res = response.data;
+              if(res.error)
+              {
+                  setError(true);
+                  setMessage("There was an error");
+                  setIsLoading(false);
+              }
+              else{
+                  setIsLoading(false);
+                  setError(false);
+              }
+          })
+          .catch(function(err)
+          {
+              setIsLoading(false);
+              setError(true);
+              console.log(err.message);
+          });
 
-    useEffect(() => {
-        (async() => {
-            var id = {id:userId};
-            var config = 
-            {
-                method: 'get',
-                url: bp.buildPath(`users/`),
-                headers:
-                {
-                    'Content-Type': 'application/json',
-                    'Authorization': `bearer ${token}`
-                },
-                params: id
-            };
-            axios(config)
-                .then(function(response)
-            {
-                var res = response.data;
-                if(res.error)
-                {
-                    setError(true);
-                    setMessage("There was an error");
-                    setIsLoading(false);
-                }
-                else{
-                    setIsLoading(false);
-                    setError(false);
-                    storage.storeToken(res);
-                    // var jwt = require('jsonwebtoken');
-                    // var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                    // var firstName = ud.payload.firstName;
-                }
-            })
-            .catch(function(error)
-            {
-                setIsLoading(false);
-                setError(true);
-                console.log(error.message);
-            });
+      })()
+  },[user, bp])
+    
+    const handleLogout = () => {
+      storage.clearTokens();
+      setUser(null);
+      history.push('/');
+    }
 
-        })()
-    },[])
-
-
-
-
-    const createNewRoomForm = () => {
-        setCancelButton(true)  
-        setCreateRoomForm(<CreateRoomForm />)
-        
-    };
-
-    function cancelClicked() {
-        setCancelButton(false)
-        // {window.location.href = '/museum'}
-    };
-
-
-    const search = () => {
-        setDisplay(<SearchRooms/>)
-    };
-
-
+    // If UseEffect hasn't finished then show loading message
     if(isLoading){
         return(
             <h4>Loading Webpage</h4>
@@ -99,67 +76,44 @@ function Museum() {
     }
     else if(error){
         return(
-            <h4>There was an Error! Please try again!</h4>
+            <h4>{message}</h4>
         );
-    }
-    else if(cancelButton){
-        return(
-            <div id="museumDiv">
-                <Grid container spacing={3}>
-                    <Grid item xs={12}/>
-                    <Grid item xs={7} >
-                        <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
-                    </Grid>
-                    <Grid item xs={5}>
-                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
-                    </Grid>
-                    <Grid item xs={12}/>
-                    <Grid item xs={7}>
-                        <span id="displayRoom">{display}</span>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                        <h1>Rooms Here</h1>
-                    </Grid>
-                    <Grid item xs={5} sm={5}>
-                        <span id="createNewRoomFormResult" >{createRoomForm}</span><br />
-                        {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
-                    </Grid>
-                </Grid>
-            </div>
-        )
-    }
-    else{
+    }else{
         return(
             <div>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} />
-                    <Grid item xs={7} >
-                        <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{search()}}>Search Rooms</Button>
-                    </Grid>
-                    <Grid item xs={5}>
-                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{window.location.href = '/'}}>Sign Out</Button> <br />
-                    </Grid>
+                    {/* Set up in to rows of length 12 */}
                     <Grid item xs={12}/>
-                    <Grid item xs={7}>
-                    <span id="displayRoom">{display}</span>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
-                    <h1>Rooms Here</h1>
+
+                    {/* Begin Row (This row is split into 2+5+5=12)*/}
+                    <Grid item xs={2}/>
+                    <Grid item xs={5}>    
+                        <SearchRooms/>                    
+                        {/* <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
+                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button> */}
                     </Grid>
                     <Grid item xs={5}>
-                        <Button variant="contained" size="large" color="primary" type="submit" id="createRoomFormButton" className="buttons" value="Create New Room" onClick={() => createNewRoomForm()}>Create New Room</Button><br />
+                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
                     </Grid>
-                </Grid>  
+                    {/* End Row */}
+
+                    {/* single row of nothing. Im using this to space things out */}
+                    <Grid item xs={12}/>
+
+                    {/* Begin Row */}
+                    <Grid item xs={1}/>
+                    <Grid item xs={4}>
+                       <span id="displayRoom"><h1>{user.firstName}'s Rooms</h1></span>  
+                        <DisplayRooms/>
+                    </Grid>
+                    <Grid item xs={2}/>
+                    <Grid item xs={5}>
+                        <CreateRoomForm/>
+                    </Grid>
+                    {/* End Row */}
+
+                    <Grid item xs={12}/>
+                </Grid>
             </div>
         )
     }

@@ -28,8 +28,9 @@ function ResetPassword ()
     const { id } = useParams(); // grabs the id from the url
     const [visibility, setVisibility] = useState(<VisibilityOffIcon/>);
     const [type, setType] = useState("password");
+    const [email, setEmail] = useState();
 
-    // once the page loads this fires
+    // only fires once at the beginning
     useEffect(() => {
         (async () => {
 
@@ -58,6 +59,7 @@ function ResetPassword ()
                 }
                 else
                 {
+                    setEmail(res.email);
                     setMessage('Reset Link is verified');
                     setMessageColor('green');
                     setError(false);
@@ -72,15 +74,11 @@ function ResetPassword ()
             });
         })()
         
-    },[])
+    },[bp,id])
 
     
     const updatePassword = async event => {
         event.preventDefault();
-
-        var _ud = localStorage.getItem('user_data');
-        var ud = JSON.parse(_ud);
-        var email = ud.email;
 
         var obj = {email:email,password:password.current.value};
         var js = JSON.stringify(obj);
@@ -138,6 +136,7 @@ function ResetPassword ()
         }
     }
 
+    // Reveals or hides password
     function changeVisibility(){
         if(type === "text"){
           setVisibility(<VisibilityOffIcon/>)
@@ -149,6 +148,7 @@ function ResetPassword ()
         }
       }
     
+    // If the api responds with an error
     if(error){
         return(
             <div>
@@ -158,6 +158,7 @@ function ResetPassword ()
         );
         
     }
+    // If useEffect hasn't finished
     else if(isLoading){
         return(
             <div>
@@ -165,6 +166,7 @@ function ResetPassword ()
             </div>
         );
     }
+    // If the passwords don't match it disables the update password button
     else if(checkPasswordError){
         return(
             <div>
