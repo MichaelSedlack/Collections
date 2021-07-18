@@ -29,7 +29,6 @@ function CreateCollectionForm()
 
     const classes = useStyles();
     var bp = require('./../Path.js');
-    var storage = require('../../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
@@ -76,7 +75,6 @@ function CreateCollectionForm()
             }
             else 
             {
-                storage.storeToken(res);
 
                 setMessage('New Collection Created');
                 setTimeout(

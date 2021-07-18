@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 import CreateRoomForm from './CreateRoomForm';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import { useHistory } from 'react-router-dom';
 import RoomForm from './RoomForm';
 import SearchRooms from './SearchRooms';
 import { UserContext } from '../UserContext';
@@ -14,18 +14,18 @@ function Museum() {
 
   const {user, setUser} = useContext(UserContext)
   const history = useHistory();
-  var storage = require('../../tokenStorage.js');
+  const { userID } = useParams();
 
   // Initial States
+  const [museumUser, setMuseumUser] = useState(null);
   const [message,setMessage] = useState('');
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
     
     const handleLogout = () => {
-      storage.clearTokens();
       setUser(null);
-      roomService.setToken(null);
+      window.localStorage.clear();
       history.push('/');
     }
 
@@ -35,7 +35,10 @@ function Museum() {
       try{
         setIsLoading(true);
 
-        const res = await roomService.getAll(user.id);
+        const id = (!userID) ? user.id : userID;
+
+        const res = await roomService.getAll(id);
+        const currUser = await roomService.getUser(id);
 
         if(res.error){
           setError(true);
@@ -44,19 +47,37 @@ function Museum() {
         }
 
         setRooms(res);
+        setMuseumUser(currUser);
         setIsLoading(false);
       }catch(exception){
         setError(true);
         console.log(exception);
       }
     })()
-  },[user])
+  },[userID, user])
+
+  const doCreate = async (room) => {
+    try{
+      const res = await roomService.create(room);
+
+      if(res.error){
+        return res;
+      }
+
+      const newRooms = [...rooms, res];
+      setRooms(newRooms);
+    }catch(exception){
+      console.log(exception);
+    }
+  }
 
   const doSearch = async (search) => {
     try{
       const res = await roomService.search(search, user.id);
 
       if(res.error){
+        setError(true);
+        setMessage(res.error);
         return res;
       }
 
@@ -115,7 +136,7 @@ function Museum() {
   else{
     return(
       <div>
-        <ApiContext.Provider value={{doUpdate, doDelete, doSearch}}>
+        <ApiContext.Provider value={{doUpdate, doDelete, doSearch, doCreate}}>
           <Grid container spacing={3}>
             {/* Set up in to rows of length 12 */}
             <Grid item xs={12}/>
@@ -138,9 +159,9 @@ function Museum() {
             {/* Begin Row  DISPLAYS ROOMS*/}
             <Grid item xs={1}/>
             <Grid item xs={4}>
-                <span id="displayRoom"><h1>{user.firstName}'s Rooms</h1></span>  
-                <RoomForm rooms={rooms}/>
+                <span id="displayRoom"><h1>{museumUser.firstName}'s Rooms</h1></span>
                 {error && <div>{message}</div>}
+                <RoomForm rooms={rooms}/>
             </Grid>
             <Grid item xs={2}/>
             <Grid item xs={5}>

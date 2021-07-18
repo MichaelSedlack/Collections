@@ -16,7 +16,6 @@ function Login()
     const history = useHistory();
 
     var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
     
     const loginName = useRef(null);
     const loginPassword = useRef(null);
@@ -61,25 +60,13 @@ function Login()
             }
             else 
             {	
-                storage.storeToken(res);
-                var jwt = require('jsonwebtoken');
-    
-                var ud = jwt.decode(storage.retrieveToken(),{complete:true});
-                var userId = ud.payload.id;
-                var firstName = ud.payload.firstName;
-                var lastName = ud.payload.lastName;
-                var email = res.email;
-                var accessToken = res.accessToken;
-
-                console.log(ud);
-
-                var user = {firstName:firstName,lastName:lastName,id:userId,email:email,accessToken:accessToken}
-                localStorage.setItem('user_data', JSON.stringify(user));
+                var user = {...res}
+                window.localStorage.setItem('user_data', JSON.stringify(user));
                 
                 setMessage("Logging In");
                 setMessageColor('green');
                 context.setUser(user);
-                roomService.setToken(accessToken);
+                roomService.setToken(res.accessToken);
                 setTimeout(
                     function(){
                             history.push('/museum/');

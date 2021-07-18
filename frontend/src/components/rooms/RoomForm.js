@@ -1,11 +1,5 @@
 import React from 'react';
-import Slide from '@material-ui/core/Slide';
 import RoomCard from './RoomCard.js';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
-
 
 function RoomForm({rooms}){
   if(rooms.length === 0){
@@ -15,7 +9,7 @@ function RoomForm({rooms}){
       </div>
     )
   }
-  
+
   return (
     <div>
       {rooms.map(room => {

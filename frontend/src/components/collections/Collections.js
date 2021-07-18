@@ -17,7 +17,6 @@ function Museum() {
   const history = useHistory();
 
   var bp = require('./../Path.js');
-  var storage = require('../../tokenStorage.js');
 
   // Initial States
   const [message,setMessage] = useState('');
@@ -65,7 +64,7 @@ function Museum() {
   },[user, bp])
     
     const handleLogout = () => {
-      storage.clearTokens();
+      window.localStorage.clear();
       setUser(null);
       history.push('/');
     }
