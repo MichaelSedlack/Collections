@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import DisplayCollections from './DisplayCollections';
-// import SearchCollections from './SearchCollections';
+import SearchCollections from './SearchCollections';
 import { UserContext, RoomContext } from './../UserContext';
 
 
@@ -90,9 +90,7 @@ function Museum() {
                     {/* Begin Row (This row is split into 2+5+5=12)*/}
                     <Grid item xs={2}/>
                     <Grid item xs={5}>    
-                        {/* <SearchCollections/>                     */}
-                        {/* <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                        <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button> */}
+                        <SearchCollections/>                    
                     </Grid>
                     <Grid item xs={5}>
                         <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button>
