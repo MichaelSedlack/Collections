@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import { UserContext} from './../UserContext';
 import { RoomContext } from './../UserContext';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 function UpdateCollection({collectionData})
 {
+    const history = useHistory();
     const {room} = useContext(RoomContext);
     const { user } = useContext(UserContext);
     const classes = useStyles();
@@ -59,6 +61,7 @@ function UpdateCollection({collectionData})
         var obj = {
           name: name,
           private:checkOption,
+          id:collectionId
           
         };
         var js = JSON.stringify(obj);
@@ -88,6 +91,12 @@ function UpdateCollection({collectionData})
             else 
             {
                 setMessage('Collection Updated');
+                setTimeout(
+                    function(){
+                        history.push('/museum');
+                        setMessage('');
+                    },1000)
+                
             }
         })
         .catch(function (error) 
