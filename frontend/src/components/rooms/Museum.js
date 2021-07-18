@@ -22,12 +22,6 @@ function Museum() {
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [rooms, setRooms] = useState([]);
-    
-    const handleLogout = () => {
-      setUser(null);
-      window.localStorage.clear();
-      history.push('/');
-    }
 
   // GETS INITIAL DATA
   useEffect(() => {
@@ -126,6 +120,12 @@ function Museum() {
     }catch(exception){
       console.log(exception);
     }
+  }
+
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.clear();
+    history.push('/');
   }
 
   if(isLoading){

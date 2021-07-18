@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useContext }from 'react';
 import '../App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
+import { UserContext } from './UserContext';
 
 
 function PageHeader(){
-    return(
 
+  const { user, setUser } = useContext(UserContext);
+  const history = useHistory();
+
+  const handleLogout = () => {
+    setUser(null);
+    window.localStorage.clear();
+    history.push('');
+  }
+
+    return(
         <div>
             <Router>
                 <Switch>
@@ -29,6 +39,19 @@ function PageHeader(){
                     <Route path='/museum'>
                         <header>
                             <h1>Your Myuseum</h1>
+                            {user &&
+                                    <Button 
+                                      variant="contained" 
+                                      size="large" 
+                                      color="secondary" 
+                                      type="submit" 
+                                      id="loginButton" 
+                                      className="buttons" 
+                                      value="Sign Out" 
+                                      onClick={()=>{handleLogout()}}>
+                                        Sign Out
+                                    </Button>
+                            }
                         </header>
                     </Route>
                     <Route path='/forgotpassword' exact>
@@ -50,10 +73,7 @@ function PageHeader(){
                     </Route>
                 </Switch>
             </Router>
-            
-            
         </div>
-        
     );
 };
 
