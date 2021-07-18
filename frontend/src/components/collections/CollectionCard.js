@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,7 +10,6 @@ import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import IconButton from '@material-ui/core/IconButton';
 import UpdateCollection from './UpdateCollection';
 import DeleteCollection from './DeleteCollection';
-import { useHistory } from 'react-router-dom';
 import { RoomContext } from './../UserContext';
 
 function CollectionCard({collection}){

@@ -1,5 +1,4 @@
 import React, { useRef, useState, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -11,6 +10,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import { RoomContext } from './../UserContext';
+import { ApiContext } from './../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -24,91 +24,67 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateCollectionForm()
 {
-    const keyName = useRef(null);
-    const {room} = useContext(RoomContext);
+  const { doCreate } = useContext(ApiContext);
+  const {room} = useContext(RoomContext);
 
-    const classes = useStyles();
-    var bp = require('./../Path.js');
-    var storage = require('../../tokenStorage.js');
+  const keyName = useRef(null);
 
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
+  const classes = useStyles();
 
-    // Initial States
-    const [message,setMessage] = useState('');
-    const [option,setOption] = useState('Private');
-    const [optionMessage,setOptionMessage] = useState('No one will be able to view your Collection');
-    const [checkOption, setCheckOption] = useState(true);
-    const [open, setOpen] = useState(false);
-    const [collectionName, setCollectionName] = useState("");
-    const [collectionKeys, setCollectionKeys] = useState([]);
-    const [keyMessage, setKeyMessage] = useState("");
-    const [showKeyMessage, setShowKeyMessage] = useState(false);
-    const [template, setTemplate] = useState(false);
-    const [radio, setRadio] = useState("Custom");
+  // Initial States
+  const [message,setMessage] = useState('');
+  const [option,setOption] = useState('Private');
+  const [optionMessage,setOptionMessage] = useState('No one will be able to view your Collection');
+  const [checkOption, setCheckOption] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [collectionName, setCollectionName] = useState("");
+  const [collectionKeys, setCollectionKeys] = useState([]);
+  const [keyMessage, setKeyMessage] = useState("");
+  const [showKeyMessage, setShowKeyMessage] = useState(false);
+  const [template, setTemplate] = useState(false);
+  const [radio, setRadio] = useState("Custom");
 
-    const createCollection = async event =>
-    {
-        event.preventDefault();
+  const createCollection = async event =>
+  {
+    event.preventDefault();
 
-        var obj = {name:collectionName,private:checkOption, roomID:room.id, keys:collectionKeys};
-        var js = JSON.stringify(obj);
-
-        var config = 
-      {
-          method: 'post',
-          url: bp.buildPath('collections/create'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${token}`
-          },
-          data: js
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-              setMessage('There was an error');
-              setTemplate(false);
-            }
-            else 
-            {
-                storage.storeToken(res);
-                setMessage('New Collection Created');
-                setTimeout(
-                function(){
-                  setTemplate(false);
-                  setMessage('');
-                  setCollectionName("");
-                  setOpen(false);
-                },2000)
-            }
-        })
-        .catch(function (error) 
-        {
-            setMessage(error.message);
-        });
+    var collection = {
+      name:collectionName,
+      private: checkOption,
+      roomID:room.id,
+      keys:collectionKeys
     };
 
-    const displayChoice = (e) => {
-        var choice = e.target.value;
+    const res = doCreate(collection);
 
-        if(choice === "Private"){
-            setOption("Private");
-            setOptionMessage('No one will be able to view your Collection');
-            setCheckOption(true);
-        }
-        else{
-            setOption("Public");
-            setOptionMessage("Everyone will be able to view your Collection");
-            setCheckOption(false);
-        }
+    if(res.error){
+      setMessage(res.error);
+      return;
     }
+
+    setMessage("Successfully created collection!");
+    setTimeout(() => {
+      setMessage("");
+      setOpen(false);
+      setCollectionName("");
+      setOpen(false);
+    }, 500);
+  };
+
+  const displayChoice = (e) => {
+    var choice = e.target.value;
+
+    if(choice === "Private"){
+      setOption("Private");
+      setOptionMessage('No one will be able to view your Collection');
+      setCheckOption(true);
+    }
+    else{
+      setOption("Public");
+      setOptionMessage("Everyone will be able to view your Collection");
+      setCheckOption(false);
+    }
+  }
 
     const handleNameChange = (e) => {
       setCollectionName(e.target.value);

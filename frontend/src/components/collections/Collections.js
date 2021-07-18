@@ -1,18 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
-import CreateCollectionForm from './CreateCollectionForm';
+import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import CreateCollectionForm from './CreateCollectionForm';
 import CollectionForm from './CollectionForm';
 import SearchCollections from './SearchCollections';
+import collectionService from '../helpers/collectionService';
 import { UserContext, RoomContext } from './../UserContext';
 import { ApiContext } from '../ApiContext';
-import collectionService from '../helpers/collectionService';
-
 
 function Collections() {
-
   const {user, setUser} = useContext(UserContext)
   const {room} = useContext(RoomContext);
 
@@ -55,7 +52,20 @@ function Collections() {
     })()
   },[user])
     
+  const doCreate = async (collection) => {
+    try{
+      const res = await collectionService.create(collection);
 
+      if(res.error){
+        return res;
+      }
+
+      const newCollections = [...collections, res];
+      setCollections(newCollections);
+    }catch(exception){
+      console.log(exception);
+    }
+  }
 
   const doSearch = async (search) => {
     try{
@@ -122,7 +132,7 @@ function Collections() {
     }else{
         return(
             <div>
-                <ApiContext.Provider value={{doUpdate, doDelete, doSearch}}>
+                <ApiContext.Provider value={{doUpdate, doDelete, doSearch, doCreate}}>
                     <Grid container spacing={3}>
                         {/* Set up in to rows of length 12 */}
                         <Grid item xs={12}/>

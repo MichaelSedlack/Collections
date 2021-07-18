@@ -24,7 +24,9 @@ const deleteRoom = async (roomID) => {
 
 const create = async (room) => {
   const config = {
-    Authorization: token
+    headers: {
+      Authorization: token
+    }
   }
 
   const response = await axios.post(bp.buildPath('rooms/create'), room, config);
@@ -63,4 +65,12 @@ const getAll = async (id) => {
   return response.data;
 }
 
-export default { getAll, create, search, update, deleteRoom, setToken };
+const getUser = async (id) => {
+  const config = formatConfig(id);
+
+  const response = await axios.get(bp.buildPath('users/'), config);
+
+  return response.data;
+}
+
+export default { getAll, getUser, create, search, update, deleteRoom, setToken };

@@ -1,13 +1,11 @@
 import React, { useState, forwardRef, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import { UserContext,RoomContext } from './../UserContext';
-import { useHistory } from 'react-router-dom';
+import { RoomContext } from './../UserContext';
 import { ApiContext } from './../ApiContext';
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -15,10 +13,9 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 function DeleteCollection({collectionData, closeDelete}) {
-    const history = useHistory();
-    var bp = require('./../Path.js');
-    const {user} = useContext(UserContext)
     const {room} = useContext(RoomContext)
+    const {doDelete} = useContext(ApiContext);
+
     // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = useState(true);
@@ -27,8 +24,6 @@ function DeleteCollection({collectionData, closeDelete}) {
         setOpen(false);
         closeDelete();
     };
-
-    const {doDelete} = useContext(ApiContext);
 
     const handleDelete = (collectionId) => {
         const res = doDelete(collectionId);
@@ -47,7 +42,6 @@ function DeleteCollection({collectionData, closeDelete}) {
         handleClose();
       },1000)
     }
-
 
     return(
         <div>

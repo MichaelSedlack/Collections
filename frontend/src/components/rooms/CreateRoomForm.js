@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { RoomContext } from './../UserContext';
+import { ApiContext } from './../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -19,17 +18,10 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function CreateRoomForm()
-{
-    const {setRoom} = useContext(RoomContext);
+function CreateRoomForm(){
+    const { doCreate } = useContext(ApiContext);
 
     const classes = useStyles();
-    var bp = require('./../Path.js');
-    var storage = require('./../../tokenStorage.js');
-
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
 
     // Initial States
     const [message,setMessage] = useState('');
@@ -44,48 +36,25 @@ function CreateRoomForm()
     {
         event.preventDefault();
 
-        
-        var obj = {name:roomName,private:checkOption};
-        var js = JSON.stringify(obj);
+        var room = {
+          name: roomName,
+          private: checkOption
+        };
 
-        var config = 
-      {
-          method: 'post',
-          url: bp.buildPath('rooms/create'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${token}`
-          },
-          data: js
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-              setMessage('There was an error');
-            }
-            else 
-            {
+        const res = doCreate(room);
 
-                console.log(res);
-                var obj = {name:res.name,private:res.private,uid:res.uid,id:res.id,collections:res.collections}
-                setRoom(obj);
-                setMessage('New Room Created');
-                setTimeout(
-                function(){
-                        setRoomName("");
-                        setOpen(false);
-                },2000)
-            }
-        })
-        .catch(function (error) 
-        {
-            console.log(error.message);
-        });
+        if(res.error){
+          setMessage(res.error);
+          return;
+        }
+
+        setMessage("Successfully created room!");
+        setTimeout(() => {
+          setMessage("");
+          setOpen(false);
+          setRoomName("");
+          setOpen(false);
+        }, 500);
     };
 
     const displayChoice = (e) => {

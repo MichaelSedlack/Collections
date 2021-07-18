@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 import { ApiContext } from '../ApiContext';
 
@@ -15,7 +14,6 @@ function SearchCollections(){
   return(
       <div>
           <TextField id="outlined-basic" label="Search Collections" variant="outlined" value={search} onChange={(e) => searchCollection(e)} />
-          {/*Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={searchRoom}>Search Rooms</Button>*/}
       </div>
   );
 }

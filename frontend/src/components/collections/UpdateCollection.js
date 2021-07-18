@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,9 +6,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { UserContext} from './../UserContext';
-import { RoomContext } from './../UserContext';
-import { useHistory } from 'react-router-dom';
 import { ApiContext } from '../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -24,12 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 function UpdateCollection({collectionData, handleClose})
 {
-    const history = useHistory();
-    const {room} = useContext(RoomContext);
-    const { user } = useContext(UserContext);
     const classes = useStyles();
-
-    var bp = require('./../Path.js');
 
     const {doUpdate} = useContext(ApiContext);
     // Initial states

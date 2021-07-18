@@ -24,7 +24,10 @@ const deleteCollection = async (collectionID) => {
 
 const create = async (collection) => {
   const config = {
-    Authorization: token
+    headers: {
+      Authorization: token
+    }
+    
   }
 
   const response = await axios.post(bp.buildPath('collections/create'), collection, config);
