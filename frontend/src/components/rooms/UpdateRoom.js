@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,8 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
-import { UserContext} from './../UserContext';
+import { ApiContext } from '../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -20,85 +18,55 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function UpdateRoom({roomData})
+function UpdateRoom({roomData, handleClose})
 {
-  const { user } = useContext(UserContext);
-    const { userId } = useParams(); // grabs the id from the url
-    const classes = useStyles();
-
-    var bp = require('./../Path.js');
+  const { doUpdate } = useContext(ApiContext);
+  const classes = useStyles();
 
     
-    // Initial states
-    const [message,setMessage] = useState('');
-    const [option,setOption] = useState('Private');
-    const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
-    const [checkOption, setCheckOption] = useState(true);
-    const [name,setName] = useState(roomData.roomName);
-    const [roomId] = useState(roomData.roomId);
+  // Initial states
+  const [message,setMessage] = useState('');
+  const [option,setOption] = useState('Private');
+  const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
+  const [checkOption, setCheckOption] = useState(true);
+  const [name,setName] = useState(roomData.roomName);
+  const [roomId] = useState(roomData.roomId);
     
-    // Displays to the user what the private/public options mean
-    const displayChoice = (e) => {
-        var choice = e.target.value;
+  // Displays to the user what the private/public options mean
+  const displayChoice = (e) => {
+    var choice = e.target.value;
 
-        if(choice === "Private"){
-            setOption("Private");
-            setOptionMessage('No one will be able to view your Room');
-            setCheckOption(true);
-        }
-        else{
-            setOption("Public");
-            setOptionMessage("Everyone will be able to view your Room");
-            setCheckOption(false);
-        }
+    if(choice === "Private"){
+        setOption("Private");
+        setOptionMessage('No one will be able to view your Room');
+        setCheckOption(true);
     }
+    else{
+        setOption("Public");
+        setOptionMessage("Everyone will be able to view your Room");
+        setCheckOption(false);
+    }
+  }
 
-    const updateRoom = async event =>
+    const updateRoom = event =>
     {
         event.preventDefault();
-        var obj = {
+        const newRoom = {
           name: name,
           private:checkOption,
-          id: roomId
         };
-        var js = JSON.stringify(obj);
 
-        var config = 
-      {
-          method: 'put',
-          url: bp.buildPath('rooms/single'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${user.accessToken}`
-          },
-          params: {id: roomId},
-          data: js
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-                console.log(res.message);
-                setMessage('There was an error');
-            }
-            else 
-            {
-                setMessage('Room Updated');
-                setTimeout(
-                function(){
-                        window.location.href = `/museum/${userId}`;
-                },2000)
-            }
-        })
-        .catch(function (error) 
-        {
-            setMessage(error.message);
-            console.log(error.message);
-        });
+        const res = doUpdate(roomId, newRoom);
+
+        if(res.error){
+          setMessage(res.error);
+        }else{
+          setMessage("Successfully updated room!");
+          setTimeout(function(){
+            setMessage("");
+            handleClose();
+          },1000)
+        }
     };
 
     return(

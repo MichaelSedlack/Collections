@@ -38,6 +38,7 @@ function DeleteRoom({roomData, closeDelete}) {
 
       setMessage("Successfully deleted the room!");
       setTimeout(function(){
+        setMessage("");
         handleClose();
       },1000)
     }

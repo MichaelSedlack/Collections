@@ -1,5 +1,6 @@
 // IMPORTS/DECLARATIONS
 const roomsRouter = require('express').Router();
+const url = require('url');
 const Room = require('../models/room');
 const token = require('../utils/token');
 
@@ -31,6 +32,35 @@ roomsRouter.post('/create', async (req, res) => {
   const savedRoom = await newRoom.save(); // Save room
 
   return res.send(savedRoom);
+})
+
+// Search a Users Rooms
+roomsRouter.get('/search', async (req, res) => {
+  const search = req.query.search;
+  const uid = req.query.uid;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  if(verifiedToken.id != uid){
+    const rooms = await Room.find({
+      name: { $regex: search, $options: 'i' },
+      private: false,
+      uid: uid
+    })
+
+    return res.send(rooms);
+  }else{
+    const rooms = await Room.find({
+      name: { $regex: search, $options: 'i' },
+      uid: uid
+    })
+
+    return res.send(rooms);
+  }
 })
 
 // Update single room.

@@ -55,7 +55,7 @@ function RoomCard({room}){
           {/* Displays the content as editable */}
           <Card >                            
             <CardContent>
-                <UpdateRoom roomData={{roomId: room.id, roomName: room.name}}/>
+                <UpdateRoom roomData={{roomId: room.id, roomName: room.name}} handleClose={cancelClicked}/>
                 {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
               </CardContent>
           </Card>
