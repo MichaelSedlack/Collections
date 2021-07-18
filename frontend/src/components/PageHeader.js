@@ -26,7 +26,7 @@ function PageHeader(){
                             <h1>Create New Account</h1>
                         </header>
                     </Route>
-                    <Route path='/museum'>
+                    <Route path='/museum' exact>
                         <header>
                             <h1>Your Myuseum</h1>
                         </header>
@@ -36,16 +36,19 @@ function PageHeader(){
                             <h1>Forgot Password</h1>
                         </header>
                     </Route>
-                    <Route path='/reset'>
+                    <Route path='/reset' exact>
                         <header>
                             <h1>Reset Password</h1>
                         </header>
                     </Route>
-                    <Route path='/collections'>
+                    <Route path='/collections' exact>
                         <header>
-                            <h1>
-                                Collections
-                            </h1>
+                            <h1>Collections</h1>
+                        </header>
+                    </Route>
+                    <Route path='/items' exact>
+                        <header>
+                            <h1>Items</h1>
                         </header>
                     </Route>
                 </Switch>

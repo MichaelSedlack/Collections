@@ -9,6 +9,7 @@ import { UserContext } from './UserContext';
 import { useHistory } from 'react-router-dom';
 import roomService from './helpers/roomService';
 import collectionService from './helpers/collectionService';
+import itemService from './helpers/itemService';
 
 function Login()
 {
@@ -82,6 +83,7 @@ function Login()
                 context.setUser(user);
                 roomService.setToken(accessToken);
                 collectionService.setToken(accessToken);
+                itemService.setToken(accessToken);
                 setTimeout(
                     function(){
                             history.push('/museum/');

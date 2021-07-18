@@ -53,7 +53,7 @@ itemsRouter.post('/create', async (req, res) => {
   // Create item object
   const newItem = new Item({
     description: body.description,
-    item: body.item,
+    // item: body.item,
     collectionID: body.collectionID,
     roomID: body.roomID,
     name: body.name,
@@ -63,6 +63,33 @@ itemsRouter.post('/create', async (req, res) => {
   const savedItem = await newItem.save(); // Save item
 
   return res.send(savedItem);
+})
+
+itemsRouter.get('/search', async (req, res) => {
+  const search = req.query.search;
+  const uid = req.query.uid;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  if(verifiedToken.id != uid){
+    const items = await Item.find({
+      name: { $regex: search, $options: 'i' },
+      uid: uid
+    })
+
+    return res.send(items);
+  }else{
+    const items = await Item.find({
+      name: { $regex: search, $options: 'i' },
+      uid: uid
+    })
+
+    return res.send(items);
+  }
 })
 
 // GET Item

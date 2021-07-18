@@ -145,8 +145,6 @@ function Museum() {
             <Grid item xs={2}/>
             <Grid item xs={5}>    
                 <SearchRooms/>                    
-                {/* <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
-                <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button> */}
             </Grid>
             <Grid item xs={5}>
                 <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />

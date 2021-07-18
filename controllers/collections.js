@@ -139,14 +139,21 @@ collectionsRouter.get('/single', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  const collection = await Collection.findById(collectionID);
+  var collection = await Collection.findById(collectionID);
 
-  // If collection private and not owner don't return room
-  if((collection.uid != verifiedToken.id) && collection.private){
-    return res.status(401).json({error: "Collection is private."})
+  if(!collection){ // Room already doesn't exist.
+    return res.status(404).json({error: "collection does not exist."});
+  }else if((collection.uid != verifiedToken.id) && collection.private){ // If room private and not owner don't return room
+    return res.status(403).json({error: "Room is private."})
+  }
+
+  if(collection.uid != verifiedToken.id){
+    return res.json(await Collection.findById(collectionID).populate('items', null, { private: false }));
   }
 
   return res.json(await Collection.findById(collectionID).populate('items'));
+
+
 })
 
 // EXPORTS
