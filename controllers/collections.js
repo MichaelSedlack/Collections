@@ -103,6 +103,7 @@ collectionsRouter.delete('/single', async (req, res) => {
 
 collectionsRouter.get('/search', async (req, res) => {
   const search = req.query.search;
+  const uid = req.query.uid;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -110,7 +111,22 @@ collectionsRouter.get('/search', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  // TODO: Search Logic
+  if(verifiedToken.id != uid){
+    const collections = await Collection.find({
+      name: { $regex: search, $options: 'i' },
+      private: false,
+      uid: uid
+    })
+
+    return res.send(collections);
+  }else{
+    const collections = await Collection.find({
+      name: { $regex: search, $options: 'i' },
+      uid: uid
+    })
+
+    return res.send(collections);
+  }
 })
 
 // GET Collection by ID
