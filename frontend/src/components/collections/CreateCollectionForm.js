@@ -46,6 +46,7 @@ function CreateCollectionForm()
     const [keyMessage, setKeyMessage] = useState("");
     const [showKeyMessage, setShowKeyMessage] = useState(false);
     const [template, setTemplate] = useState(false);
+    const [radio, setRadio] = useState("");
 
     const createCollection = async event =>
     {
@@ -128,22 +129,30 @@ function CreateCollectionForm()
       setTemplate(true);
       switch(event.target.value){
         case "Books":
+          setRadio("Books");
           setCollectionKeys(["Author", "Genre", "Year", "Edition"]);
           break;
         case "Movies":
+          setRadio("Movies");
           setCollectionKeys(["Author", "Genre", "Year", "Platform"]);
           break;  
         case "Trading Cards":
+          setRadio("Trading Cards");
           setCollectionKeys(["Set", "Condition", "Year", "Rarity"]);
           break;  
         case "Art":
+          setRadio("Art");
           setCollectionKeys(["Artist", "Condition", "Year", "Style"]);
           break;  
-        default:
+        case "Custom":
           setTemplate(false);
           setCollectionKeys([]);
           break;
+        default:
+          console.log("error");
+          break;
       }
+      
     };
 
     if(open){
@@ -152,17 +161,19 @@ function CreateCollectionForm()
               <span id="inner-title">Create New Collection</span><br />
               
               <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
-              <h4>Custom Properties</h4>
-              <TextField disabled={template ? true : false} margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
-              <Button disabled={template ? true : false} variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
-              {showKeyMessage ? <span>{keyMessage}</span> : null}
-              <br/>
-              <h4>OR Choose a Template</h4>
-              <RadioGroup row aria-label="position" name="position" defaultValue="top" onChange={e=>handleRadioChange(e)}>
+              {template ? <h4>Use a Template for a {radio} Collection</h4> : 
+              <div><h4>Use a Custom Collection</h4>
+                  <TextField disabled={template ? true : false} margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
+                  <Button disabled={template ? true : false} variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
+                  {showKeyMessage ? <span>{keyMessage}</span> : null}
+                  <br/><br/>
+              </div>}
+
+              <RadioGroup row aria-label="position" name="position" defaultValue="Custom" onChange={e=>handleRadioChange(e)}>
                 <FormControlLabel
-                  value="None"
+                  value="Custom"
                   control={<Radio color="primary" />}
-                  label="None"
+                  label="Custom"
                   labelPlacement="top"
                 />
                 <FormControlLabel
