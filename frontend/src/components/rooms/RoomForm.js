@@ -7,10 +7,18 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-function RoomForm({data}){
+function RoomForm({rooms}){
+  if(rooms.length === 0){
+    return (
+      <div>
+        <p>No rooms found.</p>
+      </div>
+    )
+  }
+  
   return (
     <div>
-      {data.map(room => {
+      {rooms.map(room => {
         return(
           <div key={room.id}>
             <RoomCard room={room}/>

@@ -41,6 +41,20 @@ const update = async (roomID, room) => {
   return response.data;
 }
 
+const search = async (string, userID) => {
+  const config = {
+    headers: { Authorization: token },
+    params: {
+      uid: userID,
+      search: string
+    }
+  }
+
+  const response = await axios.get(bp.buildPath('rooms/search'), config);
+
+  return response.data;
+}
+
 const getAll = async (id) => {
   const config = formatConfig(id);
 
@@ -49,4 +63,4 @@ const getAll = async (id) => {
   return response.data;
 }
 
-export default { getAll, create, update, deleteRoom, setToken };
+export default { getAll, create, search, update, deleteRoom, setToken };
