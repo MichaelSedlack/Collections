@@ -95,7 +95,7 @@ collectionsRouter.delete('/single', async (req, res) => {
     return res.status(403).json({error: "Cannot delete a collection that is not yours."});
   }
 
-  await Collection.deleteOne({_id: collection.id}); // Delete collection.
+  await collection.deleteOne({_id: collection.id}); // Delete collection.
 
   return res.status(204).json({success: "Successfully deleted collection and all associated Items."});
 })
