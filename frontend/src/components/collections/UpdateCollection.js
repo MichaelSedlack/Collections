@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { UserContext} from './../UserContext';
 import { RoomContext } from './../UserContext';
 import { useHistory } from 'react-router-dom';
+import { ApiContext } from '../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function UpdateCollection({collectionData})
+function UpdateCollection({collectionData, handleClose})
 {
     const history = useHistory();
     const {room} = useContext(RoomContext);
@@ -30,7 +31,7 @@ function UpdateCollection({collectionData})
 
     var bp = require('./../Path.js');
 
-    
+    const {doUpdate} = useContext(ApiContext);
     // Initial states
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
@@ -55,55 +56,25 @@ function UpdateCollection({collectionData})
         }
     }
 
-    const updateCollection = async event =>
+    const updateCollection = event =>
     {
         event.preventDefault();
-        var obj = {
-          name: name,
-          private:checkOption,
-          id:collectionId
-          
+        const newCollection = {
+            name:name,
+            private:checkOption
         };
-        var js = JSON.stringify(obj);
 
-        var config = 
-      {
-          method: 'put',
-          url: bp.buildPath('collections/single'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${user.accessToken}`
-          },
-          params: {id: collectionId},
-          data: js
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-                console.log(res.message);
-                setMessage('There was an error');
-            }
-            else 
-            {
-                setMessage('Collection Updated');
-                setTimeout(
-                    function(){
-                        history.push('/museum');
-                        setMessage('');
-                    },1000)
-                
-            }
-        })
-        .catch(function (error) 
-        {
-            setMessage(error.message);
-            console.log(error.message);
-        });
+        const res = doUpdate(collectionId, newCollection);
+
+        if(res.error){
+            setMessage(res.error);
+          }else{
+            setMessage("Successfully updated collection!");
+            setTimeout(function(){
+              setMessage("");
+              handleClose();
+            },1000)
+          }
     };
 
     return(

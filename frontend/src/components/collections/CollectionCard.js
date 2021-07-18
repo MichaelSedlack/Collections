@@ -56,7 +56,7 @@ function CollectionCard({collection}){
           {/* Displays the content as editable */}
           <Card >                            
             <CardContent>
-                <UpdateCollection collectionData={{collectionId: collection.id, collectionName: collection.name}}/>
+                <UpdateCollection collectionData={{collectionId: collection.id, collectionName: collection.name}} handleClose={cancelClicked}/>
                 {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
               </CardContent>
           </Card>

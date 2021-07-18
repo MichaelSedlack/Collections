@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { UserContext,RoomContext } from './../UserContext';
 import { useHistory } from 'react-router-dom';
+import { ApiContext } from './../ApiContext';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -27,47 +28,25 @@ function DeleteCollection({collectionData, closeDelete}) {
         closeDelete();
     };
 
-    const deleteCollection = async (collectionId) =>
-    {
+    const {doDelete} = useContext(ApiContext);
 
-        var config = 
-      {
-          method: 'delete',
-          url: bp.buildPath('collections/single'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${user.accessToken}`
-          },
-          params: {id: collectionId}
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-              setMessage('There was an error');
-              handleClose();
-            }
-            else 
-            {
-                setMessage('Collection Deleted');
-                setTimeout(
-                function(){
-                    history.push('/museum');
-                    setMessage('');
-                    handleClose();
-                },1000)
-            }
-        })
-        .catch(function (error) 
-        {
-            setMessage(error.message);
+    const handleDelete = (collectionId) => {
+        const res = doDelete(collectionId);
+        if(res.error){
+            setMessage(res.error);
+            setTimeout(function(){
             handleClose();
-        });
-    };
+            setMessage("");
+        },500)
+        return;
+      }
+
+      setMessage("Successfully deleted the collection!");
+      setTimeout(function(){
+        setMessage("");
+        handleClose();
+      },1000)
+    }
 
 
     return(
@@ -76,7 +55,7 @@ function DeleteCollection({collectionData, closeDelete}) {
                 <DialogTitle>{`This will DELETE the "${collectionData.name} Collection" and all items in the collection from the "${room.name} room"`}</DialogTitle>
                 <DialogContent><span>{message}</span></DialogContent>
                 <DialogActions>
-                    <Button onClick={() => deleteCollection(collectionData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                    <Button onClick={() => handleDelete(collectionData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
                     <Button onClick={handleClose} color="primary">CANCEL</Button>
                  </DialogActions>
             </Dialog>
