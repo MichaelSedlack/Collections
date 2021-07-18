@@ -46,7 +46,7 @@ function CreateCollectionForm()
     const [keyMessage, setKeyMessage] = useState("");
     const [showKeyMessage, setShowKeyMessage] = useState(false);
     const [template, setTemplate] = useState(false);
-    const [radio, setRadio] = useState("");
+    const [radio, setRadio] = useState("Custom");
 
     const createCollection = async event =>
     {
@@ -74,16 +74,18 @@ function CreateCollectionForm()
             if (res.error) 
             {
               setMessage('There was an error');
+              setTemplate(false);
             }
             else 
             {
                 storage.storeToken(res);
-
                 setMessage('New Collection Created');
                 setTimeout(
                 function(){
-                        setCollectionName("");
-                        setOpen(false);
+                  setTemplate(false);
+                  setMessage('');
+                  setCollectionName("");
+                  setOpen(false);
                 },2000)
             }
         })
