@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
+import { RoomContext } from './../UserContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -20,9 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateRoomForm()
 {
+    const {setRoom} = useContext(RoomContext);
+
     const classes = useStyles();
-    var bp = require('./Path.js');
-    var storage = require('../tokenStorage.js');
+    var bp = require('./../Path.js');
+    var storage = require('./../../tokenStorage.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);
@@ -67,8 +70,10 @@ function CreateRoomForm()
             }
             else 
             {
-                storage.storeToken(res);
 
+                console.log(res);
+                var obj = {name:res.name,private:res.private,uid:res.uid,id:res.id,collections:res.collections}
+                setRoom(obj);
                 setMessage('New Room Created');
                 setTimeout(
                 function(){
@@ -79,7 +84,7 @@ function CreateRoomForm()
         })
         .catch(function (error) 
         {
-            console.log(error.response.data);
+            console.log(error.message);
         });
     };
 

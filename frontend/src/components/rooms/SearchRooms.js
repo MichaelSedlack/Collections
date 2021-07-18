@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
 
 function SearchRooms(){
-    var bp = require('./Path.js');
+    var bp = require('./../Path.js');
 
     var _ud = localStorage.getItem('user_data');
     var ud = JSON.parse(_ud);

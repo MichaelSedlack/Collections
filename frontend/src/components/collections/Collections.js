@@ -1,21 +1,23 @@
 import React, { useEffect, useState, useContext } from 'react';
-import CreateRoomForm from './CreateRoomForm';
+import CreateCollectionForm from './CreateCollectionForm';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import DisplayRooms from './DisplayRooms';
-import SearchRooms from './SearchRooms';
-import { UserContext } from './UserContext';
+import DisplayCollections from './DisplayCollections';
+// import SearchCollections from './SearchCollections';
+import { UserContext, RoomContext } from './../UserContext';
 
 
 function Museum() {
 
   const {user, setUser} = useContext(UserContext)
+  const {room} = useContext(RoomContext);
+
   const history = useHistory();
 
-  var bp = require('./Path.js');
-  var storage = require('../tokenStorage.js');
+  var bp = require('./../Path.js');
+  var storage = require('../../tokenStorage.js');
 
   // Initial States
   const [message,setMessage] = useState('');
@@ -88,12 +90,13 @@ function Museum() {
                     {/* Begin Row (This row is split into 2+5+5=12)*/}
                     <Grid item xs={2}/>
                     <Grid item xs={5}>    
-                        <SearchRooms/>                    
+                        {/* <SearchCollections/>                     */}
                         {/* <TextField id="outlined-basic" label="Search Rooms" variant="outlined" />
                         <Button variant="contained" size="large" color="primary" type="submit" id="searchButton" className="buttons" value="Search" onClick={()=>{alert("Search button clicked")}}>Search Rooms</Button> */}
                     </Grid>
                     <Grid item xs={5}>
-                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
+                        <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button>
+                        <Button variant="contained" size="large" color="primary" type="submit" id="roomButton" className="buttons" value="Back to Rooms" onClick={()=>{history.push("/museum")}}>Back to Rooms</Button> <br />
                     </Grid>
                     {/* End Row */}
 
@@ -103,12 +106,12 @@ function Museum() {
                     {/* Begin Row */}
                     <Grid item xs={1}/>
                     <Grid item xs={4}>
-                       <span id="displayRoom"><h1>{user.firstName}'s Rooms</h1></span>  
-                        <DisplayRooms/>
+                       <span id="displayCollection"><h1>{room.name} Collections</h1></span>  
+                        <DisplayCollections/>
                     </Grid>
                     <Grid item xs={2}/>
                     <Grid item xs={5}>
-                        <CreateRoomForm/>
+                        <CreateCollectionForm/>
                     </Grid>
                     {/* End Row */}
 

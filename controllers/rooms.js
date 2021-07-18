@@ -34,7 +34,6 @@ roomsRouter.post('/create', async (req, res) => {
 })
 
 // Update single room.
-
 roomsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const isPrivate = req.body.private;

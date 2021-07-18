@@ -41,6 +41,13 @@ function PageHeader(){
                             <h1>Reset Password</h1>
                         </header>
                     </Route>
+                    <Route path='/collections'>
+                        <header>
+                            <h1>
+                                Collections
+                            </h1>
+                        </header>
+                    </Route>
                 </Switch>
             </Router>
             

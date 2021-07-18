@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
-import RoomForm from './RoomForm.js';
-import {ApiContext} from './ApiContext';
-import { UserContext } from './UserContext';
-import { deleteRoom, updateRoom } from './helpers/api';
+import CollectionForm from './CollectionForm.js';
+import {ApiContext} from './../ApiContext';
+import { UserContext, RoomContext } from './../UserContext';
+// import {deleteCollection} from './helpers/api';
 
-function DisplayRooms(){
-    var bp = require('./Path.js');
+function DisplayCollections(){
+    var bp = require('./../Path.js');
 
     const { user } = useContext(UserContext);
+    const { room } = useContext(RoomContext);
 
     // Initial States
     const [message,setMessage] = useState('');
@@ -18,11 +19,11 @@ function DisplayRooms(){
     
     useEffect(() => {
         (async() => {
-            var id = {id:user.id};
+            var id = {id:room.id};
             var config = 
             {
                 method: 'get',
-                url: bp.buildPath('users/rooms'),
+                url: bp.buildPath('rooms/single'),
                 headers:
                 {
                     'Content-Type': 'application/json',
@@ -43,9 +44,8 @@ function DisplayRooms(){
                 else{
                     setError(false);
                     setIsLoading(false);
-                    setData(res)
-                    console.log('Response from API:',res)
-                    console.log('data:',res.data)
+                    setData(res.collections)
+                    console.log('Response from API Collections:',res.collections)
                 }
             })
             .catch(function(err)
@@ -58,44 +58,23 @@ function DisplayRooms(){
         })()
     },[bp, user])
 
-    const doDelete = (roomID) => {
-      const res = deleteRoom(roomID, user.accessToken);
+    // const doDelete = (CollectionID) => {
+    //   const res = deleteCollection(CollectionID, user.accessToken);
       
-      console.log(res);
-      
-      if(res.error){
-        return res;
-      }
+    //   if(res.error){
+    //     return res;
+    //   }
 
-      setTimeout(function(){
-          setData(data.filter(room => room.id !== roomID));
-          return res;
-      },1000)
+    //   setTimeout(function(){
+    //       setData(data.filter(Collection => Collection.id !== CollectionID));
+    //       return res;
+    //   },1000)
 
-      return true;
-    }
-
-    const doUpdate = ( roomID, newRoom ) => {
-      const res = updateRoom(roomID, newRoom, user.accessToken);
-
-      console.log("API RESPONSE TO UPDATE: " + res);
-      if(res.error){
-        return res.data;
-      }
-
-      setTimeout(function(){
-        setData(data.map(room => {
-          if(roomID === room.id){
-            return {...room, ...newRoom}
-          }
-
-          return room;
-        }))
-      }, 500);
-    }
+    //   return true;
+    // }
     
     if(isLoading){
-        return(<div><h4>Loading Rooms!</h4></div>);
+        return(<div><h4>Loading Collections!</h4></div>);
     }
     else if(error){
         return(<h4>{message}</h4>);
@@ -103,12 +82,12 @@ function DisplayRooms(){
     else{
         return(
             <div>
-              <ApiContext.Provider value={{doDelete, doUpdate}}>
-                <RoomForm data={data}/>
-              </ApiContext.Provider>
+              {/* <ApiContext.Provider value={{doDelete}}> */}
+                <CollectionForm data={data}/>
+              {/* </ApiContext.Provider> */}
             </div>
         );
     }
 }
 
-export default DisplayRooms;
+export default DisplayCollections;
