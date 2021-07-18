@@ -7,12 +7,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import { UserContext,RoomContext } from './../UserContext';
+import { useHistory } from 'react-router-dom';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 function DeleteCollection({collectionData, closeDelete}) {
+    const history = useHistory();
     var bp = require('./../Path.js');
     const {user} = useContext(UserContext)
     const {room} = useContext(RoomContext)
@@ -54,8 +56,10 @@ function DeleteCollection({collectionData, closeDelete}) {
                 setMessage('Collection Deleted');
                 setTimeout(
                 function(){
+                    history.push('/museum');
+                    setMessage('');
                     handleClose();
-                },2000)
+                },1000)
             }
         })
         .catch(function (error) 
