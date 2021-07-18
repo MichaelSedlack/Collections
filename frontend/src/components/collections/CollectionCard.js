@@ -69,9 +69,9 @@ function CollectionCard({collection}){
           <Card >                            
             <CardContent>
             <div>
-              <p>Collection: {collection.name}</p>
-              <p>Private: {collection.private.toString()}</p>
-              <p>Items: {collection.items}</p>
+              <p>{collection.name} Collection</p>
+              <p>{collection.private ? "Private - No one can view this collection" : "Public - Anyone can view this collection"}</p>
+              <p>{collection.items.length} Items Stored</p>
             </div>
               </CardContent>
               <CardActions>
