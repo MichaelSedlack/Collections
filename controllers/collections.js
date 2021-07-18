@@ -44,6 +44,7 @@ collectionsRouter.post('/create', async (req, res) => {
 collectionsRouter.put('/single', async (req, res) => {
   const newName = req.body.name;
   const isPrivate = req.body.private;
+  const collectionID = req.query.id;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -73,7 +74,7 @@ collectionsRouter.put('/single', async (req, res) => {
   collection.name = newName;
   collection.private = isPrivate;
 
-  await collection.findByIdAndUpdate(collectionID, collection);
+  await Collection.findByIdAndUpdate(collectionID, collection);
 
   return res.status(200).json({success: "Collection updated."});
 })
