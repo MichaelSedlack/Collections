@@ -143,7 +143,7 @@ function CreateCollectionForm()
               <div><h4>Use a Custom Collection</h4>
                   <TextField disabled={template ? true : false} margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
                   <Button disabled={template ? true : false} variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
-                  {showKeyMessage ? <span>{keyMessage}</span> : null}
+                  {/* {showKeyMessage ? <span>{keyMessage}</span> : null} */}
                   <br/><br/>
               </div>}
 
@@ -178,7 +178,11 @@ function CreateCollectionForm()
                   label="Art"
                   labelPlacement="top"
                 />
-              </RadioGroup>       
+              </RadioGroup>
+              <h4>Properties</h4>
+              {collectionKeys.length ? collectionKeys.map(key=>{
+                return(<div><p>{key}</p></div>)}) : <div><p>No Properties Created</p></div>
+              }
 
               <br/>
               <hr align="left" width="60%"/> 
