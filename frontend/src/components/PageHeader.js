@@ -1,63 +1,53 @@
 import React from 'react';
 import '../App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import { Grid } from '@material-ui/core';
 
+class PageHeader extends React.Component {
 
-function PageHeader(){
-    return(
+  // constructor(props){
+  //   super(props);
+  // }
 
-        <div>
-            <Router>
-                <Switch>
-                    <Route path='/' exact>
-                        <header>
-                            <div>
-                                <Grid container direction="column" alignItems="flex-end">
-                                    <AccountBoxIcon color="secondary" fontSize="large"/>
-                                    <h1>Myuseum</h1>
-                                </Grid>
-                            </div>
-                        </header>
-                    </Route>
-                    <Route path='/register' exact>
-                        <header>
-                            <h1>Create New Account</h1>
-                        </header>
-                    </Route>
-                    <Route path='/museum' exact>
-                        <header>
-                            <h1>Your Myuseum</h1>
-                        </header>
-                    </Route>
-                    <Route path='/forgotpassword' exact>
-                        <header>
-                            <h1>Forgot Password</h1>
-                        </header>
-                    </Route>
-                    <Route path='/reset' exact>
-                        <header>
-                            <h1>Reset Password</h1>
-                        </header>
-                    </Route>
-                    <Route path='/collections' exact>
-                        <header>
-                            <h1>Collections</h1>
-                        </header>
-                    </Route>
-                    <Route path='/items' exact>
-                        <header>
-                            <h1>Items</h1>
-                        </header>
-                    </Route>
-                </Switch>
-            </Router>
-            
-            
-        </div>
-        
-    );
-};
+  render(){
+    var currPath = this.props.location.pathname
+    var pageName = "";
 
-export default PageHeader;
+    console.log(currPath);
+
+    switch(currPath){
+      case "/":
+        pageName = "Login";
+        break;
+      case "/register":
+        pageName = "Register";
+        break;
+      case "/museum/":
+        pageName = "Museum";
+        break;
+      case "/collections":
+        pageName = "Collections";
+        break;
+      case "/items":
+        pageName = "Items";
+        break;
+      case "/forgotpassword":
+        pageName = "Forgot Password";
+        break;
+      case "/reset":
+        pageName = "Reset Password";
+        break;
+      default:
+        break;
+    }
+
+    return (
+      <header>
+        <h1>{pageName}</h1>
+      </header>
+    )
+  }
+}
+
+export default withRouter(PageHeader);

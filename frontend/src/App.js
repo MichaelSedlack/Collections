@@ -21,8 +21,8 @@ function App() {
     <UserContext.Provider value={{user, setUser}}>
       <RoomContext.Provider value={{room, setRoom}}>
         <CollectionContext.Provider value={{collection, setCollection}}>
-          <Layout>
-            <Router>
+          <Router>
+            <Layout>
               <Switch> {/* Switch: Wraps multiple Route components. Only picks the first matching route among all the routes */}
                 <Route path="/register" exact> {/* Only if the path is an exact match will it call the RegisterPage. Example: http://localhost:3000/register */}
                   <RegisterPage />
@@ -47,8 +47,8 @@ function App() {
                 </Route>
                 
               </Switch>
-            </Router>
-          </Layout>
+            </Layout>
+          </Router>
         </CollectionContext.Provider>
       </RoomContext.Provider>
     </UserContext.Provider>
