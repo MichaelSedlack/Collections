@@ -15,7 +15,7 @@ function CreateItemForm()
   const [message,setMessage] = useState('');
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
-  const [itemKeys, setItemKeys] = useState([]);
+  const [itemKeys, setItemKeys] = useState({});
   const [itemDescription, setItemDescription] = useState("");
 
 
@@ -26,9 +26,12 @@ function CreateItemForm()
     var item = {
       name:itemName,
       description: itemDescription,
+      item: itemKeys,
       roomID:room.id,
       collectionID:collection.id
     };
+
+    console.log(item);
 
     const res = doCreate(item);
 
@@ -51,6 +54,13 @@ function CreateItemForm()
       setItemName(e.target.value);
     }
 
+    const handleObjectChange = (e, key) => {
+      let obj = itemKeys;
+      obj[key] = e.target.value;
+
+      setItemKeys(obj);
+    }
+
     const handelDescriptionChange = (e) => {
       setItemDescription(e.target.value);
     }
@@ -64,6 +74,9 @@ function CreateItemForm()
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
               <br/><br/>
+              {collection.keys.map(key => {
+                return <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/>
+              })}
               <Button variant="contained" size="large" color="primary" type="submit" id="CreateItemButton" className="buttons" value = "Set Up New Item" onClick={createItem}>Set Up New Item</Button>
               <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{setOpen(false)}}>Cancel</Button><br />
               <span id="CreateItemResult">{message}</span>

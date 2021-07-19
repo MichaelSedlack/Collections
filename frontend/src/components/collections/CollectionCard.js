@@ -45,7 +45,7 @@ function CollectionCard({collection}){
   }
 
   const enterCollection = (collectionId, collectionName) => {
-    context.setCollection({name:collectionName,id:collectionId});
+    context.setCollection(collection);
     history.push("/items")
   }
 

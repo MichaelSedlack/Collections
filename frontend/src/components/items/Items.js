@@ -167,7 +167,7 @@ function Items() {
 
                         <Grid item xs={12}/>
                     </Grid>
-                    </ApiContext.Provider>
+                </ApiContext.Provider>
             </div>
         )
     }
