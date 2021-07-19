@@ -67,7 +67,7 @@ itemsRouter.post('/create', async (req, res) => {
 
 itemsRouter.get('/search', async (req, res) => {
   const search = req.query.search;
-  const uid = req.query.uid;
+  const collectionID = req.query.collectionID;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -75,21 +75,18 @@ itemsRouter.get('/search', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  if(verifiedToken.id != uid){
-    const items = await Item.find({
-      name: { $regex: search, $options: 'i' },
-      uid: uid
-    })
+  const collection = await Collection.findById(collectionID);
 
-    return res.send(items);
-  }else{
-    const items = await Item.find({
-      name: { $regex: search, $options: 'i' },
-      uid: uid
-    })
-
-    return res.send(items);
+  if(collection.private && (collection.uid != verifiedToken.id)){
+    return res.status(403).json({error: "Collection is private."});
   }
+
+  const items = await Item.find({
+    name: { $regex: search, $options: 'i' },
+    collectionID: collectionID
+  })
+
+  return res.send(items);
 })
 
 // GET Item
