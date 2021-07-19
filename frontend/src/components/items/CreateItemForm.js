@@ -15,7 +15,7 @@ function CreateItemForm({keys})
   const [message,setMessage] = useState('');
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
-  const [itemKeys, setItemKeys] = useState(keys);
+  const [itemKeys, setItemKeys] = useState({});
   const [itemDescription, setItemDescription] = useState("");
   const [keyName, setKeyName] = useState([]);
 
@@ -31,8 +31,6 @@ function CreateItemForm({keys})
       roomID:room.id,
       collectionID:collection.id
     };
-
-    console.log(item);
 
     const res = doCreate(item);
 
@@ -65,11 +63,6 @@ function CreateItemForm({keys})
     const handelDescriptionChange = (e) => {
       setItemDescription(e.target.value);
     }
-
-    const handleKeyName = (e) => {
-      setKeyName(e.target.value);
-      console.log(`Key PROPS: ${keyName}`)
-    }
       
     if(open){
         return(
@@ -79,15 +72,15 @@ function CreateItemForm({keys})
               <TextField margin="dense" variant="outlined" type="text" id="itemName" label="Item Name" value={itemName} onChange={e => handleNameChange(e)}/>
               <br /><br/>
               {/* Displays the Key Properties as text fields */}
-              {itemKeys.map(key=>{return(
-                <TextField margin="dense" variant="outlined" type="text" id={key} label={key} onChange={(e)=>{handleKeyName(e)}}/>
-              )})}
 
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
               <br/><br/>
               {collection.keys.map(key => {
-                return <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/>
+                return (
+                  <div>
+                    <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/> <br/><br/>
+                  </div>)
               })}
               <Button variant="contained" size="large" color="primary" type="submit" id="CreateItemButton" className="buttons" value = "Set Up New Item" onClick={createItem}>Set Up New Item</Button>
               <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{setOpen(false)}}>Cancel</Button><br />
