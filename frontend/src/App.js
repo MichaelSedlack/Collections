@@ -46,7 +46,7 @@ function App() {
                 <Route path='/reset/:id'>
                   <ResetPasswordPage />
                 </Route>
-                <Route path='/verification/:id'>
+                <Route path='/validate/:id'>
                   <Verification/>
                 </Route>
                 

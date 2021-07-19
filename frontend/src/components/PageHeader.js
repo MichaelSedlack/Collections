@@ -38,6 +38,9 @@ class PageHeader extends React.Component {
       case "/reset":
         pageName = "Reset Password";
         break;
+      case "/verification":
+        pageName = "Verify Email";
+        break;
       default:
         break;
     }
