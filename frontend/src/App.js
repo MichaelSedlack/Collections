@@ -9,6 +9,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import CollectionsPage from './pages/CollectionsPage';
 import ItemsPage from './pages/ItemPage';
+import Verification from './pages/VerificationPage'
 import { UserContext, RoomContext, CollectionContext } from './components/UserContext';
 
 function App() {
@@ -44,6 +45,9 @@ function App() {
                 </Route>
                 <Route path='/reset/:id'>
                   <ResetPasswordPage />
+                </Route>
+                <Route path='/verification/:id'>
+                  <Verification/>
                 </Route>
                 
               </Switch>
