@@ -17,7 +17,8 @@ const itemSchema = mongoose.Schema({
   uid: {
     type: mongoose.Schema.Types.ObjectID,
     ref: 'User'
-  }
+  },
+  img: String
 })
 
 // Set options for translation to JSON

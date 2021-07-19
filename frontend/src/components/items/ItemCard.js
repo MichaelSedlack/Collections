@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UpdateItem from './UpdateItem';
 import DeleteItem from './DeleteItem';
 import { CollectionContext } from '../UserContext';
+import { CardMedia } from '@material-ui/core';
 
 function ItemCard({item}){
   // Initial States
@@ -62,6 +63,11 @@ function ItemCard({item}){
         <div>
           <Card >                            
             <CardContent>
+              {(item.img) &&
+                <CardMedia
+                  image={process.env.PUBLIC_URL + "uploads" + item.img}
+                />
+              }
             <div>
               <p>Item: {item.name}</p>
               <p>Description: {item.description}</p><br/>
