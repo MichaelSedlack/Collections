@@ -5,7 +5,7 @@ import { RoomContext, CollectionContext } from './../UserContext';
 import { ApiContext } from './../ApiContext';
 
 
-function CreateItemForm()
+function CreateItemForm({keys})
 {
   const { doCreate } = useContext(ApiContext);
   const {room} = useContext(RoomContext);
@@ -15,8 +15,9 @@ function CreateItemForm()
   const [message,setMessage] = useState('');
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
-  const [itemKeys, setItemKeys] = useState({});
+  const [itemKeys, setItemKeys] = useState(keys);
   const [itemDescription, setItemDescription] = useState("");
+  const [keyName, setKeyName] = useState([]);
 
 
   const createItem = async event =>
@@ -64,6 +65,11 @@ function CreateItemForm()
     const handelDescriptionChange = (e) => {
       setItemDescription(e.target.value);
     }
+
+    const handleKeyName = (e) => {
+      setKeyName(e.target.value);
+      console.log(`Key PROPS: ${keyName}`)
+    }
       
     if(open){
         return(
@@ -71,6 +77,12 @@ function CreateItemForm()
               <span id="inner-title">Create New Item</span><br />
               
               <TextField margin="dense" variant="outlined" type="text" id="itemName" label="Item Name" value={itemName} onChange={e => handleNameChange(e)}/>
+              <br /><br/>
+              {/* Displays the Key Properties as text fields */}
+              {itemKeys.map(key=>{return(
+                <TextField margin="dense" variant="outlined" type="text" id={key} label={key} onChange={(e)=>{handleKeyName(e)}}/>
+              )})}
+
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
               <br/><br/>

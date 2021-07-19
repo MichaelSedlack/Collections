@@ -102,10 +102,9 @@ p {
   justify-content: center;
 }
 
-/* body {
+body {
   width: calc(100vw - 16px);
-} */
-
-/* ::-webkit-scrollbar {
+}
+*/ ::-webkit-scrollbar {
   width: 16px;
-} */
+}
