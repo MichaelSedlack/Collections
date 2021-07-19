@@ -10,14 +10,10 @@ import UpdateItem from './UpdateItem';
 import DeleteItem from './DeleteItem';
 import { CollectionContext } from '../UserContext';
 import {CardMedia}  from '@material-ui/core';
-import { CardActionArea } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
 
 const useStyles= makeStyles({
-  root:{
-    maxWidth: 345,
-  },
   media: {
     height:200,
   },
@@ -74,7 +70,7 @@ function ItemCard({item}){
       return(
         <div>
           {console.log(item.img)}
-          <Card className={classes.root}>                            
+          <Card>                            
             <CardContent>
               {/* Displays Item Image */}
               {(item.img) && <CardMedia className={classes.media} image={process.env.PUBLIC_URL + "/uploads/" + item.img} />}
