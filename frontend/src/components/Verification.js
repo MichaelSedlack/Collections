@@ -56,7 +56,7 @@ function Verification ()
                     setTimeout(
                         function(){
                             window.location.href = '/';
-                        },1000)
+                        },2000)
                 }
             })
             .catch(function(error)
