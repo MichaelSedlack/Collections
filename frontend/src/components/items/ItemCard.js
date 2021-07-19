@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,9 +8,12 @@ import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import UpdateItem from './UpdateItem';
 import DeleteItem from './DeleteItem';
+import { CollectionContext } from '../UserContext';
 
 function ItemCard({item}){
   // Initial States
+
+  const {collection} = useContext(CollectionContext);
 
   const [message, setMessage]=  useState("");
   const [open, setOpen] = React.useState(false);
@@ -61,7 +64,10 @@ function ItemCard({item}){
             <CardContent>
             <div>
               <p>Item: {item.name}</p>
-              <p>Description: {item.description}</p>
+              <p>Description: {item.description}</p><br/>
+              {collection.keys.map(key => {
+                return (<p key={key}>{key}: {item.item[key]}</p>)
+              })}
             </div>
               </CardContent>
               <CardActions>

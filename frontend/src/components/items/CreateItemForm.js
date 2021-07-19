@@ -15,7 +15,7 @@ function CreateItemForm({keys})
   const [message,setMessage] = useState('');
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
-  const [itemKeys, setItemKeys] = useState(keys);
+  const [itemKeys, setItemKeys] = useState({});
   const [itemDescription, setItemDescription] = useState("");
   const [keyName, setKeyName] = useState([]);
 
@@ -27,6 +27,7 @@ function CreateItemForm({keys})
     var item = {
       name:itemName,
       description: itemDescription,
+      item: itemKeys,
       roomID:room.id,
       collectionID:collection.id
     };
@@ -52,13 +53,15 @@ function CreateItemForm({keys})
       setItemName(e.target.value);
     }
 
-    const handelDescriptionChange = (e) => {
-      setItemDescription(e.target.value);
+    const handleObjectChange = (e, key) => {
+      let obj = itemKeys;
+      obj[key] = e.target.value;
+
+      setItemKeys(obj);
     }
 
-    const handleKeyName = (e) => {
-      setKeyName(e.target.value);
-      console.log(`Key PROPS: ${keyName}`)
+    const handelDescriptionChange = (e) => {
+      setItemDescription(e.target.value);
     }
       
     if(open){
@@ -69,13 +72,16 @@ function CreateItemForm({keys})
               <TextField margin="dense" variant="outlined" type="text" id="itemName" label="Item Name" value={itemName} onChange={e => handleNameChange(e)}/>
               <br /><br/>
               {/* Displays the Key Properties as text fields */}
-              {itemKeys.map(key=>{return(
-                <TextField margin="dense" variant="outlined" type="text" id={key} label={key} onChange={(e)=>{handleKeyName(e)}}/>
-              )})}
 
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
               <br/><br/>
+              {collection.keys.map(key => {
+                return (
+                  <div>
+                    <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/> <br/><br/>
+                  </div>)
+              })}
               <Button variant="contained" size="large" color="primary" type="submit" id="CreateItemButton" className="buttons" value = "Set Up New Item" onClick={createItem}>Set Up New Item</Button>
               <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{setOpen(false)}}>Cancel</Button><br />
               <span id="CreateItemResult">{message}</span>
