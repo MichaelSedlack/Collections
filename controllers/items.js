@@ -53,7 +53,7 @@ itemsRouter.post('/create', async (req, res) => {
   // Create item object
   const newItem = new Item({
     description: body.description,
-    // item: body.item,
+    item: body.item,
     collectionID: body.collectionID,
     roomID: body.roomID,
     name: body.name,

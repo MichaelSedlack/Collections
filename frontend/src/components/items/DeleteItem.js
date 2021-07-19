@@ -5,7 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import { CollectionContext } from './../UserContext';
+import { CollectionContext, RoomContext } from './../UserContext';
 import { ApiContext } from './../ApiContext';
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -13,6 +13,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 });
 
 function DeleteItem({itemData, closeDelete}) {
+    const {room} = useContext(RoomContext);
     const {collection} = useContext(CollectionContext)
     const {doDelete} = useContext(ApiContext);
 
@@ -46,7 +47,7 @@ function DeleteItem({itemData, closeDelete}) {
     return(
         <div>
            <Dialog maxWidth="lg" open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                <DialogTitle>{`This will DELETE the "${itemData.name} item" and all items in the "${collection.name} collection"`}</DialogTitle>
+                <DialogTitle>{`This will DELETE the "${itemData.name} item" from the "${collection.name} collection" in the "${room.name} room""`}</DialogTitle>
                 <DialogContent><span>{message}</span></DialogContent>
                 <DialogActions>
                     <Button onClick={() => handleDelete(itemData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>

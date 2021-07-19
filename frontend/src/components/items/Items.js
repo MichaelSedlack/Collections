@@ -21,7 +21,8 @@ function Items() {
   const [message,setMessage] = useState('');
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState([]);
+  const [keys, setKeys] = useState([]);
 
   const handleLogout = () => {
     storage.clearTokens();
@@ -43,7 +44,8 @@ function Items() {
           setMessage(res.error);
           return;
         }
-        console.log(`Response from API ITEMS: ${res.items}`)
+        console.log(`Response from API ITEMS: ${res.keys}`)
+        setKeys(res.keys);
         setItems(res.items);
         setIsLoading(false);
       }catch(exception){
@@ -161,7 +163,7 @@ function Items() {
                         </Grid>
                         <Grid item xs={2}/>
                         <Grid item xs={5}>
-                            <CreateItemForm/>
+                            <CreateItemForm keys={keys}/>
                         </Grid>
                         {/* End Row */}
 
