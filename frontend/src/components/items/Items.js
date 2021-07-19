@@ -72,7 +72,7 @@ function Items() {
 
   const doSearch = async (search) => {
     try{
-      const res = await itemService.search(search, user.id);
+      const res = await itemService.search(search, collection.id);
 
       if(res.error){
         return res;

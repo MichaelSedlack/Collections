@@ -44,11 +44,11 @@ const update = async (itemID, item) => {
   return response.data;
 }
 
-const search = async (string, userID) => {
+const search = async (string, collectionID) => {
   const config = {
     headers: { Authorization: token },
     params: {
-      uid: userID,
+      collectionID: collectionID,
       search: string
     }
   }
