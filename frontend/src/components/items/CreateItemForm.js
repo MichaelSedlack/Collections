@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
 import { RoomContext, CollectionContext } from './../UserContext';
 import { ApiContext } from './../ApiContext';
 
@@ -50,6 +51,9 @@ function CreateItemForm({keys})
       setOpen(false);
       setItemName("");
       setItemDescription("");
+      collection.keys.map(key=>{
+        itemKeys[key]="";
+      })
     }, 500);
   };
 
@@ -80,7 +84,18 @@ function CreateItemForm({keys})
               
               <TextField margin="dense" variant="outlined" type="text" id="itemName" label="Item Name" value={itemName} onChange={e => handleNameChange(e)}/>
               <br /><br/>
-              {/* Displays the Key Properties as text fields */}
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                type="file"
+                onChange={(e) => handlePhoto(e)}
+              />
+              <label htmlFor="raised-button-file">
+                <Button variant="contained" size="small" component="span">
+                  <CloudUploadOutlinedIcon color="primary">Upload</CloudUploadOutlinedIcon>&nbsp;<h5>Upload a photo</h5>
+                </Button>
+              </label> 
 
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
@@ -91,18 +106,7 @@ function CreateItemForm({keys})
                     <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/> <br/><br/>
                   </div>)
               })}
-              <input
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="raised-button-file"
-                type="file"
-                onChange={(e) => handlePhoto(e)}
-              />
-              <label htmlFor="raised-button-file">
-                <Button variant="contained" component="span">
-                  Upload
-                </Button>
-              </label> 
+
               <br/>
               <Button variant="contained" size="large" color="primary" type="submit" id="CreateItemButton" className="buttons" value = "Set Up New Item" onClick={createItem}>Set Up New Item</Button>
               <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{setOpen(false)}}>Cancel</Button><br />
