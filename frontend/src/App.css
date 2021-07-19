@@ -101,3 +101,11 @@ p {
   align-items: center;
   justify-content: center;
 }
+
+/* body {
+  width: calc(100vw - 16px);
+} */
+
+/* ::-webkit-scrollbar {
+  width: 16px;
+} */
