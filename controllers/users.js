@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const config = require('../utils/config');
 const bcrypt = require('bcrypt');
+const { truncate } = require('fs');
 
 const saltRounds = 10;
 
@@ -24,20 +25,68 @@ usersRouter.post('/register', async (req, res) => {
     return res.status(409).json({error: "Email already in use."});
   }
 
+  const validateToken = crypto.randomBytes(20).toString('hex');
+
   // Format request into mongoose schema
   const newUser = new User({
     firstName,
     lastName,
     email: body.email,
     passwordHash: passwordHash,
+    validateToken,
+    validated: false,
     rooms: []
   })
 
   // Save user
   const savedUser = await newUser.save();
 
+  // Setup email transporter.
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth:{
+      user: `${config.EMAIL_ADDRESS}`,
+      pass: `${config.EMAIL_PASSWORD}`,
+    }
+  })
+
+  // Sends validation email
+  // Setup Email contents.
+  const mailOptions = {
+    from: 'myuseumapp@gmail.com',
+    to: `${savedUser.email}`,
+    subject: 'Myuseum email validation.',
+    text:
+      'You are receiving this because you must validate your account.\n\n'
+      + 'Please follow the link provided below, or paste it into your browser to validate your email:\n\n'
+      + `${config.BASEURL}validate/${validateToken}\n\n`
+      + 'If you did not create this account, ignore this message and the account will not be activated.' 
+  }
+
+  // Send Email and retrieve info for email.
+  await transporter.sendMail(mailOptions);
+
   // Send response
   return res.send(savedUser);
+})
+
+// Validate email
+usersRouter.get('/validate', async (req, res) => {
+  const validateToken = req.query.validateToken;
+
+  const user = await User.findOne({validateToken});
+
+  if(!user){
+    return res.status(400).send({error: "Validation token invalid"});
+  }
+
+  user.validated = true;
+
+  console.log(user);
+
+  await User.findByIdAndUpdate(user._id, user);
+
+  return res.status(200).json({success: "Email successfully validated!"});
 })
 
 // Login endpoint
@@ -54,7 +103,11 @@ usersRouter.post('/login', async (req, res) => {
     return res.status(400).json({error: "User does not exist"});
   }else if(!(await bcrypt.compare(password, user.passwordHash))){ // Check if passwords match
     return res.status(400).json({error: "Incorrect Password"});
-  }
+  }//else if(!user.validated){
+  //   return res.status(403).json({error: "Please validate email."});
+  // }
+
+  // TODO: UNCOMMENT ABOVE WHEN GOING INTO PRODUCTION
 
   const newToken = token.createToken(user.firstName, user.lastName, user.id);
   
@@ -111,7 +164,7 @@ usersRouter.post('/forgotPassword', async (req, res) => {
     text:
       'You are receiving this because you have requested to reset the password for your account.\n\n'
       + 'Please follow the link provided below, or paste it into your browser to be taken to the password reset page:\n\n'
-      + `http://localhost:3000/reset/${resetPasswordToken}\n\n`
+      + `${config.BASEURL}reset/${resetPasswordToken}\n\n`
       + 'If you did not request to reset your password, please ignore this email and your password will remain unchanged.' 
   }
 

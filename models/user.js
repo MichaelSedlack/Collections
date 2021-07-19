@@ -20,7 +20,9 @@ const userSchema = new mongoose.Schema({
     }
   ],
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  validateToken: String,
+  validated: Boolean
 })
 
 // Set options for translation to JSON
@@ -29,6 +31,8 @@ userSchema.set('toJSON', {
       returnedObject.id = returnedObject._id.toString()
       delete returnedObject.resetPasswordToken
       delete returnedObject.resetPasswordExpires
+      delete returnedObject.validated
+      delete returnedObject.validateToken
       delete returnedObject._id
       delete returnedObject.__v
       delete returnedObject.passwordHash
