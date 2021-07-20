@@ -1,4 +1,5 @@
 // IMPORTS/DECLARATIONS
+const config = require('../utils/config');
 const itemsRouter = require('express').Router();
 const Item = require('../models/item');
 //room may not be required, can only access item through collection and nothing else
@@ -6,7 +7,10 @@ const Room = require('../models/room');
 const Collection = require('../models/collection');
 const User = require('../models/user');
 const token = require('../utils/token');
+const path = require('path');
+const crypto = require('crypto');
 const multer = require('multer');
+const {GridFsStorage} = require('multer-gridfs-storage');
 
 // Helper functions
 const containsKeys = (keys, item) => {
@@ -18,16 +22,26 @@ const containsKeys = (keys, item) => {
 }
 
 // MULTER SETUP
-const storage = multer.diskStorage({
-  destination: (req, file, callback) => {
-    callback(null, "./frontend/public/uploads");
-  },
-  filename: (req, file, callback) => {
-    callback(null, Date.now() + '-' + file.originalname);
+const storage = new GridFsStorage({
+  url: config.MONGODB_URI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
   }
-})
+});
 
-const upload = multer({storage: storage});
+const upload = multer({storage});
 
 // Create Item
 itemsRouter.post('/create', upload.single("image"), async (req, res) => {
@@ -61,12 +75,14 @@ itemsRouter.post('/create', upload.single("image"), async (req, res) => {
   // TODO: Update rather than add new item.
   //-------
 
+  const img = 'images/' + req.file.filename;
+
   // Create item object
   const newItem = new Item({
     name: body.name,
     description: body.description,
     item: body.item,
-    img: req.file.filename,
+    img,
     collectionID: body.collectionID,
     roomID: body.roomID,
     uid: verifiedToken.id
