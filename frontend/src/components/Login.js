@@ -7,6 +7,9 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { UserContext } from './UserContext';
 import { useHistory } from 'react-router-dom';
+import roomService from './helpers/roomService';
+import collectionService from './helpers/collectionService';
+import itemService from './helpers/itemService';
 
 function Login()
 {
@@ -78,6 +81,9 @@ function Login()
                 setMessage("Logging In");
                 setMessageColor('green');
                 context.setUser(user);
+                roomService.setToken(accessToken);
+                collectionService.setToken(accessToken);
+                itemService.setToken(accessToken);
                 setTimeout(
                     function(){
                             history.push('/museum/');
@@ -104,7 +110,7 @@ function Login()
 
     return(
         <div id="loginDiv">
-            <Grid container spacing={0} direction="column" alignItems="center" justifyContent="center">
+            <Grid container spacing={0} direction="column" alignItems="center" justify="center">
                 <h4 id="inner-title">Please Sign In</h4><br />
                 <TextField  style={{marginBottom: "2em"}} variant="outlined" required label="Email" type="text" id="loginName" inputRef={loginName}  />
                 <TextField InputProps={{endAdornment:<Button endIcon={visibility} onClick={()=>{changeVisibility()}}/>}} style={{marginBottom: "2em"}} variant="outlined" required label="Password" type={type} id="loginPassword" inputRef={loginPassword} />

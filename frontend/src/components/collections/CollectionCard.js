@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,18 +8,22 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import IconButton from '@material-ui/core/IconButton';
-import UpdateRoom from './UpdateRoom';
-import DeleteRoom from './DeleteRoom';
+import UpdateCollection from './UpdateCollection';
+import DeleteCollection from './DeleteCollection';
+import { CollectionContext } from './../UserContext';
 
-function RoomCard({room}){
+function CollectionCard({collection}){
   // Initial States
+  const history = useHistory();
+  const context = useContext(CollectionContext);
+
   const [message, setMessage]=  useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
 
-  const editRoom = (roomId, roomName) => {
+  const editCollection = (collectionId, collectionName) => {
     setCancelButton(true);
     setEdit(true);
   }
@@ -30,22 +35,27 @@ function RoomCard({room}){
 
   const openDelete = (id,name) => {
       setOpen(true);
-      setShowDialog(<DeleteRoom roomData={{id,name}} closeDelete={()=> closeDelete()}/>)
+      setShowDialog(<DeleteCollection collectionData={{id,name}} closeDelete={()=> closeDelete()}/>)
   }
 
-  // Used to hide the Create New Room Form
+  // Used to hide the Create New Collection Form
   function cancelClicked() {
     setCancelButton(false);
     setEdit(false);
   }
 
+  const enterCollection = (collectionId, collectionName) => {
+    context.setCollection(collection);
+    history.push("/items")
+  }
+
     if(edit){
       return (
-        <div key={room.id}>
+        <div key={collection.id}>
           {/* Displays the content as editable */}
           <Card >                            
             <CardContent>
-                <UpdateRoom roomData={{roomId: room.id, roomName: room.name}}/>
+                <UpdateCollection collectionData={{collectionId: collection.id, collectionName: collection.name}} handleClose={cancelClicked}/>
                 {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
               </CardContent>
           </Card>
@@ -59,19 +69,19 @@ function RoomCard({room}){
           <Card >                            
             <CardContent>
             <div>
-              <p>Room: {room.name}</p>
-              <p>Private: {room.private.toString()}</p>
-              <p>Collections: {room.collections}</p>
+              <p>{collection.name} Collection</p>
+              <p>{collection.private ? "Private - No one can view this collection" : "Public - Anyone can view this collection"}</p>
+              <p>{collection.items.length} Items Stored</p>
             </div>
               </CardContent>
               <CardActions>
-                {/* Enter/Update/Delete Room Buttons */}
-                <IconButton size="medium" color="primary" onClick={()=>{alert("Enter Room Button was clicked!")}}><MeetingRoomIcon/></IconButton>
-                <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
-                {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
+                {/* Enter/Update/Delete collection Buttons */}
+                <IconButton size="medium" color="primary" onClick={()=>{enterCollection(collection.id,collection.name)}}><MeetingRoomIcon/></IconButton>
+                <IconButton size="medium" color="primary" onClick={()=>{editCollection(collection.id,collection.name)}}><EditIcon/></IconButton>
+                {/* <IconButton size="small" color="secondary" onClick={doDelete(collection.id,collection.name)}><DeleteIcon/></IconButton> */}
                 <span>{message}</span>
                 {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
-                <IconButton color="secondary" size ="small" onClick={()=>{openDelete(room.id,room.name)}}><DeleteIcon/></IconButton>
+                <IconButton color="secondary" size ="small" onClick={()=>{openDelete(collection.id,collection.name)}}><DeleteIcon/></IconButton>
                 <span id="createDialog">{showDialog}</span>
               </CardActions>
           </Card>
@@ -81,4 +91,4 @@ function RoomCard({room}){
     }
 }
 
-export default RoomCard;
+export default CollectionCard;

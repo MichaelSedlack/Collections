@@ -6,6 +6,7 @@ const Room = require('../models/room');
 const Collection = require('../models/collection');
 const User = require('../models/user');
 const token = require('../utils/token');
+const multer = require('multer');
 
 // Helper functions
 const containsKeys = (keys, item) => {
@@ -16,11 +17,21 @@ const containsKeys = (keys, item) => {
   return result.includes(false) ? false : true;
 }
 
-// TODO: ROUTES
-// blah
+// MULTER SETUP
+const storage = multer.diskStorage({
+  destination: (req, file, callback) => {
+    callback(null, "./frontend/public/uploads");
+  },
+  filename: (req, file, callback) => {
+    callback(null, Date.now() + '-' + file.originalname);
+  }
+})
+
+const upload = multer({storage: storage});
+
 // Create Item
-itemsRouter.post('/create', async (req, res) => {
-  const body = req.body;
+itemsRouter.post('/create', upload.single("image"), async (req, res) => {
+  const body = JSON.parse(req.body.item);
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -41,7 +52,7 @@ itemsRouter.post('/create', async (req, res) => {
     uid: verifiedToken.id, 
     name: body.name,
     collectionID: body.collectionID, 
-    item: body.item
+    item: body.item,
   });
   
   if(itemExists.length > 0){
@@ -52,17 +63,42 @@ itemsRouter.post('/create', async (req, res) => {
 
   // Create item object
   const newItem = new Item({
+    name: body.name,
     description: body.description,
     item: body.item,
+    img: req.file.filename,
     collectionID: body.collectionID,
     roomID: body.roomID,
-    name: body.name,
     uid: verifiedToken.id
   })
 
   const savedItem = await newItem.save(); // Save item
 
   return res.send(savedItem);
+})
+
+itemsRouter.get('/search', async (req, res) => {
+  const search = req.query.search;
+  const collectionID = req.query.collectionID;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  const collection = await Collection.findById(collectionID);
+
+  if(collection.private && (collection.uid != verifiedToken.id)){
+    return res.status(403).json({error: "Collection is private."});
+  }
+
+  const items = await Item.find({
+    name: { $regex: search, $options: 'i' },
+    collectionID: collectionID
+  })
+
+  return res.send(items);
 })
 
 // GET Item
