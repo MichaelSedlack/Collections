@@ -1,6 +1,9 @@
 import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import IconButton from '@material-ui/core/IconButton';
+import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { RoomContext, CollectionContext } from './../UserContext';
 import { ApiContext } from './../ApiContext';
 
@@ -16,8 +19,9 @@ function CreateItemForm({keys})
   const [open, setOpen] = useState(false);
   const [itemName, setItemName] = useState("");
   const [itemKeys, setItemKeys] = useState({});
+  const [image, setImage] = useState();
   const [itemDescription, setItemDescription] = useState("");
-  const [keyName, setKeyName] = useState([]);
+  const [photoMessage, setPhotoMessage] = useState("");
 
 
   const createItem = async event =>
@@ -32,7 +36,11 @@ function CreateItemForm({keys})
       collectionID:collection.id
     };
 
-    const res = doCreate(item);
+    const formData = new FormData();
+    formData.append('image', image);
+    formData.append('item', JSON.stringify(item));
+
+    const res = doCreate(formData);
 
     if(res.error){
       setMessage(res.error);
@@ -45,6 +53,10 @@ function CreateItemForm({keys})
       setOpen(false);
       setItemName("");
       setItemDescription("");
+      setPhotoMessage("");
+      collection.keys.map(key=>{
+        itemKeys[key]="";
+      })
     }, 500);
   };
 
@@ -60,6 +72,11 @@ function CreateItemForm({keys})
       setItemKeys(obj);
     }
 
+    const handlePhoto = (e) => {
+      setImage(e.target.files[0]);
+      setPhotoMessage(`${e.target.value} uploaded`)
+    }
+
     const handelDescriptionChange = (e) => {
       setItemDescription(e.target.value);
     }
@@ -70,18 +87,32 @@ function CreateItemForm({keys})
               <span id="inner-title">Create New Item</span><br />
               
               <TextField margin="dense" variant="outlined" type="text" id="itemName" label="Item Name" value={itemName} onChange={e => handleNameChange(e)}/>
-              <br /><br/>
-              {/* Displays the Key Properties as text fields */}
+              <input
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="raised-button-file"
+                type="file"
+                onChange={(e) => handlePhoto(e)}
+              />
+              <label htmlFor="raised-button-file">
+                <IconButton variant="outlined" size="large" component="span">
+                  <PhotoCamera  color="primary"/>
+                </IconButton>
+              </label> 
+              {photoMessage}
 
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
               <br/><br/>
+              <p>Required Item Properties</p>
               {collection.keys.map(key => {
                 return (
                   <div>
-                    <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/> <br/><br/>
+                    <TextField margin="dense" variant="outlined" type="text" label={key} value={itemKeys[key]} onChange={e => handleObjectChange(e, key)}/><br/>
                   </div>)
               })}
+
+              <br/>
               <Button variant="contained" size="large" color="primary" type="submit" id="CreateItemButton" className="buttons" value = "Set Up New Item" onClick={createItem}>Set Up New Item</Button>
               <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{setOpen(false)}}>Cancel</Button><br />
               <span id="CreateItemResult">{message}</span>

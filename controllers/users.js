@@ -77,7 +77,7 @@ usersRouter.get('/validate', async (req, res) => {
   const user = await User.findOne({validateToken});
 
   if(!user){
-    return res.status(400).send({error: "Validation token invalid"});
+    return res.status(401).send({error: "Validation token invalid"});
   }
 
   user.validated = true;

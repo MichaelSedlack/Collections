@@ -9,10 +9,19 @@ import IconButton from '@material-ui/core/IconButton';
 import UpdateItem from './UpdateItem';
 import DeleteItem from './DeleteItem';
 import { CollectionContext } from '../UserContext';
+import {CardMedia}  from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+
+
+const useStyles= makeStyles({
+  media: {
+    height:200,
+  },
+})
 
 function ItemCard({item}){
   // Initial States
-
+  const classes = useStyles();
   const {collection} = useContext(CollectionContext);
 
   const [message, setMessage]=  useState("");
@@ -60,8 +69,11 @@ function ItemCard({item}){
     }else{
       return(
         <div>
-          <Card >                            
+          {console.log(item.img)}
+          <Card>                            
             <CardContent>
+              {/* Displays Item Image */}
+              {(item.img) && <CardMedia className={classes.media} image={process.env.PUBLIC_URL + "/uploads/" + item.img} />}
             <div>
               <p>Item: {item.name}</p>
               <p>Description: {item.description}</p><br/>
