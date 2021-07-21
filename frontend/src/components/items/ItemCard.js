@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -13,11 +12,39 @@ import {CardMedia}  from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
 
-const useStyles= makeStyles({
+const useStyles= makeStyles(({spacing}) => ({
   media: {
     height:200,
+    width: 151,
   },
-})
+
+  root: {
+    width: "75%",
+    display: 'flex',
+    transition: '0.3s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    paddingBottom: spacing(2),
+    paddingTop: spacing(2),
+    
+  },
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
+  },
+
+  content: {
+    flex: '1 0 auto',
+  },
+
+  controls: {
+    display: 'flex',
+    alignItems:'center',
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
+  },
+}));
 
 function ItemCard({item}){
   // Initial States
@@ -70,26 +97,28 @@ function ItemCard({item}){
       return(
         <div>
           {console.log(item.img)}
-          <Card>                            
-            <CardContent>
-              {/* Displays Item Image */}
-              {(item.img) && <CardMedia className={classes.media} image={"http://localhost:5000/" +item.img} />}
-            <div>
-              <p>Item: {item.name}</p>
-              <p>Description: {item.description}</p><br/>
-              {collection.keys.map(key => {
-                return (<p key={key}>{key}: {item.item[key]}</p>)
-              })}
-            </div>
+          <Card className={classes.root}>       
+            <div className={classes.details}>            
+              <CardContent className={classes.content}>
+                {/* Displays Item Image */}
+                <p>Item: {item.name}</p>
+                <p>Description: {item.description}</p><br/>
+                {collection.keys.map(key => {
+                  return (<p key={key}>{key}: {item.item[key]}</p>)
+                })}
+            
               </CardContent>
-              <CardActions>
+              
+              <div className={classes.controls}>
                 {/* Enter/Update/Delete item Buttons */}
                 <IconButton size="medium" color="primary" onClick={()=>{editItem(item.id,item.name)}}><EditIcon/></IconButton>
                 <span>{message}</span>
                 {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
                 <IconButton color="secondary" size ="small" onClick={()=>{openDelete(item.id,item.name)}}><DeleteIcon/></IconButton>
                 <span id="createDialog">{showDialog}</span>
-              </CardActions>
+              </div>
+            </div>
+            {(item.img) && <CardMedia className={classes.media} image={"http://localhost:5000/" +item.img} />}
           </Card>
           <br />
         </div>

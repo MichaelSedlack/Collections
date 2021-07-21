@@ -74,7 +74,7 @@ function CreateItemForm({keys})
 
     const handlePhoto = (e) => {
       setImage(e.target.files[0]);
-      setPhotoMessage(`${e.target.value} uploaded`)
+      setPhotoMessage(`image uploaded`)
     }
 
     const handelDescriptionChange = (e) => {
@@ -99,7 +99,7 @@ function CreateItemForm({keys})
                   <PhotoCamera  color="primary"/>
                 </IconButton>
               </label> 
-              {photoMessage}
+              <span style={{color:'green'}}>{photoMessage}</span>
 
               <br /><br/>
               <TextField id="outlined-multiline-static" label="Description" multiline rows={4}  variant="outlined" onChange={e=>handelDescriptionChange(e)} />
