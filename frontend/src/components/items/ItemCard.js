@@ -73,7 +73,7 @@ function ItemCard({item}){
           <Card>                            
             <CardContent>
               {/* Displays Item Image */}
-              {(item.img) && <CardMedia className={classes.media} image={"http://localhost:5000/" +item.img} />}
+              {(item.img) && <CardMedia className={classes.media} image={item.img} />}
             <div>
               <p>Item: {item.name}</p>
               <p>Description: {item.description}</p><br/>
