@@ -21,12 +21,22 @@ const useStyles= makeStyles(({spacing}) => ({
   root: {
     width: "75%",
     display: 'flex',
-    transition: '0.3s',
+    transition: '.3s',
     boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
     paddingBottom: spacing(2),
     paddingTop: spacing(2),
     
   },
+  none: {
+    width: "75%",
+    display: 'flex',
+    transition: '0.3s',
+    boxShadow: '1px 1px 2px 2px rgba(34, 35, 58, 0.2)',
+    paddingBottom: spacing(2),
+    paddingTop: spacing(2),
+    
+  },
+
   details: {
     display: 'flex',
     flexDirection: 'column',
@@ -56,6 +66,7 @@ function ItemCard({item}){
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
+  const [shadow, setShadow] = useState(false);
 
   const editItem = (itemId, itemName) => {
     setCancelButton(true);
@@ -83,7 +94,7 @@ function ItemCard({item}){
       return (
         <div key={item.id}>
           {/* Displays the content as editable */}
-          <Card >                            
+          <Card>                                                   
             <CardContent>
                 <UpdateItem itemData={{itemId: item.id, itemName: item.name, itemDescription:item.description}} handleClose={cancelClicked}/>
                 {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
@@ -95,9 +106,9 @@ function ItemCard({item}){
       )
     }else{
       return(
-        <div>
+        <div >
           {console.log(item.img)}
-          <Card className={classes.root}>       
+          <Card onMouseEnter={() => setShadow(true)} onMouseLeave={() => setShadow(false)} className={shadow ? classes.root : classes.none}>       
             <div className={classes.details}>            
               <CardContent className={classes.content}>
                 {/* Displays Item Image */}
