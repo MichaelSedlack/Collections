@@ -88,7 +88,7 @@ function UpdateRoom({roomData, handleClose})
 
             <p id="result">{optionMessage}</p>
             <br /><br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton" className="buttons" value = "Update Room" onClick={updateRoom}>Update Room</Button>
+            <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton"  value = "Update Room" onClick={updateRoom}>Update Room</Button>
             <span id="createRoomResult">{message}</span>
         </div>
     );

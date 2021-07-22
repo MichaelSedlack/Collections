@@ -87,7 +87,7 @@ function UpdateCollection({collectionData, handleClose})
 
             <p id="result">{optionMessage}</p>
             <br /><br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createcollectionButton" className="buttons" value = "Update collection" onClick={updateCollection}>Update collection</Button>
+            <Button variant="contained" size="large" color="primary" type="submit" id="createcollectionButton" value = "Update collection" onClick={updateCollection}>Update collection</Button>
             <span id="createcollectionResult">{message}</span>
         </div>
     );
