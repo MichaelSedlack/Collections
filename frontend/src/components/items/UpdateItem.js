@@ -47,8 +47,8 @@ function UpdateItem({itemData, handleClose})
             <br />
             <TextField id="outlined-multiline-static" label="Description" multiline rows={4} defaultValue={itemDescription} variant="outlined" onChange={e=>handelDescriptionChange(e)} />
 
-            <br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createitemButton" className="buttons" value = "Update item" onClick={updateItem}>Update item</Button>
+            <br /><br/>
+            <Button variant="contained" size="large" color="primary" type="submit" id="createitemButton" value = "Update item" onClick={updateItem}>Update item</Button>
             <span id="createitemResult">{message}</span>
         </div>
     );

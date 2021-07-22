@@ -55,6 +55,13 @@ const useStyles= makeStyles(({spacing}) => ({
     paddingLeft: spacing(2),
     paddingRight: spacing(2),
   },
+
+  controlsOpen: {
+    display: 'flex',
+    alignItems:'flex-end',
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
+  },
 }));
 
 function ItemCard({item}){
@@ -95,11 +102,13 @@ function ItemCard({item}){
       return (
         <div key={item.id}>
           {/* Displays the content as editable */}
-          <Card >                            
-            <CardContent>
+          <Card onMouseEnter={() => setShadow(true)} onMouseLeave={() => setShadow(false)} className={shadow ? classes.root : classes.hover}>
+            <div className={classes.details}>                            
+              <div className={classes.controlsOpen}>
                 <UpdateItem itemData={{itemId: item.id, itemName: item.name, itemDescription:item.description}} handleClose={cancelClicked}/>
-                {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
-              </CardContent>
+                {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
+              </div>
+            </div>
           </Card>
           <br />
         </div>

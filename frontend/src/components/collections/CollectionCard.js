@@ -51,6 +51,13 @@ const useStyles= makeStyles(({spacing}) => ({
     paddingLeft: spacing(2),
     paddingRight: spacing(2),
   },
+
+  controlsOpen: {
+    display: 'flex',
+    alignItems:'flex-end',
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
+  },
 }));
 
 
@@ -97,11 +104,13 @@ function CollectionCard({collection}){
       return (
         <div key={collection.id}>
           {/* Displays the content as editable */}
-          <Card >                            
-            <CardContent>
-                <UpdateCollection collectionData={{collectionId: collection.id, collectionName: collection.name}} handleClose={cancelClicked}/>
-                {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" className="buttons" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
-              </CardContent>
+          <Card onMouseEnter={() => setShadow(true)} onMouseLeave={() => setShadow(false)} className={shadow ? classes.root : classes.hover}>
+            <div className={classes.details}>                            
+              <div className={classes.controlsOpen}>
+                  <UpdateCollection collectionData={{collectionId: collection.id, collectionName: collection.name}} handleClose={cancelClicked}/>
+                  {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
+              </div>
+            </div>
           </Card>
           <br />
         </div>
