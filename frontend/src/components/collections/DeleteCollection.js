@@ -19,6 +19,7 @@ function DeleteCollection({collectionData, closeDelete}) {
     // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = useState(true);
+    const [error,setError] = useState(false);
     
     const handleClose = () => {
         setOpen(false);
@@ -28,6 +29,7 @@ function DeleteCollection({collectionData, closeDelete}) {
     const handleDelete = (collectionId) => {
         const res = doDelete(collectionId);
         if(res.error){
+            setError(true);
             setMessage(res.error);
             setTimeout(function(){
             handleClose();
@@ -42,19 +44,24 @@ function DeleteCollection({collectionData, closeDelete}) {
         handleClose();
       },1000)
     }
-
-    return(
-        <div>
-           <Dialog maxWidth="lg" open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                <DialogTitle>{`This will DELETE the "${collectionData.name} Collection" and all items in the collection from the "${room.name} room"`}</DialogTitle>
-                <DialogContent><span>{message}</span></DialogContent>
-                <DialogActions>
-                    <Button onClick={() => handleDelete(collectionData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
-                    <Button onClick={handleClose} color="primary">CANCEL</Button>
-                 </DialogActions>
-            </Dialog>
-         </div>
-    );
+    if(error){
+        return(<h1>{message}</h1>);
+    }
+    else{
+        return(
+            <div>
+               <Dialog maxWidth="lg" open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
+                    <DialogTitle>{`This will DELETE the "${collectionData.name} Collection" and all items in the collection from the "${room.name} room"`}</DialogTitle>
+                    <DialogContent><span>{message}</span></DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => handleDelete(collectionData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                        <Button onClick={handleClose} color="primary">CANCEL</Button>
+                     </DialogActions>
+                </Dialog>
+             </div>
+        );
+    }
+    
 }
 
 export default DeleteCollection;

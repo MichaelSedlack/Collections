@@ -1,32 +1,63 @@
-import React from 'react';
-import Slide from '@material-ui/core/Slide';
-import RoomCard from './RoomCard.js';
+import React, { useState } from "react";
+import RoomCard from "./RoomCard.js";
+import TablePagination from "@material-ui/core/TablePagination";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
+function RoomForm({ rooms }) {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-function RoomForm({rooms}){
-  if(rooms.length === 0){
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  if (rooms.length === 0) {
     return (
       <div>
         <p>No rooms found.</p>
       </div>
-    )
+    );
   }
-  
+
   return (
     <div>
-      {rooms.map(room => {
-        return(
-          <div key={room.id}>
-            <RoomCard room={room}/>
-          </div>
-        )
-      })}
+      <TablePagination
+        labelRowsPerPage="Rooms Per Page"
+        component="div"
+        count={rooms.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <br />
+      {rooms
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((room) => {
+          return (
+            <div>
+              <div key={room.id}>
+                <RoomCard room={room} />
+              </div>
+            </div>
+          );
+        })}
+
+      <TablePagination
+        labelRowsPerPage="Rooms Per Page"
+        component="div"
+        count={rooms.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
-  )
+  );
 }
 
 export default RoomForm;

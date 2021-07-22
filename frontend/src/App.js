@@ -1,5 +1,5 @@
 import './App.css';
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import Layout from './components/Layout';
 import RegisterPage from './pages/RegisterPage';
@@ -10,6 +10,9 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import CollectionsPage from './pages/CollectionsPage';
 import ItemsPage from './pages/ItemPage';
 import Verification from './pages/VerificationPage'
+import roomService from './components/helpers/roomService';
+import collectionService from './components/helpers/collectionService';
+import itemService from './components/helpers/itemService';
 import { UserContext, RoomContext, CollectionContext } from './components/UserContext';
 
 function App() {
@@ -17,6 +20,17 @@ function App() {
   const [user, setUser] = useState(null);
   const [room, setRoom] = useState(null);
   const [collection, setCollection] = useState(null);
+
+  useEffect(() => {
+    const user_data = window.localStorage.getItem('user_data');
+    if(user_data){
+      const loggedUser = JSON.parse(user_data);
+      setUser(loggedUser);
+      roomService.setToken(loggedUser.accessToken);
+      collectionService.setToken(loggedUser.accessToken);
+      itemService.setToken(loggedUser.accessToken);
+    }
+  }, [])
 
   return (
     <UserContext.Provider value={{user, setUser}}>
@@ -29,7 +43,7 @@ function App() {
                   <RegisterPage />
                 </Route>
                 <Route path="/" exact>
-                  <LoginPage />
+                  {user ? <Redirect to='/museum'/> : <LoginPage />}
                 </Route>
                 <Route path="/museum" exact>
                   {!user ? <Redirect to='/'/> : <MuseumPage />}

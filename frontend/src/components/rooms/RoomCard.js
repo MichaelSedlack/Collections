@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import UpdateRoom from './UpdateRoom';
 import DeleteRoom from './DeleteRoom';
 import { useHistory } from 'react-router-dom';
-import { RoomContext } from './../UserContext';
+import { UserContext, RoomContext } from './../UserContext';
 import { makeStyles } from '@material-ui/core';
 
 const useStyles= makeStyles(({spacing}) => ({
@@ -63,6 +63,7 @@ const useStyles= makeStyles(({spacing}) => ({
 function RoomCard({room}){
   // Initial States
   const history = useHistory();
+  const { user } = useContext(UserContext);
   const context = useContext(RoomContext);
   const classes = useStyles();
 
@@ -131,13 +132,17 @@ function RoomCard({room}){
               <div className={classes.controls}>
                 {/* Enter/Update/Delete Room Buttons */}
                 <IconButton size="medium" color="primary" onClick={()=>{enterRoom(room.id,room.name)}}><MeetingRoomIcon/></IconButton>
-                <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
-                {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
-                <span>{message}</span>
-                {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
-                <IconButton color="secondary" size ="small" onClick={()=>{openDelete(room.id,room.name)}}><DeleteIcon/></IconButton>
-                <span id="createDialog">{showDialog}</span>
-              </div>
+                { (user.id === room.uid) &&
+                  <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
+                }
+                  {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
+                  <span>{message}</span>
+                  {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
+                { (user.id === room.uid) &&
+                  <IconButton color="secondary" size ="small" onClick={()=>{openDelete(room.id,room.name)}}><DeleteIcon/></IconButton>
+                }
+                  <span id="createDialog">{showDialog}</span>
+                  </div>
             </div>
           </Card>
           <br />

@@ -20,6 +20,7 @@ function DeleteItem({itemData, closeDelete}) {
     // Initial States
     const [message, setMessage]=  useState("");
     const [open, setOpen] = useState(true);
+    const [error, setError] = useState(false);
     
     const handleClose = () => {
         setOpen(false);
@@ -29,6 +30,7 @@ function DeleteItem({itemData, closeDelete}) {
     const handleDelete = (itemId) => {
         const res = doDelete(itemId);
         if(res.error){
+            setError(true);
             setMessage(res.error);
             setTimeout(function(){
             handleClose();
@@ -44,18 +46,24 @@ function DeleteItem({itemData, closeDelete}) {
       },1000)
     }
 
-    return(
-        <div>
-           <Dialog maxWidth="lg" open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                <DialogTitle>{`This will DELETE the "${itemData.name} item" from the "${collection.name} collection" in the "${room.name} room""`}</DialogTitle>
-                <DialogContent><span>{message}</span></DialogContent>
-                <DialogActions>
-                    <Button onClick={() => handleDelete(itemData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
-                    <Button onClick={handleClose} color="primary">CANCEL</Button>
-                 </DialogActions>
-            </Dialog>
-         </div>
-    );
+    if(error){
+        return(<h1>{message}</h1>);
+    }
+    else{
+        return(
+            <div>
+               <Dialog maxWidth="lg" open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
+                    <DialogTitle>{`This will DELETE the "${itemData.name} item" from the "${collection.name} collection" in the "${room.name} room""`}</DialogTitle>
+                    <DialogContent><span>{message}</span></DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => handleDelete(itemData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                        <Button onClick={handleClose} color="primary">CANCEL</Button>
+                     </DialogActions>
+                </Dialog>
+             </div>
+        );
+    }
+    
 }
 
 export default DeleteItem;

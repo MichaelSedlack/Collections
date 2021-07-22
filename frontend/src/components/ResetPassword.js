@@ -52,7 +52,7 @@ function ResetPassword ()
                 var res = response.data;
                 if(res.error)
                 {
-                    setMessage("There was an error");
+                    setMessage(res.error);
                     setMessageColor('red');
                     setError(true);
                     setIsLoading(false);
@@ -68,6 +68,8 @@ function ResetPassword ()
             })
             .catch(function(error)
             {
+                setMessage("There was an error");
+                setMessageColor('red');
                 setIsLoading(false);
                 setError(true);
                 console.log(error.message);
@@ -99,7 +101,7 @@ function ResetPassword ()
             var res = response.data;
             if(res.error)
             {
-                setMessage("There was an error");
+                setMessage(res.error);
                 setMessageColor('red');
                 setError(true);
             }
@@ -116,6 +118,8 @@ function ResetPassword ()
         })
         .catch(function(error)
         {
+            setMessage("There was an error");
+            setMessageColor('red');
             setError(true);
             console.log(error.response.data);
         });
@@ -152,7 +156,7 @@ function ResetPassword ()
     if(error){
         return(
             <div>
-                <h4>There was a problem resetting password. Please send another reset link</h4>
+                <h4>{message}</h4>
                 <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Login" onClick={()=>{window.location.href = '/'}}>Back to Home</Button><br />
             </div>
         );

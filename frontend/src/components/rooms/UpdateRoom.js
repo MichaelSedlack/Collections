@@ -27,6 +27,7 @@ function UpdateRoom({roomData, handleClose})
   // Initial states
   const [message,setMessage] = useState('');
   const [option,setOption] = useState('Private');
+  const [error, setError] = useState(false);
   const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
   const [checkOption, setCheckOption] = useState(true);
   const [name,setName] = useState(roomData.roomName);
@@ -59,6 +60,7 @@ function UpdateRoom({roomData, handleClose})
         const res = doUpdate(roomId, newRoom);
 
         if(res.error){
+          setError(true);
           setMessage(res.error);
         }else{
           setMessage("Successfully updated room!");
@@ -68,8 +70,11 @@ function UpdateRoom({roomData, handleClose})
           },1000)
         }
     };
-
-    return(
+    if(error){
+      return(<h1>{message}</h1>);
+    }
+    else{
+      return(
         <div>
             <TextField margin="dense" variant="outlined" type="text" id="roomName" defaultValue={name} label="Room Name" onChange={(e) => setName(e.target.value)}/><br />
             <FormControl variant="outlined" className={classes.formControl}>
@@ -91,7 +96,9 @@ function UpdateRoom({roomData, handleClose})
             <Button variant="contained" size="large" color="primary" type="submit" id="createRoomButton"  value = "Update Room" onClick={updateRoom}>Update Room</Button>
             <span id="createRoomResult">{message}</span>
         </div>
-    );
+      );
+    }
+    
 }
 
 export default UpdateRoom;

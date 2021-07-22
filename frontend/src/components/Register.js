@@ -58,11 +58,12 @@ function Register()
           var res = response.data;
           if (res.error) 
           {
-            setMessage('There was an Error');
+            setMessage(res.error);
             setMessageColor('red');
           }
           else 
           {
+            setMessageColor('green');
             setMessage('New Account Created. Verification Email Sent!');
             setTimeout(
               function(){

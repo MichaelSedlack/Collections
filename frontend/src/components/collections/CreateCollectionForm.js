@@ -34,6 +34,7 @@ function CreateCollectionForm()
   // Initial States
   const [message,setMessage] = useState('');
   const [option,setOption] = useState('Private');
+  const [error, setError] = useState(false);
   const [optionMessage,setOptionMessage] = useState('No one will be able to view your Collection');
   const [checkOption, setCheckOption] = useState(true);
   const [open, setOpen] = useState(false);
@@ -58,6 +59,7 @@ function CreateCollectionForm()
     const res = doCreate(collection);
 
     if(res.error){
+      setError(true);
       setMessage(res.error);
       return;
     }
@@ -209,6 +211,8 @@ function CreateCollectionForm()
               <span id="CreateCollectionResult">{message}</span>
           </div>
       );
+    }else if(error){
+      return(<h1>{message}</h1>);   
     }else{
       return(
         <div>

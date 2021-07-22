@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
+import { Typography } from "@material-ui/core";
 import UpdateItem from "./UpdateItem";
 import DeleteItem from "./DeleteItem";
 import { CollectionContext } from "../UserContext";
@@ -40,6 +41,7 @@ const useStyles = makeStyles(({ spacing }) => ({
     flexDirection: "column",
     paddingLeft: spacing(2),
     paddingRight: spacing(2),
+    width: "11rem",
   },
 
   content: {
@@ -149,7 +151,9 @@ function ItemCard({ item }) {
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <p>Item: {item.name}</p>
-              <p>Description: {item.description}</p>
+              <Typography style={{ wordWrap: "break-word" }}>
+                Description: {item.description}
+              </Typography>
               <br />
               {collection.keys.map((key) => {
                 return (
