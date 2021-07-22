@@ -5,15 +5,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
-import { RoomContext } from './../UserContext';
+import { CollectionContext, RoomContext } from './../UserContext';
 import { ApiContext } from './../ApiContext';
 
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function DeleteCollection({collectionData, closeDelete}) {
-    const {room} = useContext(RoomContext)
+function DeleteItem({itemData, closeDelete}) {
+    const {room} = useContext(RoomContext);
+    const {collection} = useContext(CollectionContext)
     const {doDelete} = useContext(ApiContext);
 
     // Initial States
@@ -25,8 +26,8 @@ function DeleteCollection({collectionData, closeDelete}) {
         closeDelete();
     };
 
-    const handleDelete = (collectionId) => {
-        const res = doDelete(collectionId);
+    const handleDelete = (itemId) => {
+        const res = doDelete(itemId);
         if(res.error){
             setMessage(res.error);
             setTimeout(function(){
@@ -36,7 +37,7 @@ function DeleteCollection({collectionData, closeDelete}) {
         return;
       }
 
-      setMessage("Successfully deleted the collection!");
+      setMessage("Successfully deleted the item!");
       setTimeout(function(){
         setMessage("");
         handleClose();
@@ -46,10 +47,10 @@ function DeleteCollection({collectionData, closeDelete}) {
     return(
         <div>
            <Dialog maxWidth="lg" open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                <DialogTitle>{`This will DELETE the "${collectionData.name} Collection" and all items in the collection from the "${room.name} room"`}</DialogTitle>
+                <DialogTitle>{`This will DELETE the "${itemData.name} item" from the "${collection.name} collection" in the "${room.name} room""`}</DialogTitle>
                 <DialogContent><span>{message}</span></DialogContent>
                 <DialogActions>
-                    <Button onClick={() => handleDelete(collectionData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
+                    <Button onClick={() => handleDelete(itemData.id)} color="secondary">DELETE PERMANENTLY</Button><br/>
                     <Button onClick={handleClose} color="primary">CANCEL</Button>
                  </DialogActions>
             </Dialog>
@@ -57,4 +58,4 @@ function DeleteCollection({collectionData, closeDelete}) {
     );
 }
 
-export default DeleteCollection;
+export default DeleteItem;

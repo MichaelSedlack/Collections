@@ -1,5 +1,4 @@
 import React, { useRef, useState, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -11,6 +10,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import { RoomContext } from './../UserContext';
+import { ApiContext } from './../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -24,86 +24,67 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateCollectionForm()
 {
-    const keyName = useRef(null);
-    const {room} = useContext(RoomContext);
+  const { doCreate } = useContext(ApiContext);
+  const {room} = useContext(RoomContext);
 
-    const classes = useStyles();
-    var bp = require('./../Path.js');
+  const keyName = useRef(null);
 
-    var _ud = localStorage.getItem('user_data');
-    var ud = JSON.parse(_ud);
-    var token = ud.accessToken;
+  const classes = useStyles();
 
-    // Initial States
-    const [message,setMessage] = useState('');
-    const [option,setOption] = useState('Private');
-    const [optionMessage,setOptionMessage] = useState('No one will be able to view your Collection');
-    const [checkOption, setCheckOption] = useState(true);
-    const [open, setOpen] = useState(false);
-    const [collectionName, setCollectionName] = useState("");
-    const [collectionKeys, setCollectionKeys] = useState([]);
-    const [keyMessage, setKeyMessage] = useState("");
-    const [showKeyMessage, setShowKeyMessage] = useState(false);
-    const [template, setTemplate] = useState(false);
+  // Initial States
+  const [message,setMessage] = useState('');
+  const [option,setOption] = useState('Private');
+  const [optionMessage,setOptionMessage] = useState('No one will be able to view your Collection');
+  const [checkOption, setCheckOption] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [collectionName, setCollectionName] = useState("");
+  const [collectionKeys, setCollectionKeys] = useState([]);
+  const [keyMessage, setKeyMessage] = useState("");
+  const [showKeyMessage, setShowKeyMessage] = useState(false);
+  const [template, setTemplate] = useState(false);
+  const [radio, setRadio] = useState("Custom");
 
-    const createCollection = async event =>
-    {
-        event.preventDefault();
+  const createCollection = async event =>
+  {
+    event.preventDefault();
 
-        var obj = {name:collectionName,private:checkOption, roomID:room.id, keys:collectionKeys};
-        var js = JSON.stringify(obj);
-
-        var config = 
-      {
-          method: 'post',
-          url: bp.buildPath('collections/create'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${token}`
-          },
-          data: js
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-              setMessage('There was an error');
-            }
-            else 
-            {
-
-                setMessage('New Collection Created');
-                setTimeout(
-                function(){
-                        setCollectionName("");
-                        setOpen(false);
-                },2000)
-            }
-        })
-        .catch(function (error) 
-        {
-            setMessage(error.message);
-        });
+    var collection = {
+      name:collectionName,
+      private: checkOption,
+      roomID:room.id,
+      keys:collectionKeys
     };
 
-    const displayChoice = (e) => {
-        var choice = e.target.value;
+    const res = doCreate(collection);
 
-        if(choice === "Private"){
-            setOption("Private");
-            setOptionMessage('No one will be able to view your Collection');
-            setCheckOption(true);
-        }
-        else{
-            setOption("Public");
-            setOptionMessage("Everyone will be able to view your Collection");
-            setCheckOption(false);
-        }
+    if(res.error){
+      setMessage(res.error);
+      return;
     }
+
+    setMessage("Successfully created collection!");
+    setTimeout(() => {
+      setMessage("");
+      setOpen(false);
+      setCollectionName("");
+      setOpen(false);
+    }, 500);
+  };
+
+  const displayChoice = (e) => {
+    var choice = e.target.value;
+
+    if(choice === "Private"){
+      setOption("Private");
+      setOptionMessage('No one will be able to view your Collection');
+      setCheckOption(true);
+    }
+    else{
+      setOption("Public");
+      setOptionMessage("Everyone will be able to view your Collection");
+      setCheckOption(false);
+    }
+  }
 
     const handleNameChange = (e) => {
       setCollectionName(e.target.value);
@@ -126,22 +107,30 @@ function CreateCollectionForm()
       setTemplate(true);
       switch(event.target.value){
         case "Books":
+          setRadio("Books");
           setCollectionKeys(["Author", "Genre", "Year", "Edition"]);
           break;
         case "Movies":
+          setRadio("Movies");
           setCollectionKeys(["Author", "Genre", "Year", "Platform"]);
           break;  
         case "Trading Cards":
+          setRadio("Trading Cards");
           setCollectionKeys(["Set", "Condition", "Year", "Rarity"]);
           break;  
         case "Art":
+          setRadio("Art");
           setCollectionKeys(["Artist", "Condition", "Year", "Style"]);
           break;  
-        default:
+        case "Custom":
           setTemplate(false);
           setCollectionKeys([]);
           break;
+        default:
+          console.log("error");
+          break;
       }
+      
     };
 
     if(open){
@@ -150,17 +139,19 @@ function CreateCollectionForm()
               <span id="inner-title">Create New Collection</span><br />
               
               <TextField margin="dense" variant="outlined" type="text" id="collectionName" label="Collection Name" value={collectionName} onChange={e => handleNameChange(e)}/><br />
-              <h4>Custom Properties</h4>
-              <TextField disabled={template ? true : false} margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
-              <Button disabled={template ? true : false} variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
-              {showKeyMessage ? <span>{keyMessage}</span> : null}
-              <br/>
-              <h4>OR Choose a Template</h4>
-              <RadioGroup row aria-label="position" name="position" defaultValue="top" onChange={e=>handleRadioChange(e)}>
+              {template ? <h4>Use a Template for a {radio} Collection</h4> : 
+              <div><h4>Use a Custom Collection</h4>
+                  <TextField disabled={template ? true : false} margin="dense" variant="outlined" type="text" id="collectionKeys" label="Collection Properties"  inputRef={keyName}/>
+                  <Button disabled={template ? true : false} variant="contained" size="medium" color="primary" type="submit" id="addKeyButton" className="buttons" value = "Add Key" onClick={()=>{handleKeys()}}>Add Key</Button>
+                  {/* {showKeyMessage ? <span>{keyMessage}</span> : null} */}
+                  <br/><br/>
+              </div>}
+
+              <RadioGroup row aria-label="position" name="position" defaultValue="Custom" onChange={e=>handleRadioChange(e)}>
                 <FormControlLabel
-                  value="None"
+                  value="Custom"
                   control={<Radio color="primary" />}
-                  label="None"
+                  label="Custom"
                   labelPlacement="top"
                 />
                 <FormControlLabel
@@ -187,7 +178,11 @@ function CreateCollectionForm()
                   label="Art"
                   labelPlacement="top"
                 />
-              </RadioGroup>       
+              </RadioGroup>
+              <h4>Properties</h4>
+              {collectionKeys.length ? collectionKeys.map(key=>{
+                return(<div><p>{key}</p></div>)}) : <div><p>No Properties Created</p></div>
+              }
 
               <br/>
               <hr align="left" width="60%"/> 

@@ -1,4 +1,5 @@
 // IMPORTS/DECLARATIONS
+const config = require('../utils/config');
 const itemsRouter = require('express').Router();
 const Item = require('../models/item');
 //room may not be required, can only access item through collection and nothing else
@@ -6,6 +7,10 @@ const Room = require('../models/room');
 const Collection = require('../models/collection');
 const User = require('../models/user');
 const token = require('../utils/token');
+const path = require('path');
+const crypto = require('crypto');
+const multer = require('multer');
+const {GridFsStorage} = require('multer-gridfs-storage');
 
 // Helper functions
 const containsKeys = (keys, item) => {
@@ -16,11 +21,31 @@ const containsKeys = (keys, item) => {
   return result.includes(false) ? false : true;
 }
 
-// TODO: ROUTES
-// blah
+// MULTER SETUP
+const storage = new GridFsStorage({
+  url: config.MONGODB_URI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
+});
+
+const upload = multer({storage});
+
 // Create Item
-itemsRouter.post('/create', async (req, res) => {
-  const body = req.body;
+itemsRouter.post('/create', upload.single("image"), async (req, res) => {
+  const body = JSON.parse(req.body.item);
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -41,7 +66,7 @@ itemsRouter.post('/create', async (req, res) => {
     uid: verifiedToken.id, 
     name: body.name,
     collectionID: body.collectionID, 
-    item: body.item
+    item: body.item,
   });
   
   if(itemExists.length > 0){
@@ -50,19 +75,46 @@ itemsRouter.post('/create', async (req, res) => {
   // TODO: Update rather than add new item.
   //-------
 
+  const img = 'images/' + req.file.filename;
+
   // Create item object
   const newItem = new Item({
+    name: body.name,
     description: body.description,
     item: body.item,
+    img,
     collectionID: body.collectionID,
     roomID: body.roomID,
-    name: body.name,
     uid: verifiedToken.id
   })
 
   const savedItem = await newItem.save(); // Save item
 
   return res.send(savedItem);
+})
+
+itemsRouter.get('/search', async (req, res) => {
+  const search = req.query.search;
+  const collectionID = req.query.collectionID;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  const collection = await Collection.findById(collectionID);
+
+  if(collection.private && (collection.uid != verifiedToken.id)){
+    return res.status(403).json({error: "Collection is private."});
+  }
+
+  const items = await Item.find({
+    name: { $regex: search, $options: 'i' },
+    collectionID: collectionID
+  })
+
+  return res.send(items);
 })
 
 // GET Item

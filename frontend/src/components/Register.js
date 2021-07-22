@@ -63,7 +63,7 @@ function Register()
           }
           else 
           {
-            setMessage('New Account Created');
+            setMessage('New Account Created. Verification Email Sent!');
             setTimeout(
               function(){
                       history.push('/');

@@ -8,6 +8,8 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { UserContext } from './UserContext';
 import { useHistory } from 'react-router-dom';
 import roomService from './helpers/roomService';
+import collectionService from './helpers/collectionService';
+import itemService from './helpers/itemService';
 
 function Login()
 {
@@ -67,6 +69,8 @@ function Login()
                 setMessageColor('green');
                 context.setUser(user);
                 roomService.setToken(res.accessToken);
+                collectionService.setToken(res.accessToken);
+                itemService.setToken(res.accessToken);
                 setTimeout(
                     function(){
                             history.push('/museum/');

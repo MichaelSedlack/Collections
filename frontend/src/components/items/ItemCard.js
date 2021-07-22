@@ -5,15 +5,20 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import IconButton from '@material-ui/core/IconButton';
-import UpdateRoom from './UpdateRoom';
-import DeleteRoom from './DeleteRoom';
-import { useHistory } from 'react-router-dom';
-import { UserContext, RoomContext } from './../UserContext';
+import UpdateItem from './UpdateItem';
+import DeleteItem from './DeleteItem';
+import { CollectionContext } from '../UserContext';
+import {CardMedia}  from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 
+
 const useStyles= makeStyles(({spacing}) => ({
+  media: {
+    height:200,
+    width: 151,
+  },
+
   root: {
     width: "75%",
     display: 'flex',
@@ -50,6 +55,7 @@ const useStyles= makeStyles(({spacing}) => ({
     paddingLeft: spacing(2),
     paddingRight: spacing(2),
   },
+
   controlsOpen: {
     display: 'flex',
     alignItems:'flex-end',
@@ -58,14 +64,10 @@ const useStyles= makeStyles(({spacing}) => ({
   },
 }));
 
-
-
-function RoomCard({room}){
+function ItemCard({item}){
   // Initial States
-  const history = useHistory();
-  const { user } = useContext(UserContext);
-  const context = useContext(RoomContext);
   const classes = useStyles();
+  const {collection} = useContext(CollectionContext);
 
   const [message, setMessage]=  useState("");
   const [open, setOpen] = React.useState(false);
@@ -74,7 +76,7 @@ function RoomCard({room}){
   const [showDialog, setShowDialog] = useState();
   const [shadow, setShadow] = useState(false);
 
-  const editRoom = (roomId, roomName) => {
+  const editItem = (itemId, itemName) => {
     setCancelButton(true);
     setEdit(true);
   }
@@ -86,30 +88,25 @@ function RoomCard({room}){
 
   const openDelete = (id,name) => {
       setOpen(true);
-      setShowDialog(<DeleteRoom roomData={{id,name}} closeDelete={()=> closeDelete()}/>)
+      setShowDialog(<DeleteItem itemData={{id,name}} closeDelete={()=> closeDelete()}/>)
   }
 
-  // Used to hide the Create New Room Form
+  // Used to hide the Create New Item Form
   function cancelClicked() {
     setCancelButton(false);
     setEdit(false);
   }
 
-  const enterRoom = (roomId, roomName) => {
-    context.setRoom({name:roomName,id:roomId});
-    history.push("/collections")
-  }
 
     if(edit){
       return (
-        <div key={room.id}>
+        <div key={item.id}>
           {/* Displays the content as editable */}
           <Card onMouseEnter={() => setShadow(true)} onMouseLeave={() => setShadow(false)} className={shadow ? classes.root : classes.hover}>
             <div className={classes.details}>                            
               <div className={classes.controlsOpen}>
-                <UpdateRoom roomData={{roomId: room.id, roomName: room.name}} handleClose={cancelClicked}/>
-                {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton"  value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
-
+                <UpdateItem itemData={{itemId: item.id, itemName: item.name, itemDescription:item.description}} handleClose={cancelClicked}/>
+                {cancelButton ? <Button variant="contained" size="large" color="secondary" type="submit" id="cancelButton" value="Cancel" onClick={()=>{cancelClicked()}}>Cancel</Button> : null}
               </div>
             </div>
           </Card>
@@ -120,29 +117,28 @@ function RoomCard({room}){
     }else{
       return(
         <div>
+          {console.log(item.img)}
           <Card onMouseEnter={() => setShadow(true)} onMouseLeave={() => setShadow(false)} className={shadow ? classes.root : classes.hover}>
             <div className={classes.details}>                            
               <CardContent className={classes.content}>
-                <div>
-                  <p>{room.name} Room</p>
-                  <p>{room.private ? "Private - No one can view this room" : "Public - Anyone can view this room"}</p>
-                  <p>{room.collections.length} Collections Found</p>
-                </div>
+                {/* Displays Item Image */}
+                {(item.img) && <CardMedia className={classes.media} image={item.img} />}
+            
+                <p>Item: {item.name}</p>
+                <p>Description: {item.description}</p><br/>
+                {collection.keys.map(key => {
+                  return (<p key={key}>{key}: {item.item[key]}</p>)
+                })}
+            
               </CardContent>
               <div className={classes.controls}>
-                {/* Enter/Update/Delete Room Buttons */}
-                <IconButton size="medium" color="primary" onClick={()=>{enterRoom(room.id,room.name)}}><MeetingRoomIcon/></IconButton>
-                { (user.id === room.uid) &&
-                  <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
-                }
-                  {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
-                  <span>{message}</span>
-                  {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
-                { (user.id === room.uid) &&
-                  <IconButton color="secondary" size ="small" onClick={()=>{openDelete(room.id,room.name)}}><DeleteIcon/></IconButton>
-                }
-                  <span id="createDialog">{showDialog}</span>
-                  </div>
+                {/* Enter/Update/Delete item Buttons */}
+                <IconButton size="medium" color="primary" onClick={()=>{editItem(item.id,item.name)}}><EditIcon/></IconButton>
+                <span>{message}</span>
+                {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
+                <IconButton color="secondary" size ="small" onClick={()=>{openDelete(item.id,item.name)}}><DeleteIcon/></IconButton>
+                <span id="createDialog">{showDialog}</span>
+              </div>
             </div>
           </Card>
           <br />
@@ -151,4 +147,4 @@ function RoomCard({room}){
     }
 }
 
-export default RoomCard;
+export default ItemCard;

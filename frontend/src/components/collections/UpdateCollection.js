@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -7,8 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import { UserContext} from './../UserContext';
-import { RoomContext } from './../UserContext';
+import { ApiContext } from '../ApiContext';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -20,15 +18,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function UpdateCollection({collectionData})
+function UpdateCollection({collectionData, handleClose})
 {
-    const {room} = useContext(RoomContext);
-    const { user } = useContext(UserContext);
     const classes = useStyles();
 
-    var bp = require('./../Path.js');
-
-    
+    const {doUpdate} = useContext(ApiContext);
     // Initial states
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
@@ -53,48 +47,25 @@ function UpdateCollection({collectionData})
         }
     }
 
-    const updateCollection = async event =>
+    const updateCollection = event =>
     {
         event.preventDefault();
-        var obj = {
-          name: name,
-          private:checkOption,
-          
+        const newCollection = {
+            name:name,
+            private:checkOption
         };
-        var js = JSON.stringify(obj);
 
-        var config = 
-      {
-          method: 'put',
-          url: bp.buildPath('collections/single'),	
-          headers: 
-          {
-              'Content-Type': 'application/json',
-              'Authorization': `bearer ${user.accessToken}`
-          },
-          params: {id: collectionId},
-          data: js
-      };
-      
-        axios(config)
-            .then(function (response) 
-        {
-            var res = response.data;
-            if (res.error) 
-            {
-                console.log(res.message);
-                setMessage('There was an error');
-            }
-            else 
-            {
-                setMessage('Collection Updated');
-            }
-        })
-        .catch(function (error) 
-        {
-            setMessage(error.message);
-            console.log(error.message);
-        });
+        const res = doUpdate(collectionId, newCollection);
+
+        if(res.error){
+            setMessage(res.error);
+          }else{
+            setMessage("Successfully updated collection!");
+            setTimeout(function(){
+              setMessage("");
+              handleClose();
+            },1000)
+          }
     };
 
     return(
@@ -116,7 +87,7 @@ function UpdateCollection({collectionData})
 
             <p id="result">{optionMessage}</p>
             <br /><br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createcollectionButton" className="buttons" value = "Update collection" onClick={updateCollection}>Update collection</Button>
+            <Button variant="contained" size="large" color="primary" type="submit" id="createcollectionButton" value = "Update collection" onClick={updateCollection}>Update collection</Button>
             <span id="createcollectionResult">{message}</span>
         </div>
     );

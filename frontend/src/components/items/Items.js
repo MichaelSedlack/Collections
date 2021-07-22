@@ -2,26 +2,26 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import CreateCollectionForm from './CreateCollectionForm';
-import CollectionForm from './CollectionForm';
-import SearchCollections from './SearchCollections';
-import collectionService from '../helpers/collectionService';
-import { UserContext, RoomContext } from './../UserContext';
+import CreateItemForm from './CreateItemForm';
+import ItemForm from './ItemForm';
+import SearchItems from './SearchItems';
+import itemService from '../helpers/itemService';
+import { UserContext, CollectionContext } from './../UserContext';
 import { ApiContext } from '../ApiContext';
 
-function Collections() {
+function Items() {
   const {user, setUser} = useContext(UserContext)
-  const {room} = useContext(RoomContext);
+  const {collection} = useContext(CollectionContext);
 
   const history = useHistory();
 
-  var bp = require('./../Path.js');
 
   // Initial States
   const [message,setMessage] = useState('');
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [collections, setCollections] = useState([])
+  const [items, setItems] = useState([]);
+  const [keys, setKeys] = useState([]);
 
 
   // only fires at beginning
@@ -30,14 +30,16 @@ function Collections() {
       try{
         setIsLoading(true);
 
-        const res = await collectionService.getAll(room.id,);
+        const res = await itemService.getAll(collection.id);
 
         if(res.error){
           setError(true);
           setMessage(res.error);
           return;
         }
-        setCollections(res.collections);
+        console.log(`Response from API ITEMS: ${res.keys}`)
+        setKeys(res.keys);
+        setItems(res.items);
         setIsLoading(false);
       }catch(exception){
         setError(true);
@@ -46,16 +48,16 @@ function Collections() {
     })()
   },[user])
     
-  const doCreate = async (collection) => {
+  const doCreate = async (item) => {
     try{
-      const res = await collectionService.create(collection);
+      const res = await itemService.create(item);
 
       if(res.error){
         return res;
       }
 
-      const newCollections = [...collections, res];
-      setCollections(newCollections);
+      const newItems = [...items, res];
+      setItems(newItems);
     }catch(exception){
       console.log(exception);
     }
@@ -63,29 +65,29 @@ function Collections() {
 
   const doSearch = async (search) => {
     try{
-      const res = await collectionService.search(search, user.id);
+      const res = await itemService.search(search, collection.id);
 
       if(res.error){
         return res;
       }
 
-      setCollections(res);
+      setItems(res);
     }catch(exception){
       console.log(exception);
     }
   }
 
 
-  const doDelete = async (collectionID) => {
+  const doDelete = async (itemID) => {
     try{
-      const res = await collectionService.deleteCollection(collectionID);
+      const res = await itemService.deleteItem(itemID);
 
       if(res.error){
         return res;
       }
 
       setTimeout(function(){
-        setCollections(collections.filter(collection => collection.id !== collectionID));
+        setItems(items.filter(item => item.id !== itemID));
         return res;
       },1000)
 
@@ -95,21 +97,21 @@ function Collections() {
     }
   }
 
-  const doUpdate = async ( collectionID, newCollection ) => {
+  const doUpdate = async ( itemID, newItem ) => {
     try{
-      const res = await collectionService.update(collectionID, newCollection);
+      const res = await itemService.update(itemID, newItem);
 
       if(res.error){
         return res;
       }
 
       setTimeout(function(){
-        setCollections(collections.map(collection => {
-          if(collectionID === collection.id){
-            return {...collection, ...newCollection}
+        setItems(items.map(item => {
+          if(itemID === item.id){
+            return {...item, ...newItem}
           }
 
-          return collection;
+          return item;
         }))
       }, 500);
     }catch(exception){
@@ -134,10 +136,10 @@ function Collections() {
                         {/* Begin Row (This row is split into 2+5+5=12)*/}
                         <Grid item xs={2}/>
                         <Grid item xs={5}>    
-                            <SearchCollections/>                    
+                            <SearchItems/>                    
                         </Grid>
                         <Grid item xs={5}>
-                            <Button variant="contained" size="large" color="primary" type="submit" id="roomButton" className="buttons" value="Back to Rooms" onClick={()=>{history.push("/museum/")}}>Back to Rooms</Button> <br />
+                            <Button variant="contained" size="large" color="primary" type="submit" id="roomButton" className="buttons" value="Back to Collections" onClick={()=>{history.push("/collections")}}>Back to Collections</Button> <br />
                         </Grid>
                         {/* End Row */}
 
@@ -147,22 +149,22 @@ function Collections() {
                         {/* Begin Row */}
                         <Grid item xs={1}/>
                         <Grid item xs={4}>
-                           <span id="displayCollection"><h1>{room.name} Collections</h1></span>  
-                            <CollectionForm collections={collections}/>
+                           <span id="displayItem"><h1>{collection.name} Items</h1></span>  
+                            <ItemForm items={items}/>
                             {error && <div>{message}</div>}
                         </Grid>
                         <Grid item xs={2}/>
                         <Grid item xs={5}>
-                            <CreateCollectionForm/>
+                            <CreateItemForm keys={keys}/>
                         </Grid>
                         {/* End Row */}
 
                         <Grid item xs={12}/>
                     </Grid>
-                    </ApiContext.Provider>
+                </ApiContext.Provider>
             </div>
         )
     }
 }
 
-export default Collections;
+export default Items;
