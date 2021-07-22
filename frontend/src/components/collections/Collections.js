@@ -15,8 +15,6 @@ function Collections() {
 
   const history = useHistory();
 
-  var bp = require('./../Path.js');
-
   // Initial States
   const [message,setMessage] = useState('');
   const [error, setError] = useState(false);
@@ -137,7 +135,7 @@ function Collections() {
                             <SearchCollections/>                    
                         </Grid>
                         <Grid item xs={5}>
-                            <Button variant="contained" size="large" color="primary" type="submit" id="roomButton" className="buttons" value="Back to Rooms" onClick={()=>{history.push("/museum/")}}>Back to Rooms</Button> <br />
+                            <Button variant="contained" size="large" color="primary" type="submit" id="roomButton" className="buttons" value="Back to Rooms" onClick={()=>{history.push("/museum")}}>Back to Rooms</Button> <br />
                         </Grid>
                         {/* End Row */}
 

@@ -66,7 +66,7 @@ function PageHeader () {
 
   const backToRoom = () => {
     setAnchorEl(null);
-    history.push('/museum/');
+    history.push('/museum');
   }
 
   var currPath = window.location.pathname;
@@ -81,7 +81,7 @@ function PageHeader () {
     case "/register":
       pageName = "Register";
       break;
-    case "/museum/":
+    case "/museum":
       pageName = "Museum";
       break;
     case "/collections":
@@ -112,7 +112,7 @@ function PageHeader () {
                   <IconButton aria-controls="simple-menu" aria-haspopup="true" color="secondary" onClick={handleClick}><AccountBoxIcon fontSize="large" />{user.firstName}</IconButton> 
                   <StyledMenu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                     <StyledMenuItem onClick={handleLogout}><ListItemText primary="Logout"/></StyledMenuItem>
-                    <StyledMenuItem onClick={backToRoom}><ListItemText primary="Back to Rooms Page"/></StyledMenuItem>
+                    <StyledMenuItem onClick={backToRoom}><ListItemText primary="To Rooms Page"/></StyledMenuItem>
                   </StyledMenu>
                 </div>
               : <img src={logo} />}

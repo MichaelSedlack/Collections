@@ -39,7 +39,7 @@ function App() {
                   <RegisterPage />
                 </Route>
                 <Route path="/" exact>
-                  <LoginPage />
+                  {user ? <Redirect to='/museum'/> : <LoginPage />}
                 </Route>
                 <Route path="/museum" exact>
                   {!user ? <Redirect to='/'/> : <MuseumPage />}

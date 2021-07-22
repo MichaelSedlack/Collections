@@ -73,7 +73,7 @@ function Login()
                 itemService.setToken(res.accessToken);
                 setTimeout(
                     function(){
-                            history.push('/museum/');
+                            history.push('/museum');
                     },2000)
             }
         })

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CreateRoomForm from './CreateRoomForm';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import RoomForm from './RoomForm';
 import SearchRooms from './SearchRooms';
@@ -13,7 +12,6 @@ import roomService from '../helpers/roomService';
 function Museum() {
 
   const {user, setUser} = useContext(UserContext)
-  const history = useHistory();
   const { userID } = useParams();
 
   // Initial States
@@ -122,11 +120,6 @@ function Museum() {
     }
   }
 
-  const handleLogout = () => {
-    setUser(null);
-    window.localStorage.clear();
-    history.push('/');
-  }
 
   if(isLoading){
     return(
