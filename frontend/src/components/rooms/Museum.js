@@ -146,9 +146,7 @@ function Museum() {
             <Grid item xs={5}>    
                 <SearchRooms/>                    
             </Grid>
-            <Grid item xs={5}>
-                <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button> <br />
-            </Grid>
+            <Grid item xs={5}/>
             {/* End Row */}
 
             {/* single row of nothing. Im using this to space things out */}

@@ -146,7 +146,6 @@ function Items() {
                             <SearchItems/>                    
                         </Grid>
                         <Grid item xs={5}>
-                            <Button variant="contained" size="large" color="secondary" type="submit" id="loginButton" className="buttons" value="Sign Out" onClick={()=>{handleLogout()}}>Sign Out</Button>
                             <Button variant="contained" size="large" color="primary" type="submit" id="roomButton" className="buttons" value="Back to Collections" onClick={()=>{history.push("/collections")}}>Back to Collections</Button> <br />
                         </Grid>
                         {/* End Row */}
