@@ -3,11 +3,44 @@ import { withRouter, useHistory } from 'react-router-dom';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import { Grid, IconButton } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { UserContext } from './UserContext';
 import '../App.css';
 import logo from './../MyuseumLogo.png';
 
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 function PageHeader () {
 
@@ -29,6 +62,11 @@ function PageHeader () {
     setUser(null);
     window.localStorage.clear();
     history.push('/');
+  }
+
+  const backToRoom = () => {
+    setAnchorEl(null);
+    history.push('/museum/');
   }
 
   var currPath = window.location.pathname;
@@ -72,9 +110,10 @@ function PageHeader () {
         <h1>{pageName}</h1>
         {user ? <div>
                   <IconButton aria-controls="simple-menu" aria-haspopup="true" color="secondary" onClick={handleClick}><AccountBoxIcon fontSize="large" />{user.firstName}</IconButton> 
-                  <Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
+                  <StyledMenu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+                    <StyledMenuItem onClick={handleLogout}><ListItemText primary="Logout"/></StyledMenuItem>
+                    <StyledMenuItem onClick={backToRoom}><ListItemText primary="Back to Rooms Page"/></StyledMenuItem>
+                  </StyledMenu>
                 </div>
               : <img src={logo} />}
       </Grid>
