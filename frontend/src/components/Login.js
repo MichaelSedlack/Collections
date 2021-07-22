@@ -57,14 +57,13 @@ function Login()
             var res = response.data;
             if (res.error) 
             {
-                setMessage("User/Password combination incorrect");
+                setMessage(res.error);
                 setMessageColor('red');
             }
             else 
             {	
                 var user = {...res}
                 window.localStorage.setItem('user_data', JSON.stringify(user));
-                
                 setMessage("Logging In");
                 setMessageColor('green');
                 context.setUser(user);
@@ -79,6 +78,8 @@ function Login()
         })
         .catch(function (error) 
         {
+            setMessage("Username or Password Incorrect");
+            setMessageColor('red');
             console.log(error.response.data);
         });
     }

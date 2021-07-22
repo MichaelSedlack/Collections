@@ -31,6 +31,7 @@ function Collections() {
         const res = await collectionService.getAll(room.id,);
 
         if(res.error){
+          setIsLoading(false);
           setError(true);
           setMessage(res.error);
           return;
@@ -38,7 +39,9 @@ function Collections() {
         setCollections(res.collections);
         setIsLoading(false);
       }catch(exception){
+        setIsLoading(false);
         setError(true);
+        setMessage(exception.message);
         console.log(exception);
       }
     })()
@@ -49,12 +52,18 @@ function Collections() {
       const res = await collectionService.create(collection);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       const newCollections = [...collections, res];
       setCollections(newCollections);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -64,11 +73,17 @@ function Collections() {
       const res = await collectionService.search(search, user.id);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setCollections(res);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -79,9 +94,12 @@ function Collections() {
       const res = await collectionService.deleteCollection(collectionID);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setTimeout(function(){
         setCollections(collections.filter(collection => collection.id !== collectionID));
         return res;
@@ -89,6 +107,9 @@ function Collections() {
 
       return true;
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -98,9 +119,12 @@ function Collections() {
       const res = await collectionService.update(collectionID, newCollection);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setTimeout(function(){
         setCollections(collections.map(collection => {
           if(collectionID === collection.id){
@@ -111,6 +135,9 @@ function Collections() {
         }))
       }, 500);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -121,6 +148,7 @@ function Collections() {
         return(
             <h4>Loading Webpage</h4>
         );
+    }else if(error){return(<h1>{message}</h1>);
     }else{
         return(
             <div>

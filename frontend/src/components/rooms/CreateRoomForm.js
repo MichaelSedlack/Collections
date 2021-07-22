@@ -26,6 +26,7 @@ function CreateRoomForm(){
     // Initial States
     const [message,setMessage] = useState('');
     const [option,setOption] = useState('Private');
+    const [error, setError] = useState(false);
     const [optionMessage,setOptionMessage] = useState('No one will be able to view your Room');
     const [checkOption, setCheckOption] = useState(true);
     const [open, setOpen] = useState(false);
@@ -44,6 +45,7 @@ function CreateRoomForm(){
         const res = doCreate(room);
 
         if(res.error){
+          setError(true);
           setMessage(res.error);
           return;
         }
@@ -76,7 +78,10 @@ function CreateRoomForm(){
       setRoomName(e.target.value);
     }
 
-    if(open){
+    if(error){
+      return(<h1>{message}</h1>);
+    }
+    else if(open){
         return(
           <div>
               <span id="inner-title">Create New Room</span><br />

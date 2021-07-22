@@ -33,6 +33,7 @@ function Museum() {
         const currUser = await roomService.getUser(id);
 
         if(res.error){
+          setIsLoading(false);
           setError(true);
           setMessage(res.error);
           return;
@@ -42,7 +43,9 @@ function Museum() {
         setMuseumUser(currUser);
         setIsLoading(false);
       }catch(exception){
+        setIsLoading(false);
         setError(true);
+        setMessage(exception.message);
         console.log(exception);
       }
     })()
@@ -53,12 +56,18 @@ function Museum() {
       const res = await roomService.create(room);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       const newRooms = [...rooms, res];
       setRooms(newRooms);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -68,13 +77,17 @@ function Museum() {
       const res = await roomService.search(search, user.id);
 
       if(res.error){
+        setIsLoading(false);
         setError(true);
         setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setRooms(res);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -84,9 +97,12 @@ function Museum() {
       const res = await roomService.deleteRoom(roomID);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setTimeout(function(){
         setRooms(rooms.filter(room => room.id !== roomID));
         return res;
@@ -94,6 +110,9 @@ function Museum() {
 
       return true;
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -103,9 +122,12 @@ function Museum() {
       const res = await roomService.update(roomID, newRoom);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setTimeout(function(){
         setRooms(rooms.map(room => {
           if(roomID === room.id){
@@ -116,15 +138,19 @@ function Museum() {
         }))
       }, 500);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
 
 
   if(isLoading){
-    return(
-        <h4>Loading Webpage</h4>
-    );
+    return(<h4>Loading Webpage</h4>);
+  }
+  else if(error){
+    return(<h1>{message}</h1>);
   }
   else{
     return(

@@ -16,6 +16,7 @@ function ForgotPassword()
 
     // Initial States
     const [message,setMessage] = useState('');
+    const [color, setColor] = useState('green');
     const [emailErrorColor, setEmailErrorColor] = useState('');
     const [emailError, setEmailError] = useState('');
     const [checkEmailError, setCheckEmailError] = useState(false);
@@ -45,10 +46,12 @@ function ForgotPassword()
             var res = response.data;
             if (res.error) 
             {
-              setMessage('Not valid email');
+              setColor('red');
+              setMessage("Email not found");
             }
             else 
             {
+              setColor('green')
               setMessage('Email Sent');
               setTimeout(
                 function(){
@@ -58,6 +61,8 @@ function ForgotPassword()
         })
         .catch(function (error) 
         {
+          setColor('red');
+          setMessage("Email not found");
           console.log(error.response.data);
         });
     };
@@ -103,7 +108,7 @@ function ForgotPassword()
             <span id="emailResult" style={{color:emailErrorColor}}>{emailError}</span><br />
             <Button style={{marginBottom: "2em"}} variant="contained" size="small" color="primary" type="submit" id="sendEmailButton" className="buttons" value="Send Email" onClick={sendEmail} endIcon={<SendIcon>send</SendIcon>}>Send Email</Button>
             <Button style={{marginBottom: "2em"}} variant="contained" size="small" color="secondary" type="submit" id="loginButton" className="buttons" value="Return to Login" onClick={()=>{window.location.href = '/'}}>Return to Login</Button><br />
-            <span id="emailResult" style={{color:'green'}}>{message}</span>
+            <span id="emailResult" style={{color:color}}>{message}</span>
             </Grid>
         </div>
     );

@@ -33,6 +33,7 @@ function Items() {
         const res = await itemService.getAll(collection.id);
 
         if(res.error){
+          setIsLoading(false);
           setError(true);
           setMessage(res.error);
           return;
@@ -42,7 +43,9 @@ function Items() {
         setItems(res.items);
         setIsLoading(false);
       }catch(exception){
+        setIsLoading(false);
         setError(true);
+        setMessage(exception.message);
         console.log(exception);
       }
     })()
@@ -53,12 +56,18 @@ function Items() {
       const res = await itemService.create(item);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       const newItems = [...items, res];
       setItems(newItems);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -68,11 +77,17 @@ function Items() {
       const res = await itemService.search(search, collection.id);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setItems(res);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -83,9 +98,12 @@ function Items() {
       const res = await itemService.deleteItem(itemID);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setTimeout(function(){
         setItems(items.filter(item => item.id !== itemID));
         return res;
@@ -93,6 +111,9 @@ function Items() {
 
       return true;
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -102,9 +123,12 @@ function Items() {
       const res = await itemService.update(itemID, newItem);
 
       if(res.error){
+        setIsLoading(false);
+        setError(true);
+        setMessage(res.error);
         return res;
       }
-
+      setIsLoading(false);
       setTimeout(function(){
         setItems(items.map(item => {
           if(itemID === item.id){
@@ -115,6 +139,9 @@ function Items() {
         }))
       }, 500);
     }catch(exception){
+      setIsLoading(false);
+      setError(true);
+      setMessage(exception.message);
       console.log(exception);
     }
   }
@@ -125,6 +152,8 @@ function Items() {
         return(
             <h4>Loading Webpage</h4>
         );
+    }else if(error){
+      return(<h1>{message}</h1>);
     }else{
         return(
             <div>

@@ -17,6 +17,7 @@ function CreateItemForm({keys})
   // Initial States
   const [message,setMessage] = useState('');
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(false);
   const [itemName, setItemName] = useState("");
   const [itemKeys, setItemKeys] = useState({});
   const [image, setImage] = useState();
@@ -43,6 +44,7 @@ function CreateItemForm({keys})
     const res = doCreate(formData);
 
     if(res.error){
+      setError(true);
       setMessage(res.error);
       return;
     }
@@ -118,7 +120,10 @@ function CreateItemForm({keys})
               <span id="CreateItemResult">{message}</span>
           </div>
       );
-    }else{
+    }else if(error){
+      return(<h1>{message}</h1>);
+    }
+    else{
       return(
         <div>
           <Button variant="contained" size="large" color="primary" type="submit" id="CreateItemFormButton" className="buttons" value="Create New Item" onClick={() => setOpen(true)}>Create New Item</Button><br />
