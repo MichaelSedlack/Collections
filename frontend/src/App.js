@@ -11,6 +11,8 @@ import CollectionsPage from './pages/CollectionsPage';
 import ItemsPage from './pages/ItemPage';
 import Verification from './pages/VerificationPage'
 import roomService from './components/helpers/roomService';
+import collectionService from './components/helpers/collectionService';
+import itemService from './components/helpers/itemService';
 import { UserContext, RoomContext, CollectionContext } from './components/UserContext';
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
       const loggedUser = JSON.parse(user_data);
       setUser(loggedUser);
       roomService.setToken(loggedUser.accessToken);
+      collectionService.setToken(loggedUser.accessToken);
+      itemService.setToken(loggedUser.accessToken);
     }
   }, [])
 
