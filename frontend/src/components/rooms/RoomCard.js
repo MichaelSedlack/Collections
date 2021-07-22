@@ -11,17 +11,61 @@ import UpdateRoom from './UpdateRoom';
 import DeleteRoom from './DeleteRoom';
 import { useHistory } from 'react-router-dom';
 import { RoomContext } from './../UserContext';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles= makeStyles(({spacing}) => ({
+  root: {
+    width: "75%",
+    display: 'flex',
+    transition: '.5s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    paddingBottom: spacing(2),
+    paddingTop: spacing(2),
+    
+  },
+  hover: {
+    width: "75%",
+    display: 'flex',
+    transition: '0.3s',
+    boxShadow: '1px 1px 2px 2px rgba(34, 35, 58, 0.2)',
+    paddingBottom: spacing(2),
+    paddingTop: spacing(2),
+    
+  },
+
+  details: {
+    display: 'flex',
+    flexDirection: 'column',
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
+  },
+
+  content: {
+    flex: '1 0 auto',
+  },
+
+  controls: {
+    display: 'flex',
+    alignItems:'center',
+    paddingLeft: spacing(2),
+    paddingRight: spacing(2),
+  },
+}));
+
+
 
 function RoomCard({room}){
   // Initial States
   const history = useHistory();
   const context = useContext(RoomContext);
+  const classes = useStyles();
 
   const [message, setMessage]=  useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
+  const [shadow, setShadow] = useState(false);
 
   const editRoom = (roomId, roomName) => {
     setCancelButton(true);
@@ -66,15 +110,16 @@ function RoomCard({room}){
     }else{
       return(
         <div>
-          <Card >                            
-            <CardContent>
-            <div>
-              <p>{room.name} Room</p>
-              <p>{room.private ? "Private - No one can view this room" : "Public - Anyone can view this room"}</p>
-              <p>{room.collections.length} Collections Found</p>
-            </div>
+          <Card onMouseEnter={() => setShadow(true)} onMouseLeave={() => setShadow(false)} className={shadow ? classes.root : classes.hover}>
+            <div className={classes.details}>                            
+              <CardContent className={classes.content}>
+                <div>
+                  <p>{room.name} Room</p>
+                  <p>{room.private ? "Private - No one can view this room" : "Public - Anyone can view this room"}</p>
+                  <p>{room.collections.length} Collections Found</p>
+                </div>
               </CardContent>
-              <CardActions>
+              <div className={classes.controls}>
                 {/* Enter/Update/Delete Room Buttons */}
                 <IconButton size="medium" color="primary" onClick={()=>{enterRoom(room.id,room.name)}}><MeetingRoomIcon/></IconButton>
                 <IconButton size="medium" color="primary" onClick={()=>{editRoom(room.id,room.name)}}><EditIcon/></IconButton>
@@ -83,7 +128,8 @@ function RoomCard({room}){
                 {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
                 <IconButton color="secondary" size ="small" onClick={()=>{openDelete(room.id,room.name)}}><DeleteIcon/></IconButton>
                 <span id="createDialog">{showDialog}</span>
-              </CardActions>
+              </div>
+            </div>
           </Card>
           <br />
         </div>
