@@ -165,11 +165,17 @@ function Collections() {
             <Grid item xs={5}>
               <Button
                 onClick={() => {
-                  history.push("/museum");
+                  user.id !== room.uid
+                    ? history.push("/publicrooms")
+                    : history.push("/museum");
                 }}
                 color="primary"
               >
-                {room.name} Room
+                {room.private
+                  ? `${room.name} Room`
+                  : user.id === room.uid
+                  ? `${room.name} Room`
+                  : `Public Room`}
               </Button>
               {">>"}
               <Button color="secondary">Collections</Button>
