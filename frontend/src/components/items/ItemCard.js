@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Typography } from "@material-ui/core";
 import UpdateItem from "./UpdateItem";
 import DeleteItem from "./DeleteItem";
-import { CollectionContext } from "../UserContext";
+import { UserContext, RoomContext, CollectionContext } from "../UserContext";
 import { CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 
@@ -67,7 +67,8 @@ function ItemCard({ item }) {
   // Initial States
   const classes = useStyles();
   const { collection } = useContext(CollectionContext);
-
+  const { user } = useContext(UserContext);
+  const { room } = useContext(RoomContext);
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
@@ -98,7 +99,44 @@ function ItemCard({ item }) {
     setEdit(false);
   }
 
-  if (edit) {
+  if (user.id != room.uid) {
+    return (
+      <div>
+        {console.log(item.img)}
+
+        <Card
+          onMouseEnter={() => setShadow(true)}
+          onMouseLeave={() => setShadow(false)}
+          className={shadow ? classes.root : classes.hover}
+        >
+          <div className={classes.details}>
+            <CardContent className={classes.content}>
+              <p>Item: {item.name}</p>
+              <Typography style={{ wordWrap: "break-word" }}>
+                Description: {item.description}
+              </Typography>
+              <br />
+              {collection.keys.map((key) => {
+                return (
+                  <p key={key}>
+                    {key}: {item.item[key]}
+                  </p>
+                );
+              })}
+            </CardContent>
+
+            <div className={classes.controls}>
+              <span>{message}</span>
+              <span id="createDialog">{showDialog}</span>
+            </div>
+          </div>
+          {/* Displays Item Image */}
+          {item.img && <CardMedia className={classes.media} image={item.img} />}
+        </Card>
+        <br />
+      </div>
+    );
+  } else if (edit) {
     return (
       <div key={item.id}>
         {/* Displays the content as editable */}

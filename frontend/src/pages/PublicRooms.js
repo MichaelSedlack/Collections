@@ -1,5 +1,5 @@
 import React from "react";
-import PublicRoom from "../components/rooms/PublicRoom";
+import PublicRoom from "../components/Public/PublicRoom";
 
 const PublicRoomPage = () => {
   return (
