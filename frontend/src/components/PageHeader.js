@@ -67,6 +67,11 @@ function PageHeader() {
     history.push("/museum");
   };
 
+  const toPublicRoom = () => {
+    setAnchorEl(null);
+    history.push("/publicrooms");
+  };
+
   var currPath = window.location.pathname;
   var pageName = "";
 
@@ -96,6 +101,9 @@ function PageHeader() {
       break;
     case "/verification":
       pageName = "Verify MyEmail";
+      break;
+    case "/publicrooms":
+      pageName = "Public Rooms";
       break;
     default:
       break;
@@ -133,7 +141,10 @@ function PageHeader() {
                 <ListItemText primary="Logout" />
               </StyledMenuItem>
               <StyledMenuItem onClick={backToRoom}>
-                <ListItemText primary="To Rooms Page" />
+                <ListItemText primary="Personal Rooms Page" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={toPublicRoom}>
+                <ListItemText primary="Public Rooms" />
               </StyledMenuItem>
             </StyledMenu>
           </div>
