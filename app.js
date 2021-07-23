@@ -50,7 +50,7 @@ app.get('/images/:filename', (req, res) => {
     // Check if file
     if (!file || file.length === 0) {
       return res.status(404).json({
-        err: 'No file exists'
+        error: 'No file exists'
       });
     }
 
@@ -61,7 +61,7 @@ app.get('/images/:filename', (req, res) => {
       readstream.pipe(res);
     } else {
       res.status(404).json({
-        err: 'Not an image'
+        error: 'Not an image'
       });
     }
   });

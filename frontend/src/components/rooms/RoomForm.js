@@ -39,8 +39,8 @@ function RoomForm({ rooms }) {
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((room) => {
           return (
-            <div>
-              <div key={room.id}>
+            <div key={room.id}>
+              <div>
                 <RoomCard room={room} />
               </div>
             </div>
