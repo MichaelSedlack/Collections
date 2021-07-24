@@ -69,7 +69,7 @@ function Collections() {
 
   const doSearch = async (search) => {
     try {
-      const res = await collectionService.search(search, user.id);
+      const res = await collectionService.search(search, room.id);
 
       if (res.error) {
         setIsLoading(false);
@@ -155,14 +155,14 @@ function Collections() {
         <ApiContext.Provider value={{ doUpdate, doDelete, doSearch, doCreate }}>
           <Grid container spacing={3}>
             {/* Set up in to rows of length 12 */}
-            <Grid item xs={12} />
+            <Grid item xs={12} md={12} lg={12} />
 
             {/* Begin Row (This row is split into 2+5+5=12)*/}
-            <Grid item xs={2} />
-            <Grid item xs={5}>
+            <Grid item xs={4} sm={2} md={2} lg={2} />
+            <Grid item xs={7} sm={5} md={5} lg={5}>
               <SearchCollections />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={12} sm={12} md={5} lg={5}>
               <Button
                 onClick={() => {
                   user.id !== room.uid
@@ -184,24 +184,24 @@ function Collections() {
             {/* End Row */}
 
             {/* single row of nothing. Im using this to space things out */}
-            <Grid item xs={12} />
+            <Grid item xs={12} md={12} lg={12} />
 
             {/* Begin Row */}
-            <Grid item xs={1} />
-            <Grid item xs={4}>
+            <Grid item xs={1} md={1} lg={1} />
+            <Grid item xs={11} sm={9} md={5} lg={4}>
               <span id="displayCollection">
                 <h1>{room.name} Collections</h1>
               </span>
               <CollectionForm collections={collections} />
               {error && <div>{message}</div>}
             </Grid>
-            <Grid item xs={2} />
-            <Grid item xs={5}>
+            <Grid item xs={2} sm={3} md={1} lg={2} />
+            <Grid item xs={10} sm={9} md={4} lg={5}>
               <CreateCollectionForm />
             </Grid>
             {/* End Row */}
 
-            <Grid item xs={12} />
+            <Grid item xs={12} md={12} lg={12} />
           </Grid>
         </ApiContext.Provider>
       </div>
