@@ -69,7 +69,7 @@ function Collections() {
 
   const doSearch = async (search) => {
     try {
-      const res = await collectionService.search(search, user.id);
+      const res = await collectionService.search(search, room.id);
 
       if (res.error) {
         setIsLoading(false);
