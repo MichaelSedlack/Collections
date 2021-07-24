@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import CloudUploadOutlinedIcon from "@material-ui/icons/CloudUploadOutlined";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import PublishIcon from "@material-ui/icons/Publish";
 import { UserContext, RoomContext, CollectionContext } from "./../UserContext";
 import { ApiContext } from "./../ApiContext";
 
@@ -90,7 +92,6 @@ function CreateItemForm({ keys }) {
       <div>
         <span id="inner-title">Create New Item</span>
         <br />
-
         <TextField
           margin="dense"
           variant="outlined"
@@ -113,7 +114,6 @@ function CreateItemForm({ keys }) {
           </IconButton>
         </label>
         <span style={{ color: "green" }}>{photoMessage}</span>
-
         <br />
         <br />
         <TextField
@@ -142,27 +142,27 @@ function CreateItemForm({ keys }) {
             </div>
           );
         })}
-
         <br />
         <Button
+          startIcon={<PublishIcon />}
           variant="contained"
           size="large"
           color="primary"
           type="submit"
           id="CreateItemButton"
-          className="buttons"
-          value="Set Up New Item"
+          value="Store New Item"
           onClick={createItem}
         >
-          Set Up New Item
+          Store New Item
         </Button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <Button
+          startIcon={<ExpandLessIcon />}
           variant="contained"
           size="large"
           color="secondary"
           type="submit"
           id="cancelButton"
-          className="buttons"
           value="Cancel"
           onClick={() => {
             setOpen(false);
@@ -180,12 +180,12 @@ function CreateItemForm({ keys }) {
     return (
       <div>
         <Button
+          startIcon={<ExpandMoreIcon />}
           variant="contained"
           size="large"
           color="primary"
           type="submit"
           id="CreateItemFormButton"
-          className="buttons"
           value="Create New Item"
           onClick={() => setOpen(true)}
         >

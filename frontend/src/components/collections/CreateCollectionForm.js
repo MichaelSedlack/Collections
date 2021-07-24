@@ -8,6 +8,9 @@ import Select from "@material-ui/core/Select";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import PublishIcon from "@material-ui/icons/Publish";
 import { makeStyles } from "@material-ui/core/styles";
 import { RoomContext, UserContext } from "./../UserContext";
 import { ApiContext } from "./../ApiContext";
@@ -146,7 +149,6 @@ function CreateCollectionForm() {
       <div>
         <span id="inner-title">Create New Collection</span>
         <br />
-
         <TextField
           margin="dense"
           variant="outlined"
@@ -191,7 +193,6 @@ function CreateCollectionForm() {
             <br />
           </div>
         )}
-
         <RadioGroup
           row
           aria-label="position"
@@ -244,11 +245,9 @@ function CreateCollectionForm() {
             <p>No Properties Created</p>
           </div>
         )}
-
         <br />
         <hr align="left" width="60%" />
         <br />
-
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel>Choose</InputLabel>
           <Select
@@ -262,29 +261,29 @@ function CreateCollectionForm() {
             <MenuItem value="Public">Public</MenuItem>
           </Select>
         </FormControl>
-
         <span id="result">{optionMessage}</span>
         <br />
         <br />
         <Button
+          startIcon={<PublishIcon />}
           variant="contained"
           size="large"
           color="primary"
           type="submit"
           id="CreateCollectionButton"
-          className="buttons"
-          value="Set Up New Collection"
+          value="Store New Collection"
           onClick={createCollection}
         >
-          Set Up New Collection
+          Store New Collection
         </Button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <Button
+          startIcon={<ExpandLessIcon />}
           variant="contained"
           size="large"
           color="secondary"
           type="submit"
           id="cancelButton"
-          className="buttons"
           value="Cancel"
           onClick={() => {
             setOpen(false);
@@ -302,12 +301,12 @@ function CreateCollectionForm() {
     return (
       <div>
         <Button
+          startIcon={<ExpandMoreIcon />}
           variant="contained"
           size="large"
           color="primary"
           type="submit"
           id="CreateCollectionFormButton"
-          className="buttons"
           value="Create New Collection"
           onClick={() => setOpen(true)}
         >
