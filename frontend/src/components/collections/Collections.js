@@ -191,7 +191,7 @@ function Collections() {
             <Grid item xs={11} sm={9} md={5} lg={4}>
               <span id="displayCollection">
                 {user.id === room.uid ? (
-                  <h1>{room.name} Collections</h1>
+                  <h1>Personal {room.name} Collections</h1>
                 ) : (
                   <h1>
                     {console.log(user.firstName)}

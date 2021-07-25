@@ -203,7 +203,7 @@ function Items() {
             <Grid item xs={11} sm={9} md={5} lg={4}>
               <span id="displayItem">
                 {user.id === room.uid ? (
-                  <h1>{collection.name} Items</h1>
+                  <h1>Personal {collection.name} Items</h1>
                 ) : (
                   <h1>
                     {room.firstName}'s Public {collection.name} Items
