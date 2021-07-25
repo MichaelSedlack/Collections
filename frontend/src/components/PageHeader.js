@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Grid, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { UserContext } from "./UserContext";
+import { UserContext, RoomContext } from "./UserContext";
 import "../App.css";
 import logo from "./../MyuseumLogo.png";
 
@@ -43,6 +43,7 @@ const StyledMenuItem = withStyles((theme) => ({
 
 function PageHeader() {
   const { user, setUser } = useContext(UserContext);
+  const { room } = useContext(RoomContext);
   const history = useHistory();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -88,10 +89,14 @@ function PageHeader() {
       pageName = "Personal Myuseum";
       break;
     case "/collections":
-      pageName = "MyCollections";
+      user.id === room.uid
+        ? (pageName = "MyCollections")
+        : (pageName = "Public Collections");
       break;
     case "/items":
-      pageName = "MyItems";
+      user.id === room.uid
+        ? (pageName = "MyItems")
+        : (pageName = "Public Items");
       break;
     case "/forgotpassword":
       pageName = "Forgot MyPassword";
