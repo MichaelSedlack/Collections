@@ -48,7 +48,7 @@ function Items() {
         console.log(exception);
       }
     })();
-  }, [user]);
+  }, [collection.id]);
 
   const doCreate = async (item) => {
     try {
@@ -189,9 +189,7 @@ function Items() {
                 {collection.name} Collection
               </Button>
               {">>"}
-              <Button color="primary" color="secondary">
-                Items
-              </Button>
+              <Button color="secondary">Items</Button>
             </Grid>
             {/* End Row */}
 

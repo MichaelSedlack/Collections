@@ -94,7 +94,7 @@ function Login() {
         spacing={0}
         direction="column"
         alignItems="center"
-        justify="center"
+        justifyContent="center"
       >
         <h4 id="inner-title">Please Sign In</h4>
         <br />

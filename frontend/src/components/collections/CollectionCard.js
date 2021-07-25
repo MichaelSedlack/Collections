@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -65,14 +64,13 @@ function CollectionCard({ collection }) {
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
-  const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
   const [shadow, setShadow] = useState(false);
 
-  const editCollection = (collectionId, collectionName) => {
+  const editCollection = () => {
     setCancelButton(true);
     setEdit(true);
   };
@@ -98,12 +96,12 @@ function CollectionCard({ collection }) {
     setEdit(false);
   }
 
-  const enterCollection = (collectionId, collectionName) => {
+  const enterCollection = () => {
     context.setCollection(collection);
     history.push("/items");
   };
 
-  if (user.id != room.uid) {
+  if (user.id !== room.uid) {
     return (
       <div>
         <Card
@@ -124,17 +122,16 @@ function CollectionCard({ collection }) {
               </div>
             </CardContent>
             <div className={classes.controls}>
-              {/* Enter/Update/Delete collection Buttons */}
               <IconButton
                 size="medium"
                 color="primary"
                 onClick={() => {
-                  enterCollection(collection.id, collection.name);
+                  enterCollection();
                 }}
               >
                 <MeetingRoomIcon />
               </IconButton>
-              <span>{message}</span>
+
               <span id="createDialog">{showDialog}</span>
             </div>
           </div>
@@ -216,13 +213,11 @@ function CollectionCard({ collection }) {
                 size="medium"
                 color="primary"
                 onClick={() => {
-                  editCollection(collection.id, collection.name);
+                  editCollection();
                 }}
               >
                 <EditIcon />
               </IconButton>
-              {/* <IconButton size="small" color="secondary" onClick={doDelete(collection.id,collection.name)}><DeleteIcon/></IconButton> */}
-              <span>{message}</span>
               {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
               <IconButton
                 color="secondary"

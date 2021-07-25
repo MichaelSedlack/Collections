@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -9,7 +8,6 @@ import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
 import IconButton from "@material-ui/core/IconButton";
 import UpdateRoom from "./UpdateRoom";
 import DeleteRoom from "./DeleteRoom";
-import roomService from "./../helpers/roomService";
 import { useHistory } from "react-router-dom";
 import { UserContext, RoomContext } from "./../UserContext";
 import { makeStyles } from "@material-ui/core";
@@ -64,27 +62,13 @@ function RoomCard({ room }) {
   const context = useContext(RoomContext);
   const classes = useStyles();
 
-  const [museumUser, setMuseumUser] = useState("");
-  const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
   const [shadow, setShadow] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const id = user.id;
-        const currUser = await roomService.getUser(id);
-        setMuseumUser(currUser);
-      } catch (exception) {
-        console.log(exception);
-      }
-    })();
-  }, [user]);
-
-  const editRoom = (roomId, roomName) => {
+  const editRoom = () => {
     setCancelButton(true);
     setEdit(true);
   };
@@ -189,14 +173,12 @@ function RoomCard({ room }) {
                   size="medium"
                   color="primary"
                   onClick={() => {
-                    editRoom(room.id, room.name);
+                    editRoom();
                   }}
                 >
                   <EditIcon />
                 </IconButton>
               )}
-              {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
-              <span>{message}</span>
               {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
               {user.id === room.uid && (
                 <IconButton

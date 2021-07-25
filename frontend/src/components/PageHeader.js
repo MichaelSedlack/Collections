@@ -6,7 +6,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Grid, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import { UserContext, RoomContext } from "./UserContext";
+import { UserContext } from "./UserContext";
 import roomService from "./helpers/roomService";
 import "../App.css";
 import logo from "./../MyuseumLogo.png";
@@ -45,7 +45,6 @@ const StyledMenuItem = withStyles((theme) => ({
 function PageHeader() {
   const [museumUser, setMuseumUser] = useState("");
   const { user, setUser } = useContext(UserContext);
-  const { room } = useContext(RoomContext);
   const history = useHistory();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -138,9 +137,9 @@ function PageHeader() {
         container
         spacing={0}
         alignItems="flex-start"
-        justify="space-evenly"
+        justifyContent="space-evenly"
       >
-        <img src={logo} />
+        <img src={logo} alt="Myuseum Logo" />
         <h1>{pageName}</h1>
         {user ? (
           <div>
@@ -172,7 +171,7 @@ function PageHeader() {
             </StyledMenu>
           </div>
         ) : (
-          <img src={logo} />
+          <img src={logo} alt="Myuseum Logo" />
         )}
       </Grid>
     </header>

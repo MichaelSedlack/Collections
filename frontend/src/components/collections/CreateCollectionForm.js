@@ -44,8 +44,6 @@ function CreateCollectionForm() {
   const [open, setOpen] = useState(false);
   const [collectionName, setCollectionName] = useState("");
   const [collectionKeys, setCollectionKeys] = useState([]);
-  const [keyMessage, setKeyMessage] = useState("");
-  const [showKeyMessage, setShowKeyMessage] = useState(false);
   const [template, setTemplate] = useState(false);
   const [radio, setRadio] = useState("Custom");
 
@@ -102,11 +100,6 @@ function CreateCollectionForm() {
     ]);
     console.log(collectionKeys);
     keyName.current.value = "";
-    setShowKeyMessage(true);
-    setKeyMessage("Added Key");
-    setTimeout(function () {
-      setShowKeyMessage(false);
-    }, 700);
   }
 
   const handleRadioChange = (event) => {
@@ -138,7 +131,7 @@ function CreateCollectionForm() {
     }
   };
 
-  if (user.id != room.uid) {
+  if (user.id !== room.uid) {
     return (
       <div>
         <br />

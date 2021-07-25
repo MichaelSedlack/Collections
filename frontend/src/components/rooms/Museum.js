@@ -8,7 +8,6 @@ import SearchRooms from "./SearchRooms";
 import { UserContext } from "../UserContext";
 import { ApiContext } from "../ApiContext";
 import roomService from "../helpers/roomService";
-import { breakpoints } from "@material-ui/system";
 
 function Museum() {
   const { user } = useContext(UserContext);

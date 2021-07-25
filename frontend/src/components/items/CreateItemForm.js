@@ -81,7 +81,7 @@ function CreateItemForm({ keys }) {
     setItemDescription(e.target.value);
   };
 
-  if (user.id != room.uid) {
+  if (user.id !== room.uid) {
     return (
       <div>
         <br />

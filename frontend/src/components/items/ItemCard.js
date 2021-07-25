@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -69,7 +68,6 @@ function ItemCard({ item }) {
   const { collection } = useContext(CollectionContext);
   const { user } = useContext(UserContext);
   const { room } = useContext(RoomContext);
-  const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
@@ -99,7 +97,7 @@ function ItemCard({ item }) {
     setEdit(false);
   }
 
-  if (user.id != room.uid) {
+  if (user.id !== room.uid) {
     return (
       <div>
         {console.log(item.img)}
@@ -126,7 +124,6 @@ function ItemCard({ item }) {
             </CardContent>
 
             <div className={classes.controls}>
-              <span>{message}</span>
               <span id="createDialog">{showDialog}</span>
             </div>
           </div>
@@ -213,7 +210,6 @@ function ItemCard({ item }) {
               >
                 <EditIcon />
               </IconButton>
-              <span>{message}</span>
               {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
               <IconButton
                 color="secondary"
