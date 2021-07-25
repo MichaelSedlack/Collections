@@ -23,6 +23,7 @@ roomsRouter.post('/create', async (req, res) => {
 
   // Create room object
   const newRoom = new Room({
+    firstName: body.firstName,
     name: body.name,
     private: body.private,
     collections: [],

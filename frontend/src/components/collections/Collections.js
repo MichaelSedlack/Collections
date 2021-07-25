@@ -190,7 +190,14 @@ function Collections() {
             <Grid item xs={1} md={1} lg={1} />
             <Grid item xs={11} sm={9} md={5} lg={4}>
               <span id="displayCollection">
-                <h1>{room.name} Collections</h1>
+                {user.id === room.uid ? (
+                  <h1>{room.name} Collections</h1>
+                ) : (
+                  <h1>
+                    {console.log(user.firstName)}
+                    {room.firstName}'s Public {room.name} Collections
+                  </h1>
+                )}
               </span>
               <CollectionForm collections={collections} />
               {error && <div>{message}</div>}

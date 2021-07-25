@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -8,8 +8,10 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import PublishIcon from "@material-ui/icons/Publish";
 import Select from "@material-ui/core/Select";
+import roomService from "./../helpers/roomService";
 import { makeStyles } from "@material-ui/core/styles";
 import { ApiContext } from "./../ApiContext";
+import { UserContext } from "../UserContext";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,6 +29,9 @@ function CreateRoomForm() {
   const classes = useStyles();
 
   // Initial States
+  const { user } = useContext(UserContext);
+  const [museumUser, setMuseumUser] = useState("");
+
   const [message, setMessage] = useState("");
   const [option, setOption] = useState("Private");
   const [error, setError] = useState(false);
@@ -37,10 +42,22 @@ function CreateRoomForm() {
   const [open, setOpen] = useState(false);
   const [roomName, setRoomName] = useState("");
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const id = user.id;
+        const currUser = await roomService.getUser(id);
+        setMuseumUser(currUser);
+      } catch (exception) {
+        console.log(exception);
+      }
+    })();
+  }, [user]);
+
   const createRoom = async (event) => {
     event.preventDefault();
-
     var room = {
+      firstName: museumUser.firstName,
       name: roomName,
       private: checkOption,
     };

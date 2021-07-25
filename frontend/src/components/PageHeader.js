@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { withRouter, useHistory } from "react-router-dom";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import Menu from "@material-ui/core/Menu";
@@ -7,6 +7,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { Grid, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { UserContext, RoomContext } from "./UserContext";
+import roomService from "./helpers/roomService";
 import "../App.css";
 import logo from "./../MyuseumLogo.png";
 
@@ -42,11 +43,24 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 function PageHeader() {
+  const [museumUser, setMuseumUser] = useState("");
   const { user, setUser } = useContext(UserContext);
   const { room } = useContext(RoomContext);
   const history = useHistory();
 
   const [anchorEl, setAnchorEl] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const id = user.id;
+        const currUser = await roomService.getUser(id);
+        setMuseumUser(currUser);
+      } catch (exception) {
+        console.log(exception);
+      }
+    })();
+  }, [user]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -89,14 +103,18 @@ function PageHeader() {
       pageName = "Personal Myuseum";
       break;
     case "/collections":
-      user.id === room.uid
-        ? (pageName = "MyCollections")
-        : (pageName = "Public Collections");
+      pageName = "MyCollections";
+      // user.id is null when refreshing the page
+      // user.id === room.uid
+      //   ? (pageName = "MyCollections")
+      //   : (pageName = "Public Collections");
       break;
     case "/items":
-      user.id === room.uid
-        ? (pageName = "MyItems")
-        : (pageName = "Public Items");
+      pageName = "MyItems";
+      // user.id is null when refreshing the page
+      // user.id === room.uid
+      //   ? (pageName = "MyItems")
+      //   : (pageName = "Public Items");
       break;
     case "/forgotpassword":
       pageName = "Forgot MyPassword";
@@ -133,7 +151,7 @@ function PageHeader() {
               onClick={handleClick}
             >
               <AccountBoxIcon fontSize="large" />
-              {user.firstName}
+              {museumUser.firstName}
             </IconButton>
             <StyledMenu
               id="simple-menu"

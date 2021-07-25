@@ -190,7 +190,7 @@ function Items() {
               </Button>
               {">>"}
               <Button color="primary" color="secondary">
-                Public Items
+                Items
               </Button>
             </Grid>
             {/* End Row */}
@@ -202,7 +202,13 @@ function Items() {
             <Grid item xs={1} md={1} lg={1} />
             <Grid item xs={11} sm={9} md={5} lg={4}>
               <span id="displayItem">
-                <h1>{collection.name} Items</h1>
+                {user.id === room.uid ? (
+                  <h1>{collection.name} Items</h1>
+                ) : (
+                  <h1>
+                    {room.firstName}'s Public {collection.name} Items
+                  </h1>
+                )}
               </span>
               <ItemForm items={items} />
               {error && <div>{message}</div>}

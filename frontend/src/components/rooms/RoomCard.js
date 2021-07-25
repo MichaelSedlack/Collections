@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -9,6 +9,7 @@ import MeetingRoomIcon from "@material-ui/icons/MeetingRoom";
 import IconButton from "@material-ui/core/IconButton";
 import UpdateRoom from "./UpdateRoom";
 import DeleteRoom from "./DeleteRoom";
+import roomService from "./../helpers/roomService";
 import { useHistory } from "react-router-dom";
 import { UserContext, RoomContext } from "./../UserContext";
 import { makeStyles } from "@material-ui/core";
@@ -63,12 +64,25 @@ function RoomCard({ room }) {
   const context = useContext(RoomContext);
   const classes = useStyles();
 
+  const [museumUser, setMuseumUser] = useState("");
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
   const [shadow, setShadow] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const id = user.id;
+        const currUser = await roomService.getUser(id);
+        setMuseumUser(currUser);
+      } catch (exception) {
+        console.log(exception);
+      }
+    })();
+  }, [user]);
 
   const editRoom = (roomId, roomName) => {
     setCancelButton(true);
@@ -94,7 +108,12 @@ function RoomCard({ room }) {
   }
 
   const enterRoom = (roomId, roomName) => {
-    context.setRoom({ name: roomName, id: roomId, uid: room.uid });
+    context.setRoom({
+      name: roomName,
+      id: roomId,
+      uid: room.uid,
+      firstName: room.firstName,
+    });
     history.push("/collections");
   };
 
@@ -145,7 +164,7 @@ function RoomCard({ room }) {
           <div className={classes.details}>
             <CardContent className={classes.content}>
               <div>
-                <p>{room.name} Room</p>
+                {room.firstName}'s {room.name} Room
                 <p>
                   {room.private
                     ? "Private - No one can view this room"

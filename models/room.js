@@ -5,6 +5,9 @@ const Item = require('../models/item');
 
 // Lay out Schema
 const roomSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+  },
   name: {
     type: String,
     required: true
