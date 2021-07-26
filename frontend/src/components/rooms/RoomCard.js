@@ -12,7 +12,7 @@ import DeleteRoom from "./DeleteRoom";
 import { useHistory } from "react-router-dom";
 import { UserContext, RoomContext } from "./../UserContext";
 import { makeStyles } from "@material-ui/core";
-import { buttonStyles, cardStyles } from "./../Styles.js";
+import { buttonStyles, cardStyles, iconStyles } from "./../Styles.js";
 
 function RoomCard({ room }) {
   // Initial States
@@ -21,6 +21,7 @@ function RoomCard({ room }) {
   const context = useContext(RoomContext);
   const buttonStyle = buttonStyles();
   const cardStyle = cardStyles();
+  const iconStyle = iconStyles();
 
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -117,18 +118,19 @@ function RoomCard({ room }) {
             <div className={cardStyle.controls}>
               {/* Enter/Update/Delete Room Buttons */}
               <IconButton
-                size="medium"
-                color="primary"
+                size="small"
+                className={iconStyle.accept}
                 onClick={() => {
                   enterRoom(room.id, room.name);
                 }}
               >
                 <MeetingRoomIcon />
               </IconButton>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {user.id === room.uid && (
                 <IconButton
-                  size="medium"
-                  color="primary"
+                  size="small"
+                  className={iconStyle.accept}
                   onClick={() => {
                     editRoom(room.id, room.name);
                   }}
@@ -136,12 +138,13 @@ function RoomCard({ room }) {
                   <EditIcon />
                 </IconButton>
               )}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {/* <IconButton size="small" color="secondary" onClick={doDelete(room.id,room.name)}><DeleteIcon/></IconButton> */}
               <span>{message}</span>
               {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
               {user.id === room.uid && (
                 <IconButton
-                  color="secondary"
+                  className={iconStyle.decline}
                   size="small"
                   onClick={() => {
                     openDelete(room.id, room.name);

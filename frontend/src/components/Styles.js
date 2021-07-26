@@ -1,5 +1,24 @@
 import { makeStyles } from "@material-ui/core";
 
+const iconStyles = makeStyles((theme) => ({
+  accept: {
+    background: "#1eb8a6",
+    // #32CDBB
+    "&:hover": {
+      background: "#3C8CC3",
+    },
+    color: "white",
+  },
+  decline: {
+    background: "#CD3244",
+    "&:hover": {
+      // #E0791F
+      background: "#d4662b",
+    },
+    color: "white",
+  },
+}));
+
 const buttonStyles = makeStyles({
   accept: {
     background: "#1eb8a6",
@@ -12,7 +31,7 @@ const buttonStyles = makeStyles({
     color: "white",
     height: 48,
     width: "calc(100% - 450px)",
-    padding: "0 30px",
+    padding: "0 50px",
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   },
   decline: {
@@ -26,7 +45,7 @@ const buttonStyles = makeStyles({
     color: "white",
     height: 48,
     width: "calc(100% - 450px)",
-    padding: "0 30px",
+    padding: "0 50px",
     boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
   },
   formAccept: {
@@ -116,4 +135,4 @@ const cardStyles = makeStyles(({ spacing }) => ({
   },
 }));
 
-export { buttonStyles, formStyles, cardStyles };
+export { iconStyles, buttonStyles, formStyles, cardStyles };

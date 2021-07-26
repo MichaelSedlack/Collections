@@ -11,11 +11,12 @@ import UpdateItem from "./UpdateItem";
 import DeleteItem from "./DeleteItem";
 import { UserContext, RoomContext, CollectionContext } from "../UserContext";
 import { CardMedia } from "@material-ui/core";
-import { cardStyles, buttonStyles } from "../Styles.js";
+import { cardStyles, buttonStyles, iconStyles } from "../Styles.js";
 
 function ItemCard({ item }) {
   const cardStyle = cardStyles();
   const buttonStyle = buttonStyles();
+  const iconStyle = iconStyles();
 
   const { collection } = useContext(CollectionContext);
   const { user } = useContext(UserContext);
@@ -159,23 +160,24 @@ function ItemCard({ item }) {
             </CardContent>
 
             <div className={cardStyle.controls}>
-              {/* Enter/Update/Delete item Buttons */}
+              {/* Enter/Update/Delete item Buttons */}{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <IconButton
-                className={buttonStyle.accept}
-                size="medium"
-                color="primary"
+                className={iconStyle.accept}
+                // style={{ backgroundColor: "#1eb8a6", color: "white" }}
+                size="small"
                 onClick={() => {
                   editItem(item.id, item.name);
                 }}
               >
                 <EditIcon />
-              </IconButton>
+              </IconButton>{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <span>{message}</span>
               {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
               <IconButton
-                color="secondary"
+                className={iconStyle.decline}
                 size="small"
-                className={buttonStyle.decline}
                 onClick={() => {
                   openDelete(item.id, item.name);
                 }}

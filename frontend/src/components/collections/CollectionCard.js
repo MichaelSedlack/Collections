@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import UpdateCollection from "./UpdateCollection";
 import DeleteCollection from "./DeleteCollection";
 import { UserContext, RoomContext, CollectionContext } from "./../UserContext";
-import { buttonStyles, cardStyles } from "../Styles";
+import { buttonStyles, cardStyles, iconStyles } from "../Styles";
 
 function CollectionCard({ collection }) {
   // Initial States
@@ -21,6 +21,7 @@ function CollectionCard({ collection }) {
   const { user } = useContext(UserContext);
   const cardStyle = cardStyles();
   const buttonStyle = buttonStyles();
+  const iconStyle = iconStyles();
 
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -83,8 +84,8 @@ function CollectionCard({ collection }) {
             <div className={cardStyle.controls}>
               {/* Enter/Update/Delete collection Buttons */}
               <IconButton
-                size="medium"
-                color="primary"
+                size="small"
+                className={iconStyle.accept}
                 onClick={() => {
                   enterCollection(collection.id, collection.name);
                 }}
@@ -121,7 +122,7 @@ function CollectionCard({ collection }) {
                 <Button
                   variant="contained"
                   size="large"
-                  color="secondary"
+                  className={buttonStyle.decline}
                   type="submit"
                   id="cancelButton"
                   value="Cancel"
@@ -161,28 +162,30 @@ function CollectionCard({ collection }) {
             <div className={cardStyle.controls}>
               {/* Enter/Update/Delete collection Buttons */}
               <IconButton
-                size="medium"
-                color="primary"
+                size="small"
+                className={iconStyle.accept}
                 onClick={() => {
                   enterCollection(collection.id, collection.name);
                 }}
               >
                 <MeetingRoomIcon />
-              </IconButton>
+              </IconButton>{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <IconButton
-                size="medium"
-                color="primary"
+                size="small"
+                className={iconStyle.accept}
                 onClick={() => {
                   editCollection(collection.id, collection.name);
                 }}
               >
                 <EditIcon />
-              </IconButton>
+              </IconButton>{" "}
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {/* <IconButton size="small" color="secondary" onClick={doDelete(collection.id,collection.name)}><DeleteIcon/></IconButton> */}
               <span>{message}</span>
               {/* If user clicks on the delete room button a dialog box will pop up for confirmation */}
               <IconButton
-                color="secondary"
+                className={iconStyle.decline}
                 size="small"
                 onClick={() => {
                   openDelete(collection.id, collection.name);

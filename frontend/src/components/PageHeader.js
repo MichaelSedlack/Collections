@@ -141,7 +141,7 @@ function PageHeader() {
                 <ListItemText primary="Logout" />
               </StyledMenuItem>
               <StyledMenuItem onClick={backToRoom}>
-                <ListItemText primary="Personal Rooms Page" />
+                <ListItemText primary="Personal Rooms" />
               </StyledMenuItem>
               <StyledMenuItem onClick={toPublicRoom}>
                 <ListItemText primary="Public Rooms" />
