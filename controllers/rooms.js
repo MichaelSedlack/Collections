@@ -34,6 +34,33 @@ roomsRouter.post('/create', async (req, res) => {
   return res.send(savedRoom);
 })
 
+// Search all Public Rooms
+roomsRouter.get('/search/public', async (req, res) => {
+  const search = req.query.search;
+  const verifiedToken = token.isExpired(token.getToken(req));
+
+  // If verified token is null return
+  if(!verifiedToken){
+    return res.status(401).json({error: "JSON WebToken NULL"});
+  }
+
+  const rooms = await Room.find({
+    $or: [
+      {
+        name: { $regex: search, $options: 'i' },
+        private: false,
+        uid: { $ne: verifiedToken.id }
+      },
+      {
+        name: { $regex: search, $options: 'i' },
+        uid: verifiedToken.id
+      }
+    ]
+  })
+
+    return res.send(rooms);
+})
+
 // Search a Users Rooms
 roomsRouter.get('/search', async (req, res) => {
   const search = req.query.search;

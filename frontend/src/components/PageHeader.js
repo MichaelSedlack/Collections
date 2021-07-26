@@ -1,56 +1,159 @@
-import React from 'react';
-import '../App.css';
-import { withRouter } from 'react-router-dom';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import { Grid } from '@material-ui/core';
+import { useState, useContext } from "react";
+import { withRouter, useHistory } from "react-router-dom";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { Grid, IconButton } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { UserContext } from "./UserContext";
+import "../App.css";
+import logo from "./../Myuseum_Logo.png";
 
-class PageHeader extends React.Component {
+const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "center",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "center",
+    }}
+    {...props}
+  />
+));
 
-  // constructor(props){
-  //   super(props);
-  // }
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    "&:focus": {
+      backgroundColor: theme.palette.primary.main,
+      "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
-  render(){
-    var currPath = this.props.location.pathname
-    var pageName = "";
+function PageHeader() {
+  const { user, setUser } = useContext(UserContext);
+  const history = useHistory();
 
-    console.log(currPath);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-    switch(currPath){
-      case "/":
-        pageName = "Login";
-        break;
-      case "/register":
-        pageName = "Register";
-        break;
-      case "/museum/":
-        pageName = "Museum";
-        break;
-      case "/collections":
-        pageName = "Collections";
-        break;
-      case "/items":
-        pageName = "Items";
-        break;
-      case "/forgotpassword":
-        pageName = "Forgot Password";
-        break;
-      case "/reset":
-        pageName = "Reset Password";
-        break;
-      case "/verification":
-        pageName = "Verify Email";
-        break;
-      default:
-        break;
-    }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    return (
-      <header>
-        <h1>{pageName}</h1>
-      </header>
-    )
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    setUser(null);
+    window.localStorage.clear();
+    history.push("/");
+  };
+
+  const backToRoom = () => {
+    setAnchorEl(null);
+    history.push("/museum");
+  };
+
+  const toPublicRoom = () => {
+    setAnchorEl(null);
+    history.push("/publicrooms");
+  };
+
+  var currPath = window.location.pathname;
+  var pageName = "";
+
+  console.log(currPath);
+
+  switch (currPath) {
+    case "/":
+      pageName = "Myuseum";
+      break;
+    case "/register":
+      pageName = "Create MyAccount";
+      break;
+    case "/museum":
+      pageName = "Personal Myuseum";
+      break;
+    case "/collections":
+      pageName = "MyCollections";
+      break;
+    case "/items":
+      pageName = "MyItems";
+      break;
+    case "/forgotpassword":
+      pageName = "Forgot MyPassword";
+      break;
+    case "/reset":
+      pageName = "Reset MyPassword";
+      break;
+    case "/verification":
+      pageName = "Verify MyEmail";
+      break;
+    case "/publicrooms":
+      pageName = "Public Rooms";
+      break;
+    default:
+      break;
   }
+
+  return (
+    <header>
+      <Grid
+        container
+        spacing={0}
+        alignItems="flex-start"
+        justify="space-evenly"
+      >
+        <img src={logo} />
+        <h1>{pageName}</h1>
+        {user ? (
+          <div>
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              color="secondary"
+              onClick={handleClick}
+            >
+              <AccountBoxIcon fontSize="large" />
+              {user.firstName}
+            </IconButton>
+            <StyledMenu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <StyledMenuItem onClick={handleLogout}>
+                <ListItemText primary="Logout" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={backToRoom}>
+                <ListItemText primary="Personal Rooms Page" />
+              </StyledMenuItem>
+              <StyledMenuItem onClick={toPublicRoom}>
+                <ListItemText primary="Public Rooms" />
+              </StyledMenuItem>
+            </StyledMenu>
+          </div>
+        ) : (
+          <img src={logo} />
+        )}
+      </Grid>
+    </header>
+  );
 }
 
 export default withRouter(PageHeader);

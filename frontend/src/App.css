@@ -29,6 +29,8 @@
 
 /*CSS for the PageHeader Component*/
 header {
+  padding-top: 10px;
+  padding-bottom: 10px;
   background-color: rgb(0, 0, 0);
   min-height: 10vh;
   display: flex;

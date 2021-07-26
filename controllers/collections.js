@@ -103,7 +103,7 @@ collectionsRouter.delete('/single', async (req, res) => {
 
 collectionsRouter.get('/search', async (req, res) => {
   const search = req.query.search;
-  const uid = req.query.uid;
+  const roomID = req.query.roomID;
   const verifiedToken = token.isExpired(token.getToken(req));
 
   // If verified token is null return
@@ -111,22 +111,19 @@ collectionsRouter.get('/search', async (req, res) => {
     return res.status(401).json({error: "JSON WebToken NULL"});
   }
 
-  if(verifiedToken.id != uid){
-    const collections = await Collection.find({
-      name: { $regex: search, $options: 'i' },
-      private: false,
-      uid: uid
-    })
+  const room = await Room.findById(roomID);
 
-    return res.send(collections);
-  }else{
-    const collections = await Collection.find({
-      name: { $regex: search, $options: 'i' },
-      uid: uid
-    })
-
-    return res.send(collections);
+  if(room.private && (verifiedToken.id != room.uid)){
+    return res.status(403).json({error: "Collection is private."});
   }
+
+  const collections = await Collection.find({
+    name: { $regex: search, $options: 'i' },
+    roomID: roomID
+  })
+
+  return res.send(collections);
+  
 })
 
 // GET Collection by ID
@@ -142,18 +139,12 @@ collectionsRouter.get('/single', async (req, res) => {
   var collection = await Collection.findById(collectionID);
 
   if(!collection){ // Room already doesn't exist.
-    return res.status(404).json({error: "collection does not exist."});
+    return res.status(404).json({error: "Collection does not exist."});
   }else if((collection.uid != verifiedToken.id) && collection.private){ // If room private and not owner don't return room
-    return res.status(403).json({error: "Room is private."})
-  }
-
-  if(collection.uid != verifiedToken.id){
-    return res.json(await Collection.findById(collectionID).populate('items', null, { private: false }));
+    return res.status(403).json({error: "Collection is private."})
   }
 
   return res.json(await Collection.findById(collectionID).populate('items'));
-
-
 })
 
 // EXPORTS

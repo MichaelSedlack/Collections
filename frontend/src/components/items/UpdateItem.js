@@ -12,6 +12,7 @@ function UpdateItem({itemData, handleClose})
     // Initial states
     const [message,setMessage] = useState('');
     const [name,setName] = useState(itemData.itemName);
+    const [error, setError] = useState(false);
     const [itemDescription, setItemDescription] = useState(itemData.itemDescription);
     const [itemId] = useState(itemData.itemId);
     
@@ -27,6 +28,7 @@ function UpdateItem({itemData, handleClose})
         const res = doUpdate(itemId, newitem);
 
         if(res.error){
+            setError(true);
             setMessage(res.error);
           }else{
             setMessage("Successfully updated item!");
@@ -40,18 +42,23 @@ function UpdateItem({itemData, handleClose})
     const handelDescriptionChange = (e) => {
       setItemDescription(e.target.value);
     }
-
-    return(
+    if(error){
+      return(<h1>{message}</h1>);
+    }
+    else{
+      return(
         <div>
             <TextField margin="dense" variant="outlined" type="text" id="itemName" defaultValue={name} label="item Name" onChange={(e) => setName(e.target.value)}/><br />
             <br />
             <TextField id="outlined-multiline-static" label="Description" multiline rows={4} defaultValue={itemDescription} variant="outlined" onChange={e=>handelDescriptionChange(e)} />
 
-            <br />
-            <Button variant="contained" size="large" color="primary" type="submit" id="createitemButton" className="buttons" value = "Update item" onClick={updateItem}>Update item</Button>
+            <br /><br/>
+            <Button variant="contained" size="large" color="primary" type="submit" id="createitemButton" value = "Update item" onClick={updateItem}>Update item</Button>
             <span id="createitemResult">{message}</span>
         </div>
-    );
+      );
+    }
+    
 }
 
 export default UpdateItem;
