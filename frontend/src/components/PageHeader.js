@@ -8,7 +8,7 @@ import { Grid, IconButton } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import { UserContext } from "./UserContext";
 import "../App.css";
-import logo from "./../MyuseumLogo.png";
+import logo from "./../Myuseum_Logo.png";
 
 const StyledMenu = withStyles({
   paper: {
