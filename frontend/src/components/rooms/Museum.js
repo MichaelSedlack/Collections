@@ -175,7 +175,7 @@ function Museum() {
 
             {/* Begin Row  DISPLAYS ROOMS*/}
             <Grid item xs={1} md={1} lg={1} />
-            <Grid item xs={10} sm={9} md={5} lg={4}>
+            <Grid item xs={11} sm={9} md={5} lg={4}>
               <span id="displayRoom">
                 <h1>{museumUser.firstName}'s Rooms</h1>
               </span>

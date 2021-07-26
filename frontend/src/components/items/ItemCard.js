@@ -11,64 +11,17 @@ import UpdateItem from "./UpdateItem";
 import DeleteItem from "./DeleteItem";
 import { UserContext, RoomContext, CollectionContext } from "../UserContext";
 import { CardMedia } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
-
-const useStyles = makeStyles(({ spacing }) => ({
-  media: {
-    height: 200,
-    width: 151,
-  },
-
-  root: {
-    width: "75%",
-    display: "flex",
-    transition: ".5s",
-    boxShadow: "0px 14px 80px rgba(34, 35, 58, 0.2)",
-    paddingBottom: spacing(2),
-    paddingTop: spacing(2),
-  },
-  hover: {
-    width: "75%",
-    display: "flex",
-    transition: "0.3s",
-    boxShadow: "1px 1px 2px 2px rgba(34, 35, 58, 0.2)",
-    paddingBottom: spacing(2),
-    paddingTop: spacing(2),
-  },
-
-  details: {
-    display: "flex",
-    flexDirection: "column",
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-    width: "11rem",
-  },
-
-  content: {
-    flex: "1 0 auto",
-  },
-
-  controls: {
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-  },
-
-  controlsOpen: {
-    display: "flex",
-    alignItems: "flex-end",
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-  },
-}));
+import { cardStyles, buttonStyles } from "../Styles.js";
 
 function ItemCard({ item }) {
-  // Initial States
-  const classes = useStyles();
+  const cardStyle = cardStyles();
+  const buttonStyle = buttonStyles();
+
   const { collection } = useContext(CollectionContext);
   const { user } = useContext(UserContext);
   const { room } = useContext(RoomContext);
+
+  // Initial States
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
@@ -107,10 +60,10 @@ function ItemCard({ item }) {
         <Card
           onMouseEnter={() => setShadow(true)}
           onMouseLeave={() => setShadow(false)}
-          className={shadow ? classes.root : classes.hover}
+          className={shadow ? cardStyle.root : cardStyle.hover}
         >
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
+          <div className={cardStyle.details}>
+            <CardContent className={cardStyle.content}>
               <p>Item: {item.name}</p>
               <Typography style={{ wordWrap: "break-word" }}>
                 Description: {item.description}
@@ -125,13 +78,15 @@ function ItemCard({ item }) {
               })}
             </CardContent>
 
-            <div className={classes.controls}>
+            <div className={cardStyle.controls}>
               <span>{message}</span>
               <span id="createDialog">{showDialog}</span>
             </div>
           </div>
           {/* Displays Item Image */}
-          {item.img && <CardMedia className={classes.media} image={item.img} />}
+          {item.img && (
+            <CardMedia className={cardStyle.media} image={item.img} />
+          )}
         </Card>
         <br />
       </div>
@@ -143,10 +98,10 @@ function ItemCard({ item }) {
         <Card
           onMouseEnter={() => setShadow(true)}
           onMouseLeave={() => setShadow(false)}
-          className={shadow ? classes.root : classes.hover}
+          className={shadow ? cardStyle.root : cardStyle.hover}
         >
-          <div className={classes.details}>
-            <div className={classes.controlsOpen}>
+          <div className={cardStyle.details}>
+            <div className={cardStyle.controlsOpen}>
               <UpdateItem
                 itemData={{
                   itemId: item.id,
@@ -162,6 +117,7 @@ function ItemCard({ item }) {
                   color="secondary"
                   type="submit"
                   id="cancelButton"
+                  className={buttonStyle.decline}
                   value="Cancel"
                   onClick={() => {
                     cancelClicked();
@@ -184,10 +140,10 @@ function ItemCard({ item }) {
         <Card
           onMouseEnter={() => setShadow(true)}
           onMouseLeave={() => setShadow(false)}
-          className={shadow ? classes.root : classes.hover}
+          className={shadow ? cardStyle.root : cardStyle.hover}
         >
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
+          <div className={cardStyle.details}>
+            <CardContent className={cardStyle.content}>
               <p>Item: {item.name}</p>
               <Typography style={{ wordWrap: "break-word" }}>
                 Description: {item.description}
@@ -202,9 +158,10 @@ function ItemCard({ item }) {
               })}
             </CardContent>
 
-            <div className={classes.controls}>
+            <div className={cardStyle.controls}>
               {/* Enter/Update/Delete item Buttons */}
               <IconButton
+                className={buttonStyle.accept}
                 size="medium"
                 color="primary"
                 onClick={() => {
@@ -218,6 +175,7 @@ function ItemCard({ item }) {
               <IconButton
                 color="secondary"
                 size="small"
+                className={buttonStyle.decline}
                 onClick={() => {
                   openDelete(item.id, item.name);
                 }}
@@ -228,7 +186,9 @@ function ItemCard({ item }) {
             </div>
           </div>
           {/* Displays Item Image */}
-          {item.img && <CardMedia className={classes.media} image={item.img} />}
+          {item.img && (
+            <CardMedia className={cardStyle.media} image={item.img} />
+          )}
         </Card>
         <br />
       </div>

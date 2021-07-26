@@ -11,51 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import UpdateCollection from "./UpdateCollection";
 import DeleteCollection from "./DeleteCollection";
 import { UserContext, RoomContext, CollectionContext } from "./../UserContext";
-import { makeStyles } from "@material-ui/core";
-
-const useStyles = makeStyles(({ spacing }) => ({
-  root: {
-    width: "75%",
-    display: "flex",
-    transition: ".5s",
-    boxShadow: "0px 14px 80px rgba(34, 35, 58, 0.2)",
-    paddingBottom: spacing(2),
-    paddingTop: spacing(2),
-  },
-  hover: {
-    width: "75%",
-    display: "flex",
-    transition: "0.3s",
-    boxShadow: "1px 1px 2px 2px rgba(34, 35, 58, 0.2)",
-    paddingBottom: spacing(2),
-    paddingTop: spacing(2),
-  },
-
-  details: {
-    display: "flex",
-    flexDirection: "column",
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-  },
-
-  content: {
-    flex: "1 0 auto",
-  },
-
-  controls: {
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-  },
-
-  controlsOpen: {
-    display: "flex",
-    alignItems: "flex-end",
-    paddingLeft: spacing(2),
-    paddingRight: spacing(2),
-  },
-}));
+import { buttonStyles, cardStyles } from "../Styles";
 
 function CollectionCard({ collection }) {
   // Initial States
@@ -63,7 +19,8 @@ function CollectionCard({ collection }) {
   const context = useContext(CollectionContext);
   const { room } = useContext(RoomContext);
   const { user } = useContext(UserContext);
-  const classes = useStyles();
+  const cardStyle = cardStyles();
+  const buttonStyle = buttonStyles();
 
   const [message, setMessage] = useState("");
   const [open, setOpen] = React.useState(false);
@@ -109,10 +66,10 @@ function CollectionCard({ collection }) {
         <Card
           onMouseEnter={() => setShadow(true)}
           onMouseLeave={() => setShadow(false)}
-          className={shadow ? classes.root : classes.hover}
+          className={shadow ? cardStyle.root : cardStyle.hover}
         >
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
+          <div className={cardStyle.details}>
+            <CardContent className={cardStyle.content}>
               <div>
                 <p>{collection.name} Collection</p>
                 <p>
@@ -123,7 +80,7 @@ function CollectionCard({ collection }) {
                 <p>{collection.items.length} Items Stored</p>
               </div>
             </CardContent>
-            <div className={classes.controls}>
+            <div className={cardStyle.controls}>
               {/* Enter/Update/Delete collection Buttons */}
               <IconButton
                 size="medium"
@@ -149,10 +106,10 @@ function CollectionCard({ collection }) {
         <Card
           onMouseEnter={() => setShadow(true)}
           onMouseLeave={() => setShadow(false)}
-          className={shadow ? classes.root : classes.hover}
+          className={shadow ? cardStyle.root : cardStyle.hover}
         >
-          <div className={classes.details}>
-            <div className={classes.controlsOpen}>
+          <div className={cardStyle.details}>
+            <div className={cardStyle.controlsOpen}>
               <UpdateCollection
                 collectionData={{
                   collectionId: collection.id,
@@ -187,10 +144,10 @@ function CollectionCard({ collection }) {
         <Card
           onMouseEnter={() => setShadow(true)}
           onMouseLeave={() => setShadow(false)}
-          className={shadow ? classes.root : classes.hover}
+          className={shadow ? cardStyle.root : cardStyle.hover}
         >
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
+          <div className={cardStyle.details}>
+            <CardContent className={cardStyle.content}>
               <div>
                 <p>{collection.name} Collection</p>
                 <p>
@@ -201,7 +158,7 @@ function CollectionCard({ collection }) {
                 <p>{collection.items.length} Items Stored</p>
               </div>
             </CardContent>
-            <div className={classes.controls}>
+            <div className={cardStyle.controls}>
               {/* Enter/Update/Delete collection Buttons */}
               <IconButton
                 size="medium"

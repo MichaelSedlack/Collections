@@ -8,23 +8,14 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import PublishIcon from "@material-ui/icons/Publish";
 import Select from "@material-ui/core/Select";
-import { makeStyles } from "@material-ui/core/styles";
 import { ApiContext } from "./../ApiContext";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { buttonStyles, formStyles } from "./../Styles.js";
 
 function CreateRoomForm() {
   const { doCreate } = useContext(ApiContext);
 
-  const classes = useStyles();
+  const formStyle = formStyles();
+  const buttonStyle = buttonStyles();
 
   // Initial States
   const [message, setMessage] = useState("");
@@ -97,7 +88,7 @@ function CreateRoomForm() {
           onChange={(e) => handleNameChange(e)}
         />
         <br />
-        <FormControl variant="outlined" className={classes.formControl}>
+        <FormControl variant="outlined" className={formStyle.formControl}>
           <InputLabel>Choose</InputLabel>
           <Select
             labelId="option"
@@ -119,6 +110,7 @@ function CreateRoomForm() {
           size="large"
           color="primary"
           type="submit"
+          className={buttonStyle.accept}
           id="createRoomButton"
           value="Set Up New Room"
           onClick={createRoom}
@@ -131,6 +123,7 @@ function CreateRoomForm() {
           variant="contained"
           size="large"
           color="secondary"
+          className={buttonStyle.decline}
           type="submit"
           id="cancelButton"
           value="Cancel"
@@ -153,6 +146,7 @@ function CreateRoomForm() {
           size="large"
           color="primary"
           type="submit"
+          className={buttonStyle.accept}
           id="createRoomFormButton"
           value="Create New Room"
           onClick={() => setOpen(true)}

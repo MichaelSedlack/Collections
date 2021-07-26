@@ -11,19 +11,9 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import PublishIcon from "@material-ui/icons/Publish";
-import { makeStyles } from "@material-ui/core/styles";
 import { RoomContext, UserContext } from "./../UserContext";
 import { ApiContext } from "./../ApiContext";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { formStyles, buttonStyles } from "../Styles";
 
 function CreateCollectionForm() {
   const { doCreate } = useContext(ApiContext);
@@ -31,7 +21,8 @@ function CreateCollectionForm() {
   const { user } = useContext(UserContext);
   const keyName = useRef(null);
 
-  const classes = useStyles();
+  const formStyle = formStyles();
+  const buttonStyle = buttonStyles();
 
   // Initial States
   const [message, setMessage] = useState("");
@@ -173,6 +164,7 @@ function CreateCollectionForm() {
               label="Collection Properties"
               inputRef={keyName}
             />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Button
               disabled={template ? true : false}
               variant="contained"
@@ -180,13 +172,13 @@ function CreateCollectionForm() {
               color="primary"
               type="submit"
               id="addKeyButton"
-              className="buttons"
+              className={buttonStyle.accept}
               value="Add Key"
               onClick={() => {
                 handleKeys();
               }}
             >
-              Add Key
+              Add Property
             </Button>
             {/* {showKeyMessage ? <span>{keyMessage}</span> : null} */}
             <br />
@@ -248,7 +240,7 @@ function CreateCollectionForm() {
         <br />
         <hr align="left" width="60%" />
         <br />
-        <FormControl variant="outlined" className={classes.formControl}>
+        <FormControl variant="outlined" className={formStyle.formControl}>
           <InputLabel>Choose</InputLabel>
           <Select
             labelId="option"
@@ -270,6 +262,7 @@ function CreateCollectionForm() {
           size="large"
           color="primary"
           type="submit"
+          className={buttonStyle.accept}
           id="CreateCollectionButton"
           value="Store New Collection"
           onClick={createCollection}
@@ -284,6 +277,7 @@ function CreateCollectionForm() {
           color="secondary"
           type="submit"
           id="cancelButton"
+          className={buttonStyle.decline}
           value="Cancel"
           onClick={() => {
             setOpen(false);
@@ -307,6 +301,7 @@ function CreateCollectionForm() {
           color="primary"
           type="submit"
           id="CreateCollectionFormButton"
+          className={buttonStyle.accept}
           value="Create New Collection"
           onClick={() => setOpen(true)}
         >

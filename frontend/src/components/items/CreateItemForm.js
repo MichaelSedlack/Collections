@@ -8,12 +8,15 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import PublishIcon from "@material-ui/icons/Publish";
 import { UserContext, RoomContext, CollectionContext } from "./../UserContext";
 import { ApiContext } from "./../ApiContext";
+import { buttonStyles } from "./../Styles.js";
 
 function CreateItemForm({ keys }) {
   const { doCreate } = useContext(ApiContext);
   const { user } = useContext(UserContext);
   const { room } = useContext(RoomContext);
   const { collection } = useContext(CollectionContext);
+
+  const buttonStyle = buttonStyles();
 
   // Initial States
   const [message, setMessage] = useState("");
@@ -149,6 +152,7 @@ function CreateItemForm({ keys }) {
           size="large"
           color="primary"
           type="submit"
+          className={buttonStyle.accept}
           id="CreateItemButton"
           value="Store New Item"
           onClick={createItem}
@@ -162,6 +166,7 @@ function CreateItemForm({ keys }) {
           size="large"
           color="secondary"
           type="submit"
+          className={buttonStyle.decline}
           id="cancelButton"
           value="Cancel"
           onClick={() => {
@@ -185,6 +190,7 @@ function CreateItemForm({ keys }) {
           size="large"
           color="primary"
           type="submit"
+          className={buttonStyle.accept}
           id="CreateItemFormButton"
           value="Create New Item"
           onClick={() => setOpen(true)}

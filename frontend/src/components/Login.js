@@ -10,10 +10,12 @@ import { useHistory } from "react-router-dom";
 import roomService from "./helpers/roomService";
 import collectionService from "./helpers/collectionService";
 import itemService from "./helpers/itemService";
+import { buttonStyles } from "./Styles.js";
 
 function Login() {
   const context = useContext(UserContext);
   const history = useHistory();
+  const button = buttonStyles();
 
   var bp = require("./Path.js");
 
@@ -132,7 +134,7 @@ function Login() {
           color="primary"
           type="submit"
           id="loginButton"
-          className="buttons"
+          className={button.formAccept}
           value="Log In"
           onClick={doLogin}
         >
@@ -147,7 +149,7 @@ function Login() {
           color="secondary"
           type="submit"
           id="registerButton"
-          className="buttons"
+          className={button.formDecline}
           value="Register"
           onClick={() => {
             window.location.href = "/register";
