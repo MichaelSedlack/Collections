@@ -65,7 +65,7 @@ function UpdateItem({itemData, handleClose})
             <br />
             {collection.keys.map((key) => {
               return (
-                <div>
+                <div key={key}>
                   <TextField
                     margin="dense"
                     variant="outlined"
