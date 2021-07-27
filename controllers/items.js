@@ -75,7 +75,11 @@ itemsRouter.post('/create', upload.single("image"), async (req, res) => {
   // TODO: Update rather than add new item.
   //-------
 
-  const img = 'images/' + req.file.filename;
+  let img = 'images/'
+
+  if(request.file){
+    img = img + req.file.filename
+  }
 
   // Create item object
   const newItem = new Item({
