@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import CreateRoomForm from "./CreateRoomForm";
 import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
@@ -13,6 +13,7 @@ import { breakpoints } from "@material-ui/system";
 function Museum() {
   const { user } = useContext(UserContext);
   const { userID } = useParams();
+  const history = useHistory();
 
   // Initial States
   const [museumUser, setMuseumUser] = useState(null);
@@ -150,7 +151,21 @@ function Museum() {
   if (isLoading) {
     return <h4>Loading Webpage</h4>;
   } else if (error) {
-    return <h1>{message}</h1>;
+    return (
+      <div>
+        <h1>{message}</h1>
+        <Button
+            onClick={() => {
+              setError(false);
+              setMessage("");
+              history.push("/museum");
+            }}
+            color="primary"
+            variant="contained">
+              Return to Museum
+          </Button>
+      </div>
+    );
   } else {
     return (
       <div>

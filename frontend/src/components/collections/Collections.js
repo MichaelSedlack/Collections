@@ -153,8 +153,12 @@ function Collections() {
         <h1>{message}</h1>
         <Button
           onClick={() => {
+            setError(false);
+            setMessage("");
             history.push("/collections");
-          }}>
+          }}
+          color="primary"
+          variant="contained">
             Return to Collections
         </Button>
       </div>

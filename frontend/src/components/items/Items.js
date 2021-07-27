@@ -150,7 +150,21 @@ function Items() {
   if (isLoading) {
     return <h4>Loading Webpage</h4>;
   } else if (error) {
-    return <h1>{message}</h1>;
+    return (
+      <div>
+        <h1>{message}</h1>
+        <Button
+            onClick={() => {
+              setError(false);
+              setMessage("");
+              history.push("/items");
+            }}
+            color="primary"
+            variant="contained">
+              Return to Items
+          </Button>
+      </div>
+    );
   } else {
     return (
       <div>
