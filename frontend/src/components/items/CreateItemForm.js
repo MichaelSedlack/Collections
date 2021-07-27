@@ -55,9 +55,7 @@ function CreateItemForm({ keys }) {
       setItemName("");
       setItemDescription("");
       setPhotoMessage("");
-      collection.keys.map((key) => {
-        itemKeys[key] = "";
-      });
+      setItemKeys({});
     }, 500);
   };
 

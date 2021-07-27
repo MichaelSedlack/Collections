@@ -42,9 +42,9 @@ function UpdateItem({itemData, handleClose})
     };
 
     const handleObjectChange = (e, key) => {
-      let obj = item;
+      let obj = JSON.parse(JSON.stringify(item));
       obj[key] = e.target.value;
-  
+
       setItem(obj);
     };
 
