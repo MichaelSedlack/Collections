@@ -115,9 +115,9 @@ function PageHeader() {
         container
         spacing={0}
         alignItems="flex-start"
-        justify="space-evenly"
+        justifyContent="space-evenly"
       >
-        <img src={logo} />
+        <img src={logo} alt="Myuseum Logo"/>
         <h1>{pageName}</h1>
         {user ? (
           <div>
@@ -149,7 +149,7 @@ function PageHeader() {
             </StyledMenu>
           </div>
         ) : (
-          <img src={logo} />
+          <img src={logo} alt="Myuseum Logo"/>
         )}
       </Grid>
     </header>

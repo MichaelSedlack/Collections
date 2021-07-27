@@ -218,7 +218,7 @@ usersRouter.put('/updatePasswordByEmail', async (req, res) => {
   user.resetPasswordToken = null;
 
   // save user
-  const newUser = await user.save();
+  await User.findByIdAndUpdate(user._id, user);
 
   return res.status(200).json({success: "Password successfully changed"});
 })

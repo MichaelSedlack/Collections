@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -65,8 +64,8 @@ function CollectionCard({ collection }) {
   const { user } = useContext(UserContext);
   const classes = useStyles();
 
-  const [message, setMessage] = useState("");
-  const [open, setOpen] = React.useState(false);
+  const [message] = useState("");
+  const [setOpen] = React.useState(false);
   const [edit, setEdit] = useState(false);
   const [cancelButton, setCancelButton] = useState(false);
   const [showDialog, setShowDialog] = useState();
@@ -103,7 +102,7 @@ function CollectionCard({ collection }) {
     history.push("/items");
   };
 
-  if (user.id != room.uid) {
+  if (user.id !== room.uid) {
     return (
       <div>
         <Card

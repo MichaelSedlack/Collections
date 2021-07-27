@@ -44,7 +44,7 @@ function Collections() {
         console.log(exception);
       }
     })();
-  }, [user]);
+  }, [user, room]);
 
   const doCreate = async (collection) => {
     try {

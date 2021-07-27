@@ -123,5 +123,5 @@ describe('/users/login', () => {
 })
 
 afterAll(() => {
-  mongoose.connection.close();
+  mongoose.disconnect();
 })

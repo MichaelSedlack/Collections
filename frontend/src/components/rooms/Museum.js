@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Redirect } from "react-router-dom";
 import CreateRoomForm from "./CreateRoomForm";
 import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
@@ -8,7 +8,6 @@ import SearchRooms from "./SearchRooms";
 import { UserContext } from "../UserContext";
 import { ApiContext } from "../ApiContext";
 import roomService from "../helpers/roomService";
-import { breakpoints } from "@material-ui/system";
 
 function Museum() {
   const { user } = useContext(UserContext);
@@ -32,7 +31,10 @@ function Museum() {
         const res = await roomService.getAll(id);
         const currUser = await roomService.getUser(id);
 
-        if (res.error) {
+        if (res.error || currUser.error) {
+          if(currUser.error === "JSON Webtoken NULL"){
+            return <Redirect to="/"/>
+          }
           setIsLoading(false);
           setError(true);
           setMessage(res.error);
@@ -179,7 +181,6 @@ function Museum() {
               <span id="displayRoom">
                 <h1>{museumUser.firstName}'s Rooms</h1>
               </span>
-              {error && <div>{message}</div>}
               <RoomForm rooms={rooms} />
             </Grid>
             <Grid item xs={2} sm={3} md={1} lg={2} />

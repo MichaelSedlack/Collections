@@ -96,7 +96,7 @@ function CreateCollectionForm() {
 
   // Adds new key elements to the collectionKeys array
   function handleKeys() {
-    setCollectionKeys((collectionKeys) => [
+    setCollectionKeys(() => [
       ...collectionKeys,
       keyName.current.value,
     ]);
@@ -106,7 +106,16 @@ function CreateCollectionForm() {
     setKeyMessage("Added Key");
     setTimeout(function () {
       setShowKeyMessage(false);
+      setKeyMessage("");
     }, 700);
+  }
+
+  const isShowMessage = () => {
+    return showKeyMessage ? <span>{keyMessage}</span> : null
+  }
+  
+  const isTemplate = () => {
+    return template ? true : false;
   }
 
   const handleRadioChange = (event) => {
@@ -138,7 +147,7 @@ function CreateCollectionForm() {
     }
   };
 
-  if (user.id != room.uid) {
+  if (user.id !== room.uid) {
     return (
       <div>
         <br />
@@ -165,7 +174,7 @@ function CreateCollectionForm() {
           <div>
             <h4>Use a Custom Collection</h4>
             <TextField
-              disabled={template ? true : false}
+              disabled={isTemplate()}
               margin="dense"
               variant="outlined"
               type="text"
@@ -174,7 +183,7 @@ function CreateCollectionForm() {
               inputRef={keyName}
             />
             <Button
-              disabled={template ? true : false}
+              disabled={isTemplate()}
               variant="contained"
               size="medium"
               color="primary"
@@ -188,7 +197,7 @@ function CreateCollectionForm() {
             >
               Add Key
             </Button>
-            {/* {showKeyMessage ? <span>{keyMessage}</span> : null} */}
+            {isShowMessage()}
             <br />
             <br />
           </div>
