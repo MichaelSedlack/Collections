@@ -118,7 +118,7 @@ function CreateCollectionForm() {
         break;
       case "Movies":
         setRadio("Movies");
-        setCollectionKeys(["Author", "Genre", "Year", "Platform"]);
+        setCollectionKeys(["Director", "Genre", "Year", "Platform"]);
         break;
       case "Trading Cards":
         setRadio("Trading Cards");
