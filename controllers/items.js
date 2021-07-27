@@ -77,7 +77,7 @@ itemsRouter.post('/create', upload.single("image"), async (req, res) => {
 
   let img = 'images/'
 
-  if(request.file){
+  if(req.file){
     img = img + req.file.filename
   }
 
