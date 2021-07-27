@@ -103,9 +103,9 @@ usersRouter.post('/login', async (req, res) => {
     return res.status(400).json({error: "User does not exist"});
   }else if(!(await bcrypt.compare(password, user.passwordHash))){ // Check if passwords match
     return res.status(400).json({error: "Incorrect Password"});
-  }//else if(!user.validated){
-  //   return res.status(403).json({error: "Please validate email."});
-  // }
+  }else if(!user.validated){
+     return res.status(403).json({error: "Please validate email."});
+   }
 
   // TODO: UNCOMMENT ABOVE WHEN GOING INTO PRODUCTION
 
