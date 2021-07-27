@@ -70,7 +70,7 @@ function Login() {
         }
       })
       .catch(function (error) {
-        setMessage("Username or Password Incorrect");
+        setMessage(error.response.data.error);
         setMessageColor("red");
         console.log(error.response.data);
       });
