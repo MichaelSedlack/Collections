@@ -148,11 +148,7 @@ function ItemCard({ item }) {
           <div className={classes.details}>
             <div className={classes.controlsOpen}>
               <UpdateItem
-                itemData={{
-                  itemId: item.id,
-                  itemName: item.name,
-                  itemDescription: item.description,
-                }}
+                itemData={{item}}
                 handleClose={cancelClicked}
               />
               {cancelButton ? (

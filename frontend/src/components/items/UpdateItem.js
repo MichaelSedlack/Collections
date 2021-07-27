@@ -2,27 +2,29 @@ import React, { useState, useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { ApiContext } from '../ApiContext';
+import { CollectionContext } from '../UserContext';
 
 
 function UpdateItem({itemData, handleClose})
 {
-
+    const {collection} = useContext(CollectionContext);
     const {doUpdate} = useContext(ApiContext);
     
     // Initial states
     const [message,setMessage] = useState('');
-    const [name,setName] = useState(itemData.itemName);
+    const [name,setName] = useState(itemData.item.name);
     const [error, setError] = useState(false);
-    const [itemDescription, setItemDescription] = useState(itemData.itemDescription);
-    const [itemId] = useState(itemData.itemId);
+    const [itemDescription, setItemDescription] = useState(itemData.item.description);
+    const [item, setItem] = useState(itemData.item.item);
+    const [itemId] = useState(itemData.item.id);
     
 
-    const updateItem = event =>
-    {
+    const updateItem = event =>{
         event.preventDefault();
         const newitem = {
             name:name,
-            description: itemDescription
+            description: itemDescription,
+            item: item
         };
 
         const res = doUpdate(itemId, newitem);
@@ -39,9 +41,17 @@ function UpdateItem({itemData, handleClose})
           }
     };
 
+    const handleObjectChange = (e, key) => {
+      let obj = item;
+      obj[key] = e.target.value;
+  
+      setItem(obj);
+    };
+
     const handelDescriptionChange = (e) => {
       setItemDescription(e.target.value);
     }
+
     if(error){
       return(<h1>{message}</h1>);
     }
@@ -52,7 +62,23 @@ function UpdateItem({itemData, handleClose})
             <br />
             <TextField id="outlined-multiline-static" label="Description" multiline rows={4} defaultValue={itemDescription} variant="outlined" onChange={e=>handelDescriptionChange(e)} />
 
-            <br /><br/>
+            <br />
+            {collection.keys.map((key) => {
+              return (
+                <div>
+                  <TextField
+                    margin="dense"
+                    variant="outlined"
+                    type="text"
+                    label={key}
+                    value={item[key]}
+                    onChange={(e) => handleObjectChange(e, key)}
+                  />
+                  <br />
+                </div>
+              );
+            })}
+            <br/>
             <Button variant="contained" size="large" color="primary" type="submit" id="createitemButton" value = "Update item" onClick={updateItem}>Update item</Button>
             <span id="createitemResult">{message}</span>
         </div>
