@@ -51,11 +51,13 @@ function CreateItemForm({ keys }) {
     setMessage("Successfully created item!");
     setTimeout(() => {
       setMessage("");
+      setOpen(false);
       setItemName("");
       setItemDescription("");
       setPhotoMessage("");
-      setItemKeys({});
-      setOpen(false);
+      collection.keys.map((key) => {
+        itemKeys[key] = "";
+      });
     }, 500);
   };
 
@@ -79,7 +81,7 @@ function CreateItemForm({ keys }) {
     setItemDescription(e.target.value);
   };
 
-  if (user.id !== room.uid) {
+  if (user.id != room.uid) {
     return (
       <div>
         <br />

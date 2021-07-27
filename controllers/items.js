@@ -11,7 +11,6 @@ const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
 const {GridFsStorage} = require('multer-gridfs-storage');
-const { request } = require('express');
 
 // Helper functions
 const containsKeys = (keys, item) => {
@@ -76,12 +75,8 @@ itemsRouter.post('/create', upload.single("image"), async (req, res) => {
   // TODO: Update rather than add new item.
   //-------
 
-  let img = 'images/'
+  const img = 'images/' + req.file.filename;
 
-  if(request.file){
-    img = img + req.file.filename
-  }
-  
   // Create item object
   const newItem = new Item({
     name: body.name,

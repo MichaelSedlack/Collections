@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Grid from "@material-ui/core/Grid";
 import { Button } from "@material-ui/core";
 import RoomForm from "../rooms/RoomForm";
@@ -15,7 +15,6 @@ function PublicRoom() {
 
   const doSearch = async (search) => {
     try {
-      setIsLoading(true);
       const res = await roomService.searchPublic(search);
 
       if (res.error) {
@@ -61,7 +60,7 @@ function PublicRoom() {
               <h1>Public Rooms</h1>
             </span>
             {error && <div>{message}</div>}
-            {isLoading ? <span>Searching...</span> : <RoomForm rooms={rooms} />}
+            <RoomForm rooms={rooms} />
           </Grid>
           <Grid item xs={2} sm={3} md={1} lg={2} />
 

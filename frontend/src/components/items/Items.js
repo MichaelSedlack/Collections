@@ -48,7 +48,7 @@ function Items() {
         console.log(exception);
       }
     })();
-  }, [user, collection]);
+  }, [user]);
 
   const doCreate = async (item) => {
     try {
@@ -189,7 +189,7 @@ function Items() {
                 {collection.name} Collection
               </Button>
               {">>"}
-              <Button color="primary">
+              <Button color="primary" color="secondary">
                 Public Items
               </Button>
             </Grid>
